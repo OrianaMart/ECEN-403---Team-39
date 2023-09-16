@@ -53,62 +53,97 @@ class _ContactPageState extends State<ContactPage> {
         body: Padding(
           padding: const EdgeInsets.fromLTRB(25.0, 40, 20, 0),
           child: Form(
-            child: Column(
-              children: [
-                TextFormField(
-                  controller: nameController,
-                  decoration: const InputDecoration(
-                    icon: const Icon(Icons.account_circle),
-                    hintText: 'Name',
-                    labelText: 'Name',
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                TextFormField(
-                  controller: subjectController,
-                  decoration: const InputDecoration(
-                    icon: const Icon(Icons.subject_rounded),
-                    hintText: 'Subject',
-                    labelText: 'Subject',
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                TextFormField(
-                  controller: emailController,
-                  decoration: const InputDecoration(
-                    icon: Icon(Icons.email),
-                    hintText: 'Email',
-                    labelText: 'Email',
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                TextFormField(
-                  controller: messageController,
-                  decoration:const InputDecoration(
-                    icon: Icon(Icons.message),
-                    hintText: 'Message',
-                    labelText: 'Message',
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                ElevatedButton(
-                    onPressed: () {
-                      sendEmail();
-                    },
-                    child: Text(
-                      "Send",
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 60,
+                    child: TextFormField(
+                      controller: nameController,
+                      decoration: const InputDecoration(
+                        icon: const Icon(Icons.account_circle,
+                        color: Colors.indigo,
+                        ),
+                        hintText: 'Name',
+                        labelText: 'Name',
+                        contentPadding: EdgeInsets.symmetric(vertical: 9),
+                      ),
                       style: TextStyle(fontSize: 20),
+                      maxLines: 1,
+                      minLines: 1,
                     ),
-                ),
-              ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    height: 60,
+                    child: TextFormField(
+                      controller: subjectController,
+                      decoration: const InputDecoration(
+                        icon: const Icon(Icons.subject_rounded,
+                        color: Colors.indigo
+                        ),
+                        hintText: 'Subject',
+                        labelText: 'Subject',
+                        contentPadding: EdgeInsets.symmetric(vertical: 9),
+                      ),
+                      style: TextStyle(fontSize: 20),
+                      maxLines: 1,
+                      minLines: 1,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    height: 60,
+                    child: TextFormField(
+                      controller: emailController,
+                      decoration: const InputDecoration(
+                        icon: Icon(Icons.email,
+                        color: Colors.indigo,
+                        ),
+                        hintText: 'Email',
+                        labelText: 'Email',
+                        contentPadding: EdgeInsets.symmetric(vertical: 9),
+                      ),
+                      style: TextStyle(fontSize: 20),
+                      maxLines: 1,
+                      minLines: 1,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    controller: messageController,
+                    decoration:const InputDecoration(
+                      icon: Icon(Icons.message,
+                      color: Colors.indigo,
+                      ),
+                      hintText: 'Message',
+                      labelText: 'Message',
+                      contentPadding: EdgeInsets.symmetric(vertical: 9),
+                    ),
+                    style: TextStyle(fontSize: 20),
+                    maxLines: 6,
+                    minLines: 2,
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        sendEmail();
+                      },
+                      child: Text(
+                        "Send",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
