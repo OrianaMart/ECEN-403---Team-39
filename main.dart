@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'database_functions.dart';
+import 'equipment_page.dart';
+import 'Data.dart' as user;
+import 'home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -67,25 +70,38 @@ class LoginPageState extends State<LoginPage> {
                           )
                       ),
                       const SizedBox(height: 15),
-                      OutlinedButton(
+                      ElevatedButton(
+                          style: ButtonStyle(
+                            //backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue.shade100),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.0),
+
+                                  )
+                              )
+                          ),
                           onPressed: () async{
                             switch(await authenticate(myController1.text,myController2.text)){
                               case 'Valid Student': {
+                                user.username = myController1.text;
                                 setState(() {
                                   invalidUser = false;
                                   invalidPassword = false;
                                 });
 
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => StudentLandingPage(username: myController1.text)
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => StudentLandingPage(username: myController1.text)
                                 ));
+                                //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
                               }
                               break;
                               case 'Valid Admin': {
+                                user.username = myController1.text;
+                                user.adminStatus = true;
                                 setState(() {
                                   invalidUser = false;
                                   invalidPassword = false;
                                 });
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => AdminLandingPage(username: myController1.text)
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AdminLandingPage(username: myController1.text)
                                 ));
                               }
                               break;
@@ -115,7 +131,16 @@ class LoginPageState extends State<LoginPage> {
                           child: const Text('Login')
                       ),
                       const SizedBox(height: 15),
-                      OutlinedButton(
+                      ElevatedButton(
+                          style: ButtonStyle(
+                            //backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue.shade100),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.0),
+
+                                  )
+                              )
+                          ),
                           onPressed: (){
                             Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgotPassword()
                             ));
@@ -123,7 +148,16 @@ class LoginPageState extends State<LoginPage> {
                           child: const Text('Forgot Password')
                       ),
                       const SizedBox(height: 15),
-                      OutlinedButton(
+                      ElevatedButton(
+                          style: ButtonStyle(
+                            //backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue.shade100),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.0),
+
+                                  )
+                              )
+                          ),
                           onPressed: (){
                             Navigator.push(context, MaterialPageRoute(builder: (context) => const CreateStudentPage()
                             ));
@@ -230,6 +264,8 @@ class CreateStudentPageState extends State<CreateStudentPage> {
   bool invalidUser = false;
   bool invalidEmail = false;
   bool invalidUIN = false;
+  bool invalidPhone = false;
+  bool invalidCourse = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -277,7 +313,8 @@ class CreateStudentPageState extends State<CreateStudentPage> {
               const SizedBox(height: 15),
               TextField(
                   controller: myController7,
-                  decoration: const InputDecoration(border: OutlineInputBorder(), labelText: 'Phone Number')
+                  decoration: InputDecoration(border: const OutlineInputBorder(), labelText: 'Phone Number',
+                  errorText: invalidPhone ? 'Invalid Phone Number': null)
               ),
               const SizedBox(height: 15),
               TextField(
@@ -287,7 +324,8 @@ class CreateStudentPageState extends State<CreateStudentPage> {
               const SizedBox(height: 15),
               TextField(
                   controller: myController9,
-                  decoration: const InputDecoration(border: OutlineInputBorder(), labelText: 'Course Number')
+                  decoration: InputDecoration(border: const OutlineInputBorder(), labelText: 'Course Number',
+                  errorText: invalidCourse ? 'Invalid Course Number': null)
               ),
               const SizedBox(height: 15),
               OutlinedButton(
@@ -301,6 +339,8 @@ class CreateStudentPageState extends State<CreateStudentPage> {
                           invalidUser = true;
                           invalidEmail = false;
                           invalidUIN = false;
+                          invalidPhone = false;
+                          invalidCourse = false;
                         });
                       }
                       break;
@@ -310,6 +350,8 @@ class CreateStudentPageState extends State<CreateStudentPage> {
                           invalidUser = false;
                           invalidEmail = true;
                           invalidUIN = false;
+                          invalidPhone = false;
+                          invalidCourse = false;
                         });
                       }
                       break;
@@ -319,6 +361,30 @@ class CreateStudentPageState extends State<CreateStudentPage> {
                           invalidUser = false;
                           invalidEmail = false;
                           invalidUIN = true;
+                          invalidPhone = false;
+                          invalidCourse = false;
+                        });
+                      }
+                      break;
+
+                      case 'Invalid Phone Number': {
+                        setState(() {
+                          invalidUser = false;
+                          invalidEmail = false;
+                          invalidUIN = false;
+                          invalidPhone = true;
+                          invalidCourse = false;
+                        });
+                      }
+                      break;
+
+                      case 'Invalid Course Number': {
+                        setState(() {
+                          invalidUser = false;
+                          invalidEmail = false;
+                          invalidUIN = false;
+                          invalidPhone = false;
+                          invalidCourse = true;
                         });
                       }
                       break;
@@ -328,6 +394,8 @@ class CreateStudentPageState extends State<CreateStudentPage> {
                           invalidUser = false;
                           invalidEmail = false;
                           invalidUIN = false;
+                          invalidPhone = false;
+                          invalidCourse = false;
                           Navigator.pop(context);
                         });
                       }
@@ -346,15 +414,109 @@ class CreateStudentPageState extends State<CreateStudentPage> {
 }
 
 //creates the landing page for the students
-class StudentLandingPage extends StatelessWidget {
+class StudentLandingPage extends StatefulWidget {
   const StudentLandingPage({Key? key, required this.username}) : super(key: key);
   final String username;
   @override
+  StudentLandingPageState createState() {
+    return StudentLandingPageState();
+  }
+}
+class StudentLandingPageState extends State<StudentLandingPage> {
+  var requestIDs = List<String>.filled(0, '', growable: true);
+  var requests = List<String>.filled(0, '', growable: true);
+  var historyIDs = List<String>.filled(0, '', growable: true);
+  var checkouts = List<String>.filled(0, '', growable: true);
+  String name = '';
+
+  @override
+  void initState() {
+    super.initState();
+
+    () async {
+      var temp = await getUserInfo(widget.username);
+      name = temp[2];
+      requestIDs = await findRequests(widget.username);
+      if(requestIDs[0] == 'No Requests'){
+        requests.add(requestIDs[0]);
+      } else {
+        for(int i = 0; i < requestIDs.length; i++){
+          var temp = await getRequestInfo(requestIDs[i]);
+          requests.add(temp[2]);
+        }
+      }
+
+      historyIDs = await historyIDbyUser(widget.username);
+      if(historyIDs[0] == 'No Checkout History'){
+        checkouts.add(historyIDs[0]);
+      } else {
+        for(int i = 0; i < historyIDs.length; i++){
+          var temp = await getHistoryInfo(historyIDs[i]);
+          if(temp.length < 7) {
+            checkouts.add(temp[2]);
+          } else if(int.parse(temp[6]) < int.parse(temp[3])){
+            checkouts.add(temp[2]);
+          } else {
+            historyIDs.removeAt(i);
+            i--;
+          }
+        }
+      }
+      setState(() {
+        requestIDs;
+        requests;
+        historyIDs;
+        checkouts;
+        name;
+      });
+    } ();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    initializeDatabase();
     return Scaffold(
       appBar: AppBar(
-          title: const Text('Student Landing Page')
+          title: Text('Welcome $name')
+      ),
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            ListTile(
+              title: const Text ('Home'),
+              onTap: () {
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => StudentLandingPage(username: widget.username)
+                ));
+
+              },
+            ),
+            ListTile(
+              title: const Text ('Equipment'),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => EquipmentPage()
+                ));
+              },
+            ),
+            ListTile(
+              title: const Text ('Forms'),
+              onTap: () {
+
+              },
+            ),
+            ListTile(
+              title: const Text ('Profile'),
+              onTap: () {
+
+              },
+            ),
+            ListTile(
+              title: const Text ('Logout'),
+              onTap: () {
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage()
+                ));
+              },
+            ),
+          ]
+        )
       ),
       body: Center(
         child: Padding(
@@ -362,17 +524,153 @@ class StudentLandingPage extends StatelessWidget {
           child: ListView(
             children: [
               const SizedBox(height: 15),
-              OutlinedButton(
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => GenerateRequest(username: username)
-                    ));
-                  },
-                  child: const Text('Generate Equipment Request')
+              Container(
+                  decoration: BoxDecoration(
+                      color: Colors.lightBlue[100],
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all()
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                  child: Column(
+                      children: [
+                        const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text('Requests:', style: TextStyle(fontSize: 20)),
+                        ),
+                        for(int i = 0; i < requests.length; i++)
+                          TextButton(onPressed: () async {
+                            var temp = await getRequestInfo(requestIDs[i]);
+                            showDialog(
+                              context: context,
+                              builder: (context) =>
+                            AlertDialog(
+                              title: Text(requests[i]),
+                              content: Table(children: [
+                                TableRow(children: <Widget>[
+                                  const Text('Request ID', textAlign: TextAlign.center),
+                                  Text(temp[0], textAlign: TextAlign.center),
+                                ]),
+                                TableRow(children: <Widget>[
+                                  const Text('Requested Amount', textAlign: TextAlign.center),
+                                  Text(temp[3], textAlign: TextAlign.center),
+                                ]),
+                                TableRow(children: <Widget>[
+                                  const Text('Timestamp', textAlign: TextAlign.center),
+                                  Text(temp[4], textAlign: TextAlign.center),
+                                ])
+                              ]),
+                              actions: [TextButton(onPressed: (){
+                                Navigator.pop(context);
+                              }, child: const Text('Return')),
+                                TextButton(onPressed: (){
+                                  denyRequest(temp[0]);
+                                  setState(() {
+                                    requestIDs.removeAt(i);
+                                    requests.removeAt(i);
+                                    checkouts;
+                                    historyIDs;
+                                  });
+                                  Navigator.pop(context);
+                              }, child: const Text('Cancel Request'))],
+                            )).then;
+
+                            }, child: Text(requests[i])),
+                      ]
+                  )
               ),
               const SizedBox(height: 15),
+              ElevatedButton(
+                  style: ButtonStyle(
+                      //backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue.shade100),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+
+                          )
+                      )
+                  ),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => GenerateRequest(username: widget.username)
+                    ));
+                  },
+                  child: const Text('New Equipment Request')
+              ),
+              const SizedBox(height: 15),
+              Container(
+                  decoration: BoxDecoration(
+                    color: Colors.lightBlue[100],
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all()
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                  child: Column(
+                      children: [
+                        const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text('Active Checkouts:', style: TextStyle(fontSize: 20)),
+                        ),
+                        for(int i = 0; i < checkouts.length; i++)
+                          TextButton(onPressed: () async {
+                            var temp = await getHistoryInfo(historyIDs[i]);
+                            showDialog(
+                                context: context,
+                                builder: (context) =>
+                                    AlertDialog(
+                                      title: Text(checkouts[i]),
+                                      content: Table(children: [
+                                        TableRow(children: <Widget>[
+                                          Text('History ID', textAlign: TextAlign.center),
+                                          Text(temp[0], textAlign: TextAlign.center),
+                                        ]),
+                                        TableRow(children: <Widget>[
+                                          Text('Amount Out', textAlign: TextAlign.center),
+                                          Text(temp[3], textAlign: TextAlign.center),
+                                        ]),
+                                        TableRow(children: <Widget>[
+                                          Text('Admin Out', textAlign: TextAlign.center),
+                                          Text(temp[4], textAlign: TextAlign.center),
+                                        ]),
+                                        TableRow(children: <Widget>[
+                                          Text('Timestamp Out', textAlign: TextAlign.center),
+                                          Text(temp[5], textAlign: TextAlign.center),
+                                        ]),
+                                        TableRow(children: <Widget>[
+                                          Text('Amount In', textAlign: TextAlign.center),
+                                          if(temp.length > 7)
+                                            Text(temp[6], textAlign: TextAlign.center),
+                                          if(temp.length < 7)
+                                            Text('-', textAlign: TextAlign.center),
+                                        ]),
+                                        TableRow(children: <Widget>[
+                                          Text('Admin In', textAlign: TextAlign.center),
+                                          if(temp.length > 7)
+                                            Text(temp[7], textAlign: TextAlign.center),
+                                          if(temp.length < 7)
+                                            Text('-', textAlign: TextAlign.center),
+                                        ]),
+                                        TableRow(children: <Widget>[
+                                          Text('Timestamp In', textAlign: TextAlign.center),
+                                          if(temp.length > 7)
+                                            Text(temp[8], textAlign: TextAlign.center),
+                                          if(temp.length < 7)
+                                            Text('-', textAlign: TextAlign.center),
+                                        ]),
+                                      ]),
+                                      actions: [TextButton(onPressed: (){
+                                        Navigator.pop(context);
+                                      }, child: const Text('Return'))],
+                                    )).then;
+
+                          }, child: Text(checkouts[i])),
+                      ]
+                  )
+              ),
+
+
+              /*const SizedBox(height: 15),
               OutlinedButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => NewForm(username: username)
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => NewForm(username: widget.username)
                     ));
                   },
                   child: const Text('New Forms')
@@ -380,7 +678,7 @@ class StudentLandingPage extends StatelessWidget {
               const SizedBox(height: 15),
               OutlinedButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => StudentForms(username: username)
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => StudentForms(username: widget.username)
                     ));
                   },
                   child: const Text('View Forms')
@@ -388,7 +686,7 @@ class StudentLandingPage extends StatelessWidget {
               const SizedBox(height: 15),
               OutlinedButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => StudentRequests(username: username)
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => StudentRequests(username: widget.username)
                     ));
                   },
                   child: const Text('View Active Requests')
@@ -396,7 +694,7 @@ class StudentLandingPage extends StatelessWidget {
               const SizedBox(height: 15),
               OutlinedButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => StudentPersonalInfo(username: username)
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => StudentPersonalInfo(username: widget.username)
                     ));
                   },
                   child: const Text('View Personal Information')
@@ -404,7 +702,7 @@ class StudentLandingPage extends StatelessWidget {
               const SizedBox(height: 15),
               OutlinedButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => StudentHistory(username: username)
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => StudentHistory(username: widget.username)
                     ));
                   },
                   child: const Text('View Check Out Information')
@@ -416,7 +714,7 @@ class StudentLandingPage extends StatelessWidget {
                     );
                   },
                   child: const Text('View Equipment')
-              ),
+              ),*/
             ],
           ),
         ),
@@ -1320,7 +1618,8 @@ class AdminLandingPage extends StatelessWidget {
               const SizedBox(height: 15),
               OutlinedButton(
                   onPressed: () {
-
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationsPage()
+                    ));
                   },
                   child: const Text('Notifications')
               ),
@@ -2253,7 +2552,7 @@ class ViewInfoPage extends StatelessWidget {
               const SizedBox(height: 15),
               OutlinedButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const ViewEquipment()
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const EquipmentPage()
                     ));
                   },
                   child: const Text('Equipment')
@@ -2299,7 +2598,9 @@ class ViewUsers extends StatefulWidget {
 }
 class ViewUsersState extends State<ViewUsers> {
   final TextEditingController myController1 = TextEditingController();
+  final TextEditingController myController2 = TextEditingController();
   bool invalidUser = false;
+  bool invalidUIN = false;
   var userIDs = List<String>.filled(0, '', growable: true);
   var userInfo =List<String>.filled(0, '', growable: true);
   var userInfoList = List<List<String>>.filled(0, [], growable: true);
@@ -2328,6 +2629,12 @@ class ViewUsersState extends State<ViewUsers> {
                       errorText: invalidUser ? 'Invalid Username': null)
               ),
               const SizedBox(height: 15),
+              TextField(
+                  controller: myController2,
+                  decoration: InputDecoration(border: const OutlineInputBorder(), labelText: 'UIN',
+                      errorText: invalidUIN ? 'Invalid UIN': null)
+              ),
+              const SizedBox(height: 15),
               OutlinedButton(
                   onPressed: () async{
                     userInfoList = [];
@@ -2335,28 +2642,59 @@ class ViewUsersState extends State<ViewUsers> {
                     userInfo = [];
                     userIDs.add(myController1.text);
                     userInfo = await getUserInfo(userIDs[0]);
-                    userInfoList.add(userInfo);
-                    switch (userIDs[0]){
-                      case 'Invalid Username':{
+                    if(userInfo[0] == 'Invalid Username'){
+                      setState(() {
+                        invalidUIN = false;
+                        invalidUser = true;
+                        userInfo = [];
+                        userIDs = [];
+                      });
+                    } else {
+                      userInfoList.add(userInfo);
+                      setState(() {
+                        invalidUIN = false;
+                        invalidUser = false;
+                      });
+                    }
+                  },
+                  child: const Text('Search By Username')
+              ),
+              const SizedBox(height: 15),
+              OutlinedButton(
+                  onPressed: () async{
+                    userInfoList = [];
+                    userIDs = [];
+                    userInfo = [];
+                    if(double.tryParse(myController2.text) != null) {
+                      userIDs.add(
+                          await userByUIN(int.parse(myController2.text)));
+                      userInfo = await getUserInfo(userIDs[0]);
+                      userInfoList.add(userInfo);
+                      if (userIDs[0] == 'Invalid UIN') {
                         setState(() {
-                          invalidUser = true;
+                          invalidUIN = true;
+                          invalidUser = false;
                           userInfoList = [];
                           userInfo = [];
                           userIDs = [];
                         });
-
-                      }
-                      break;
-
-                      default:{
+                      } else {
                         setState(() {
+                          invalidUIN = false;
                           invalidUser = false;
                         });
                       }
-                      break;
+                    } else {
+                      setState(() {
+                        invalidUIN = true;
+                        invalidUser = false;
+                        userInfoList = [];
+                        userInfo = [];
+                        userIDs = [];
+                      });
                     }
                   },
-                  child: const Text('Search For User')
+                  child: const Text('Search By UIN')
               ),
               const SizedBox(height: 15),
               OutlinedButton(
@@ -2697,7 +3035,11 @@ class ViewEquipment extends StatefulWidget {
 }
 class ViewEquipmentState extends State<ViewEquipment> {
   final TextEditingController myController1 = TextEditingController();
+  final TextEditingController myController2 = TextEditingController();
+  final TextEditingController myController3 = TextEditingController();
   bool invalidEquipment = false;
+  bool invalidCategory = false;
+  bool invalidLocation = false;
   var equipmentIDs = List<String>.filled(0, '', growable: true);
   var equipmentInfo =List<String>.filled(0, '', growable: true);
   var equipmentInfoList = List<List<String>>.filled(0, [], growable: true);
@@ -2727,6 +3069,18 @@ class ViewEquipmentState extends State<ViewEquipment> {
                       errorText: invalidEquipment ? 'Invalid Equipment Name': null)
               ),
               const SizedBox(height: 15),
+              TextField(
+                  controller: myController2,
+                  decoration: InputDecoration(border: const OutlineInputBorder(), labelText: 'Category',
+                      errorText: invalidCategory ? 'Invalid Category': null)
+              ),
+              const SizedBox(height: 15),
+              TextField(
+                  controller: myController3,
+                  decoration: InputDecoration(border: const OutlineInputBorder(), labelText: 'Storage Location',
+                      errorText: invalidLocation ? 'Invalid Storage Location': null)
+              ),
+              const SizedBox(height: 15),
               OutlinedButton(
                   onPressed: () async{
                     equipmentInfoList = [];
@@ -2740,6 +3094,8 @@ class ViewEquipmentState extends State<ViewEquipment> {
                     if(equipmentInfo[0] == 'Invalid Equipment'){
                       setState(() {
                         invalidEquipment = true;
+                        invalidCategory = false;
+                        invalidLocation = false;
                         equipmentInfoList = [];
                         equipmentInfo = [];
                         equipmentIDs = [];
@@ -2747,10 +3103,80 @@ class ViewEquipmentState extends State<ViewEquipment> {
                     } else {
                       setState(() {
                         invalidEquipment = false;
+                        invalidCategory = false;
+                        invalidLocation = false;
                       });
                     }
                   },
-                  child: const Text('Search For Equipment')
+                  child: const Text('Search By Equipment Name')
+              ),
+              const SizedBox(height: 15),
+              OutlinedButton(
+                  onPressed: () async{
+                    equipmentInfoList = [];
+
+                    if(myController2.text == ''){
+                      equipmentIDs.add('Invalid Category');
+                    } else {
+                      equipmentIDs = await equipmentByCategory(myController2.text);
+                    }
+
+                    if(equipmentIDs[0] == 'Invalid Category'){
+                      setState(() {
+                        invalidEquipment = false;
+                        invalidCategory = true;
+                        invalidLocation = false;
+                        equipmentInfoList = [];
+                        equipmentInfo = [];
+                        equipmentIDs = [];
+                      });
+                    } else {
+                      for(int i = 0; i < equipmentIDs.length; i++){
+                        equipmentInfo = await getEquipmentInfo(equipmentIDs[i]);
+                        equipmentInfoList.add(equipmentInfo);
+                      }
+                      setState(() {
+                        invalidEquipment = false;
+                        invalidCategory = false;
+                        invalidLocation = false;
+                      });
+                    }
+                  },
+                  child: const Text('Search By Category')
+              ),
+              const SizedBox(height: 15),
+              OutlinedButton(
+                  onPressed: () async{
+                    equipmentInfoList = [];
+
+                    if(myController2.text == ''){
+                      equipmentIDs.add('Invalid Location');
+                    } else {
+                      equipmentIDs = await equipmentByLocation(myController3.text);
+                    }
+
+                    if(equipmentIDs[0] == 'Invalid Location'){
+                      setState(() {
+                        invalidEquipment = false;
+                        invalidCategory = false;
+                        invalidLocation = true;
+                        equipmentInfoList = [];
+                        equipmentInfo = [];
+                        equipmentIDs = [];
+                      });
+                    } else {
+                      for(int i = 0; i < equipmentIDs.length; i++){
+                        equipmentInfo = await getEquipmentInfo(equipmentIDs[i]);
+                        equipmentInfoList.add(equipmentInfo);
+                      }
+                      setState(() {
+                        invalidEquipment = false;
+                        invalidCategory = false;
+                        invalidLocation = false;
+                      });
+                    }
+                  },
+                  child: const Text('Search By Location')
               ),
               const SizedBox(height: 15),
               OutlinedButton(
@@ -2762,6 +3188,8 @@ class ViewEquipmentState extends State<ViewEquipment> {
                     if(equipmentIDs[0] == 'No Equipment'){
                       setState(() {
                         invalidEquipment = false;
+                        invalidCategory = false;
+                        invalidLocation = false;
                         equipmentInfoList = [];
                         equipmentIDs = [];
                       });
@@ -2772,6 +3200,8 @@ class ViewEquipmentState extends State<ViewEquipment> {
                       }
                       setState(() {
                         invalidEquipment = false;
+                        invalidCategory = false;
+                        invalidLocation = false;
                       });
                     }
                   },
@@ -3721,6 +4151,7 @@ class CreateAdminPageState extends State<CreateAdminPage> {
   bool invalidUser = false;
   bool invalidEmail = false;
   bool invalidUIN = false;
+  bool invalidPhone = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -3768,7 +4199,8 @@ class CreateAdminPageState extends State<CreateAdminPage> {
               const SizedBox(height: 15),
               TextField(
                   controller: myController7,
-                  decoration: const InputDecoration(border: OutlineInputBorder(), labelText: 'Phone Number')
+                  decoration: InputDecoration(border: const OutlineInputBorder(), labelText: 'Phone Number',
+                    errorText: invalidPhone ? 'Invalid Phone Number': null)
               ),
               const SizedBox(height: 15),
               OutlinedButton(
@@ -3781,6 +4213,7 @@ class CreateAdminPageState extends State<CreateAdminPage> {
                           invalidUser = true;
                           invalidEmail = false;
                           invalidUIN = false;
+                          invalidPhone = false;
                         });
                       }
                       break;
@@ -3790,6 +4223,7 @@ class CreateAdminPageState extends State<CreateAdminPage> {
                           invalidUser = false;
                           invalidEmail = true;
                           invalidUIN = false;
+                          invalidPhone = false;
                         });
                       }
                       break;
@@ -3799,6 +4233,17 @@ class CreateAdminPageState extends State<CreateAdminPage> {
                           invalidUser = false;
                           invalidEmail = false;
                           invalidUIN = true;
+                          invalidPhone = false;
+                        });
+                      }
+                      break;
+
+                      case 'Invalid Phone Number': {
+                        setState(() {
+                          invalidUser = false;
+                          invalidEmail = false;
+                          invalidUIN = false;
+                          invalidPhone = true;
                         });
                       }
                       break;
@@ -3808,10 +4253,63 @@ class CreateAdminPageState extends State<CreateAdminPage> {
                           invalidUser = false;
                           invalidEmail = false;
                           invalidUIN = false;
+                          invalidPhone = false;
                           Navigator.pop(context);
                         });
                       }
                       break;
+                    }
+                  },
+                  child: const Text('Submit')
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class NotificationsPage extends StatefulWidget {
+  const NotificationsPage({Key? key}) : super(key: key);
+  @override
+  NotificationsPageState createState() {
+    return NotificationsPageState();
+  }
+}
+class NotificationsPageState extends State<NotificationsPage> {
+  final TextEditingController myController1 = TextEditingController();
+  bool invalidUIN = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+          title: const Text('Notifications')
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          child: ListView(
+            children: [
+              const SizedBox(height: 15),
+              TextField(
+                  controller: myController1,
+                  decoration: InputDecoration(border: const OutlineInputBorder(), labelText: 'UIN',
+                      errorText: invalidUIN ? 'Invalid UIN': null)
+              ),
+              const SizedBox(height: 15),
+              OutlinedButton(
+                  onPressed: () async {
+                    var response = await userByUIN(int.parse(myController1.text));
+                    if(response == 'Invalid UIN'){
+                      setState(() {
+                        invalidUIN = true;
+                      });
+                    } else {
+                      setState(() {
+                        invalidUIN = false;
+                      });
                     }
                   },
                   child: const Text('Submit')

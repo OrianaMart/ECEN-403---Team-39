@@ -7,6 +7,8 @@ import 'package:firebase_core/firebase_core.dart';
 //import 'package:flutter/cupertino.dart';
 import 'firebase_options.dart';
 
+//Firebase Gmail account login information: Username: smartinventorytamu@gmail.com Password: EricTeam#39
+
 FirebaseDatabase database = FirebaseDatabase.instance;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -36,34 +38,42 @@ Future<String> createAdminUser(
         //ERROR CATCHING RESULT HERE!!!!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         return 'Invalid Username';
     } else {
-        //If the username does not yet exist
+        //Writes the new Admins information to their new primary key with Admin status (No Team#)
 
-        //checks if the email is used in a different account
-        Query emailQuery = usersRef.orderByChild('email').equalTo(email);
-        DataSnapshot emailResult = await emailQuery.get();
+        //checks if the UIN is used in a different account or if the UIN is the wrong number of digits
+        Query uinQuery = usersRef.orderByChild('uin').equalTo(uin);
+        DataSnapshot uinResult = await uinQuery.get();
 
-        if(emailResult.exists) {
-            return 'Invalid Email';
+        if(uinResult.exists || uin.toString().length != 9) {
+            return 'Invalid UIN';
         } else {
-            //Writes the new Admins information to their new primary key with Admin status (No Team#)
+            //checks if the email is used in a different account
+            Query emailQuery = usersRef.orderByChild('email').equalTo(email);
+            DataSnapshot emailResult = await emailQuery.get();
 
-            //checks if the UIN is used in a different account
-            Query uinQuery = usersRef.orderByChild('uin').equalTo(uin);
-            DataSnapshot uinResult = await uinQuery.get();
-
-            if(uinResult.exists) {
-                return 'Invalid UIN';
+            if (emailResult.exists) {
+                return 'Invalid Email';
             } else {
-                await usersRef.child(username).set({
-                    'password': password,
-                    'uin': uin,
-                    'firstName': firstName,
-                    'lastName': lastName,
-                    "email": email,
-                    "phoneNumber": phoneNumber,
-                    'adminStatus': true
-                });
-                return 'Created';
+                //If the username does not yet exist
+                //checks to see if the phone number is used in a different account or not 9 digits
+                Query phoneQuery = usersRef.orderByChild('phoneNumber').equalTo(phoneNumber);
+                DataSnapshot phoneResult = await phoneQuery.get();
+
+                if(phoneResult.exists || phoneNumber.toString().length != 10) {
+                    return 'Invalid Phone Number';
+                } else {
+                    //writes admin information
+                    await usersRef.child(username).set({
+                        'password': password,
+                        'uin': uin,
+                        'firstName': firstName,
+                        'lastName': lastName,
+                        "email": email,
+                        "phoneNumber": phoneNumber,
+                        'adminStatus': true
+                    });
+                    return 'Created';
+                }
             }
         }
     }
@@ -85,35 +95,50 @@ Future<String> createStudentUser(
         //ERROR CATCHING RESULT HERE!!!!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         return 'Invalid Username';
     } else {
-        //If the username does not yet exist
+        //checks if the UIN is used in a different account or if the UIN is not the correct amount of digits
+        Query uinQuery = usersRef.orderByChild('uin').equalTo(uin);
+        DataSnapshot uinResult = await uinQuery.get();
 
-        //checks if the email is used in a different account
-        Query emailQuery = usersRef.orderByChild('email').equalTo(email);
-        DataSnapshot emailResult = await emailQuery.get();
+        if (uinResult.exists || uin.toString().length != 9) {
+            return 'Invalid UIN';
 
-        if (emailResult.exists) {
-            return 'Invalid Email';
         } else {
-            //checks if the UIN is used in a different account
-            Query uinQuery = usersRef.orderByChild('uin').equalTo(uin);
-            DataSnapshot uinResult = await uinQuery.get();
+            //If the username does not yet exist
 
-            if (uinResult.exists) {
-                return 'Invalid UIN';
+            //checks if the email is used in a different account
+            Query emailQuery = usersRef.orderByChild('email').equalTo(email);
+            DataSnapshot emailResult = await emailQuery.get();
+
+            if (emailResult.exists) {
+                return 'Invalid Email';
+
             } else {
-                //Writes the new Student information to their new primary key with no Admin status
-                await usersRef.child(username).set({
-                    'password': password,
-                    'uin': uin,
-                    'firstName': firstName,
-                    'lastName': lastName,
-                    "email": email,
-                    "phoneNumber": phoneNumber,
-                    'adminStatus': false,
-                    'teamNumber': teamNumber,
-                    'courseNumber': courseNumber
-                });
-                return 'Created';
+                //checks to see if the phone number is used in a different account or not 9 digits
+                Query phoneQuery = usersRef.orderByChild('phoneNumber').equalTo(phoneNumber);
+                DataSnapshot phoneResult = await phoneQuery.get();
+
+                if(phoneResult.exists || phoneNumber.toString().length != 10) {
+                    return 'Invalid Phone Number';
+                } else {
+                    //checks to see is the course number is valid
+                    if(courseNumber != 403 && courseNumber != 404){
+                        return 'Invalid Course Number';
+                    } else {
+                        //Writes the new Student information to their new primary key with no Admin status
+                        await usersRef.child(username).set({
+                            'password': password,
+                            'uin': uin,
+                            'firstName': firstName,
+                            'lastName': lastName,
+                            "email": email,
+                            "phoneNumber": phoneNumber,
+                            'adminStatus': false,
+                            'teamNumber': teamNumber,
+                            'courseNumber': courseNumber
+                        });
+                        return 'Created';
+                    }
+                }
             }
         }
     }
@@ -572,6 +597,82 @@ Future<List<String>> forgotPassword(String email) async
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//Function for returning a users username from their UIN
+Future<String> userByUIN(int uin) async
+{
+    //sets a database reference to the users directory and performs a query to locate user
+    DatabaseReference userRef = FirebaseDatabase.instance.ref('users');
+    Query query = userRef.orderByChild('uin').equalTo(uin);
+
+    //takes a data snapshot of the queried information
+    DataSnapshot user = await query.get();
+
+    //checks to see if there is a user with the given uin in the database
+    if(user.exists){
+        //if the user exists it returns the "key" which is the username for the account
+        return user.children.first.key.toString();
+    } else {
+        //ERROR checking (no user associated with this UIN)~~~~~~~~~
+        return 'Invalid UIN';
+    }
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//Function to find all equipment within a category
+Future<List<String>> equipmentByCategory(String category) async
+{
+    //sets up a list to return to the UI once it finds all equipment for a given category
+    var equipment = List<String>.filled(0, '', growable: true);
+
+    //Creates a database reference to the equipment section of the database and queries for the category
+    DatabaseReference equipmentRef = FirebaseDatabase.instance.ref('inventory');
+    Query query = equipmentRef.orderByChild('category').equalTo(category);
+
+    //creates a snapshot of the queried data
+    DataSnapshot equipments = await query.get();
+
+    if(equipments.exists) {
+        for (final child in equipments.children) {
+            equipment.add(child.key.toString());
+        }
+    } else{
+        //ERROR Catching (no equipment)~~~~~~~~~~~~
+        equipment.add('Invalid Category');
+    }
+
+    //return resulting equipments
+    return equipment;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//Function to find all equipment within a location
+Future<List<String>> equipmentByLocation(String location) async
+{
+    //sets up a list to return to the UI once it finds all equipment for a given location
+    var equipment = List<String>.filled(0, '', growable: true);
+
+    //Creates a database reference to the equipment section of the database and queries for the location
+    DatabaseReference equipmentRef = FirebaseDatabase.instance.ref('inventory');
+    Query query = equipmentRef.orderByChild('storageLocation').equalTo(location);
+
+    //creates a snapshot of the queried data
+    DataSnapshot equipments = await query.get();
+
+    if(equipments.exists) {
+        for (final child in equipments.children) {
+            equipment.add(child.key.toString());
+        }
+    } else{
+        //ERROR Catching (no equipment)~~~~~~~~~~~~
+        equipment.add('Invalid Location');
+    }
+
+    //return resulting equipments
+    return equipment;
+}
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //Function to return a users information
 Future<List<String>> getUserInfo(String username) async
 {
@@ -979,6 +1080,62 @@ Future<List<String>> allEquipment() async
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//Function to return all categories
+Future<List<String>> allCategories() async
+{
+    //makes the list to use when returning the category names
+    var categories = List<String>.filled(0, '', growable: true);
+
+    //sets database to the equipment and then takes a data snapshot
+    DatabaseReference inventoryRef = FirebaseDatabase.instance.ref('inventory');
+    DataSnapshot equipments = await inventoryRef.orderByChild('category').get();
+
+    //checks that some equipment is found
+    if(equipments.exists){
+        categories.add(equipments.children.first.child('category').value.toString());
+
+        for(final child in equipments.children){
+            if(!categories.contains(child.child('category').value.toString())){
+                categories.add(child.child('category').value.toString());
+            }
+        }
+    } else{
+        //Error checking (no equipment found)
+        categories.add('No Categories');
+    }
+    //returns all found category names
+    return categories;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//Function to return all locations
+Future<List<String>> allLocations() async
+{
+    //makes the list to use when returning the storage location names
+    var locations = List<String>.filled(0, '', growable: true);
+
+    //sets database to the equipment and then takes a data snapshot
+    DatabaseReference inventoryRef = FirebaseDatabase.instance.ref('inventory');
+    DataSnapshot equipments = await inventoryRef.orderByChild('storageLocation').get();
+
+    //checks that some equipment is found
+    if(equipments.exists){
+        locations.add(equipments.children.first.child('storageLocation').value.toString());
+
+        for(final child in equipments.children){
+            if(!locations.contains(child.child('storageLocation').value.toString())){
+                locations.add(child.child('storageLocation').value.toString());
+            }
+        }
+    } else{
+        //Error checking (no equipment found)
+        locations.add('No Storage Locations');
+    }
+    //returns all found storage locations names
+    return locations;
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //Function to return all active requests ids
 Future<List<String>> allRequestIDs() async
 {
@@ -1148,7 +1305,8 @@ Future<String> editEquipment(
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //Function to edit a form
-Future<String> editForm(String formID, String formName, String info, bool verification) async {
+Future<String> editForm(String formID, String formName, String info, bool verification) async
+{
     //sets a database reference to the form and takes snapshot
     DatabaseReference formRef = FirebaseDatabase.instance.ref('forms/$formID');
     DataSnapshot form = await formRef.get();
@@ -1320,7 +1478,8 @@ Future<String> removeEquipment(String equipment) async
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //Function to edit a form
-Future<String> removeForm(String formID) async {
+Future<String> removeForm(String formID) async
+{
     //sets a database reference to the form and takes snapshot
     DatabaseReference formRef = FirebaseDatabase.instance.ref('forms/$formID');
     DataSnapshot form = await formRef.get();
