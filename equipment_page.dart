@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'database_functions.dart';
 import 'Data.dart' as user;
 import 'login_screen.dart';
-import 'sign_up.dart';
 import 'home_page.dart';
 import 'equipment_detail_page.dart';
 
@@ -237,8 +236,10 @@ class EquipmentPageState extends State<EquipmentPage> {
               children: [
                 const SizedBox(height: 15),
                 //Dropdown menu for selecting the category to search by
-                DropdownMenu(
+                DropdownMenu<String>(
                     controller: categoryField,
+                    requestFocusOnTap: true,
+                    enableSearch: true,
                     width: 370,
                     label: const Text('Category'),
                     hintText: currentCategory,
@@ -357,8 +358,10 @@ class EquipmentPageState extends State<EquipmentPage> {
                     }),
 
                 const SizedBox(height: 15),
-                DropdownMenu(
+                DropdownMenu<String>(
                   controller: locationField,
+                  requestFocusOnTap: true,
+                  enableSearch: true,
                   width: 370,
                   label: const Text('Storage Location'),
                   enableFilter: true,
@@ -457,8 +460,10 @@ class EquipmentPageState extends State<EquipmentPage> {
                   },
                 ),
                 const SizedBox(height: 15),
-                DropdownMenu(
+                DropdownMenu<String>(
                   controller: equipmentField,
+                  requestFocusOnTap: true,
+                  enableSearch: true,
                   width: 370,
                   enableFilter: true,
                   label: const Text('Equipment Name'),
@@ -604,9 +609,9 @@ Future<void> _logoutConfirmation(BuildContext context) async {
     builder: (BuildContext context) {
       return AlertDialog(
         title: const Text('Signing Out'),
-        content: SingleChildScrollView(
+        content: const SingleChildScrollView(
           child:ListBody(
-            children: const <Widget>[
+            children: <Widget>[
               Text('Are you sure you want to log out?')
             ],
           ),

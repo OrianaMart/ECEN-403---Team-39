@@ -25,7 +25,6 @@ class SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    initializeDatabase();
     // Creates the app bar at the top of the screen
     return Scaffold(
       appBar: AppBar( //creates top bar of the app
@@ -187,6 +186,7 @@ class SignUpPageState extends State<SignUpPage> {
               onPressed: () async{
                 switch(await createStudentUser(usernameField.text, passwordField.text, int.parse(uinField.text), firstNameField.text, lastNameField.text, emailField.text, int.parse(phoneNumberField.text), int.parse(teamNumberField.text), int.parse(courseNumberField.text))){
 
+                  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~CHECK ERROR CASES
                 }
                     Navigator.pushReplacement(context, MaterialPageRoute(
                       builder: (context) => HomePage(),

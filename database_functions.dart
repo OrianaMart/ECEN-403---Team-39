@@ -584,6 +584,10 @@ Future<List<String>> forgotPassword(String email) async
 
         //Cleanest way I have found to return the string value of the key for an object
         for(final child in login.children){
+            //adds the first name to loginInfo
+            loginInfo.add(child.child('firstName').value.toString());
+            //adds the last name to loginInfo
+            loginInfo.add(child.child('lastName').value.toString());
             //adds the username to loginInfo
             loginInfo.add(child.key.toString());
             //adds the password to loginInfo

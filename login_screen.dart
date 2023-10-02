@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'database_functions.dart';
 import 'home_page.dart';
 import 'sign_up.dart';
+import 'forgot_password_page.dart';
 import 'Data.dart' as user;
 
 class LoginScreen extends StatefulWidget {
@@ -15,6 +16,8 @@ class LoginScreen extends StatefulWidget {
 class LoginScreenState extends State<LoginScreen> {
   final TextEditingController usernameField = TextEditingController();
   final TextEditingController passwordField = TextEditingController();
+
+  bool invalidLogin = false;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +65,8 @@ class LoginScreenState extends State<LoginScreen> {
             const SizedBox(height: 10),
             TextFormField(
               controller: usernameField,
-              decoration: const InputDecoration(labelText: 'Username'),
+              decoration: InputDecoration(labelText: 'Username',
+              errorText: invalidLogin ? 'Incorrect Username or Password': null),
             ),
             TextFormField(
               controller: passwordField,
@@ -73,7 +77,10 @@ class LoginScreenState extends State<LoginScreen> {
               alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: () {
-                  // Hello
+                  // Goes to forgot password page
+                  Navigator.pushReplacement(context, MaterialPageRoute(
+                    builder: (context) => const ForgotPasswordPage(),
+                  ));
                 },
                 child: const Text(
                   'Forgot Password?',
@@ -86,25 +93,44 @@ class LoginScreenState extends State<LoginScreen> {
             ),
             ElevatedButton(
               onPressed: () async{
-                switch(await authenticate(usernameField.text,passwordField.text)) { // implement authentication
-                  case 'Valid Student':{
-                    user.username = usernameField.text.toString();
-                    user.adminStatus = false;
-                    Navigator.pushReplacement(context, MaterialPageRoute(
-                      builder: (context) => HomePage(),
-                    ));
-                  }
-                  break;
+                if(usernameField.text.toString() != '' && passwordField.text.toString() != '') {
+                  switch (await authenticate(usernameField.text,
+                      passwordField.text)) { // implement authentication
+                    case 'Valid Student':
+                      {
+                        user.username = usernameField.text.toString();
+                        user.adminStatus = false;
+                        setState(() {
+                          invalidLogin = false;
+                        });
+                        Navigator.pushReplacement(context, MaterialPageRoute(
+                          builder: (context) => HomePage(),
+                        ));
+                      }
+                      break;
 
-                  case 'Valid Admin':{
-                    user.username = usernameField.text.toString();
-                    user.adminStatus = true;
-                    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Navigator
+                    case 'Valid Admin':
+                      {
+                        user.username = usernameField.text.toString();
+                        user.adminStatus = true;
+                        setState(() {
+                          invalidLogin = false;
+                        });
+                        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Navigator
+                      }
+                      break;
+
+                    default:
+                      {
+                        setState(() {
+                          invalidLogin = true;
+                        });
+                      }
+                      break;
                   }
-                  break;
+                  // Add login code here with database
+                  // Include code to navigate to the homepage
                 }
-                // Add login code here with database
-                // Include code to navigate to the homepage
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF963e3e),
@@ -124,7 +150,7 @@ class LoginScreenState extends State<LoginScreen> {
                   TextButton(
                     onPressed: () {
                       Navigator.pushReplacement(context, MaterialPageRoute(
-                          builder: (context) => SignUpPage(),
+                          builder: (context) => const SignUpPage(),
                       ));
                     },
                     child: const Text(

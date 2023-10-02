@@ -440,9 +440,9 @@ Future<void> _logoutConfirmation(BuildContext context) async {
     builder: (BuildContext context) {
       return AlertDialog(
         title: const Text('Signing Out'),
-        content: SingleChildScrollView(
+        content: const SingleChildScrollView(
           child: ListBody(
-            children: const <Widget>[Text('Are you sure you want to log out?')],
+            children: <Widget>[Text('Are you sure you want to log out?')],
           ),
         ),
         actions: <Widget>[
