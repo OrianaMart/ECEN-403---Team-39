@@ -61,7 +61,7 @@ class RequestDetailPageState extends State<RequestDetailPage> {
                   Text('Requested Amount: ${requestDetails[3]}'),
                   Text('Request Timestamp: ${requestDetails[4]}'),
 
-                  if (user.adminStatus == false) const StudentRequestDetails(),
+                  if (!user.adminStatus) const StudentRequestDetails(),
                 ]))));
   }
 }

@@ -62,7 +62,7 @@ class SignUpPageState extends State<SignUpPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   const Text(
-                    "Create a free account or",
+                    "Create a free account or return to",
                     style: TextStyle(
                       fontSize: 17.0,
                     ),

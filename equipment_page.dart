@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'database_functions.dart';
-import 'Data.dart' as user;
-import 'login_screen.dart';
-import 'home_page.dart';
+import 'navigator_drawer.dart';
 import 'equipment_detail_page.dart';
+import 'Data.dart' as user;
 
 class EquipmentPage extends StatefulWidget {
   const EquipmentPage({Key? key}) : super(key: key);
@@ -28,6 +27,8 @@ class EquipmentPageState extends State<EquipmentPage> {
   String? currentCategory;
   String? currentLocation;
   String? currentEquipment;
+
+  String pageName = 'Equipment Search';
 
   @override
   void initState() {
@@ -74,9 +75,9 @@ class EquipmentPageState extends State<EquipmentPage> {
     return Scaffold(
         // Creates smart inventory app bar at top
         appBar: AppBar( //creates top bar of the app that includes navigation widget
-          title: const Text(
-            'Smart Inventory',
-            style: TextStyle(
+          title: Text(
+            pageName,
+            style: const TextStyle(
               fontSize: 24.0,
             ),
             textAlign: TextAlign.center,
@@ -96,145 +97,13 @@ class EquipmentPageState extends State<EquipmentPage> {
         ),
 
         // Adds Navigation drawer to the Equipment page
-        //Navigation drawer code starts here
-        drawer: Drawer( //Creates navigation drawer
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              const SizedBox(
-                height: 115,
-                child: DrawerHeader(
-                  decoration: BoxDecoration(
-                    color: Color(0xFF500000),
-                  ),
-                  child: Text(
-                    'Navigation',
-                    style: TextStyle(
-                      color: Color(0xFFFFFFFF),
-                      fontSize: 24.0,
-                    ),
-                  ),
-                ),
-              ),
-
-              const Align(
-                alignment: Alignment.topCenter,
-                child: Text(
-                  'Hi,',
-                  style: TextStyle(
-                    fontSize: 23.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-
-              // Sends user back to home page when home button is pushed
-              ListTile( //Home Drawer Option
-                leading: const Icon(Icons.home),
-                title: const Text(
-                  'Home',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Color(0xFF500000),
-                  ),
-                ),
-                onTap: () {
-                  Navigator.pushReplacement(context, MaterialPageRoute(
-                    builder: (context) => const HomePage(),
-                  ));
-                },
-              ),
-
-              // Sends user to the profile page when this button is pushed
-              ListTile( //Profile Drawer Option
-                leading: const Icon(Icons.person),
-                title: const Text(
-                  'Profile',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Color(0xFF500000),
-                  ),
-                ),
-                onTap: () {
-                  //add code here
-                },
-              ),
-
-              // Sends users to equipment search page
-              ListTile( //Equipment Drawer Option
-                leading: const Icon(Icons.shopping_cart),
-                title: const Text(
-                  'Equipment',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Color(0xFF500000),
-                  ),
-                ),
-                onTap: () {
-                  Navigator.pushReplacement(context, MaterialPageRoute(
-                    builder: (context) => const EquipmentPage(),
-                  ));
-                },
-              ),
-
-              // Sends user to page to submit forms for equipment checkout
-              ListTile( //Forms Drawer Option
-                leading: const Icon(Icons.checklist),
-                title: const Text(
-                  'Forms',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Color(0xFF500000),
-                  ),
-                ),
-                onTap: () {
-                  // add more code here
-                },
-              ),
-
-              // Sends users to
-              ListTile( //Forms Drawer Option
-                leading: const Icon(Icons.camera_alt_rounded),
-                title: const Text(
-                  'Scan',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Color(0xFF500000),
-                  ),
-                ),
-                onTap: () {
-                  // add more code here
-                },
-              ),
-
-              //Sends user to logout confirmation pop up box
-              ListTile( //Logout Drawer Option
-                leading: const Icon(Icons.exit_to_app),
-                title: const Text(
-                  'Logout',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Color(0xFF500000),
-                  ),
-                ),
-                onTap: () {
-                  user.username = '';
-                  user.adminStatus = false;
-                  _logoutConfirmation(context);
-                  //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
-                  // add more code here
-                },
-              ),
-            ],
-          ),
-        ),
+        drawer: const NavigatorDrawer(),
 
         body: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
             child: Column(
               children: [
-                const SizedBox(height: 15),
                 //Dropdown menu for selecting the category to search by
                 DropdownMenu<String>(
                     controller: categoryField,
@@ -599,54 +468,4 @@ class EquipmentPageState extends State<EquipmentPage> {
           ),
         ));
   }
-}
-
-//Function to make a pop out dialogue box appear when logout button is pushed
-Future<void> _logoutConfirmation(BuildContext context) async {
-  return showDialog<void> (
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Signing Out'),
-        content: const SingleChildScrollView(
-          child:ListBody(
-            children: <Widget>[
-              Text('Are you sure you want to log out?')
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.grey,
-              ),
-              child: const Text('Cancel')
-          ),
-          TextButton(
-              onPressed: () {
-                _performLogout(context);
-              },
-              style: TextButton.styleFrom(
-                  foregroundColor: Colors.blue
-              ),
-              child: const Text('Logout')
-          ),
-        ],
-      );
-    },
-  );
-}
-
-//Function to perform the actions of logging out or not when either button is pushed on pop out dialogue box
-void _performLogout(BuildContext context) {
-  Navigator.of(context).pop();
-  Navigator.of(context).pushReplacement(
-    MaterialPageRoute(
-      builder: (context) => const LoginScreen(),
-    ),
-  );
 }

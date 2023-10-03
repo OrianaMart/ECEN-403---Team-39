@@ -64,7 +64,7 @@ class EquipmentDetailPageState extends State<EquipmentDetailPage> {
 
                   if (equipmentDetails.length > 5) Text(equipmentDetails[5]),
 
-                  if (user.adminStatus == false) const StudentEquipmentDetails(),
+                  if (!user.adminStatus) const StudentEquipmentDetails(),
                 ])
             )
         )

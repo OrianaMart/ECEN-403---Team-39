@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'database_functions.dart';
 import 'Data.dart' as user;
-import 'home_page.dart';
 
 class HistoryDetailPage extends StatefulWidget {
   const HistoryDetailPage({Key? key}) : super(key: key);
@@ -56,7 +55,7 @@ class HistoryDetailPageState extends State<HistoryDetailPage> {
                 child: Column(children: [
                   //Displays the information for the equipment
                   Text('Checkout History ID: ${user.checkoutID}'),
-                  if (user.adminStatus) Text('Username: ${historyDetails[1]}'),
+                  if(user.adminStatus) Text('Username: ${historyDetails[1]}'),
                   Text('Checked Out Equipment: ${historyDetails[2]}'),
                   Text('Amount Checked Out: ${historyDetails[3]}'),
                   Text('Admin Approved Checkout: ${historyDetails[4]}'),
@@ -69,7 +68,7 @@ class HistoryDetailPageState extends State<HistoryDetailPage> {
                   if(historyDetails.length > 6)
                     Text('Check-in Timestamp: ${historyDetails[8]}'),
 
-                  if(user.adminStatus == true)
+                  if(user.adminStatus)
                     const AdminHistoryDetails(),
 
                 ]))));

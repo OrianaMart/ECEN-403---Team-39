@@ -116,7 +116,9 @@ class LoginScreenState extends State<LoginScreen> {
                         setState(() {
                           invalidLogin = false;
                         });
-                        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Navigator
+                        Navigator.pushReplacement(context, MaterialPageRoute(
+                          builder: (context) => HomePage(),
+                        ));
                       }
                       break;
 
