@@ -74,7 +74,8 @@ class EquipmentPageState extends State<EquipmentPage> {
 
     return Scaffold(
         // Creates smart inventory app bar at top
-        appBar: AppBar( //creates top bar of the app that includes navigation widget
+        appBar: AppBar(
+          //creates top bar of the app that includes navigation widget
           title: Text(
             pageName,
             style: const TextStyle(
@@ -98,7 +99,6 @@ class EquipmentPageState extends State<EquipmentPage> {
 
         // Adds Navigation drawer to the Equipment page
         drawer: const NavigatorDrawer(),
-
         body: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
@@ -187,7 +187,6 @@ class EquipmentPageState extends State<EquipmentPage> {
                         if (locationIDs.isNotEmpty) {
                           //if there is a current location it sets displayIDs to be the locationIDs
                           displayIDs = locationIDs;
-
                         } else {
                           //If there is no selected location
 
@@ -201,7 +200,8 @@ class EquipmentPageState extends State<EquipmentPage> {
                         }
                       }
                       //checks to see if there is a selected equipment
-                      if(currentEquipment != null && !displayIDs.contains(currentEquipment)) {
+                      if (currentEquipment != null &&
+                          !displayIDs.contains(currentEquipment)) {
                         //updates the equipment selection by  setting the selected equipment to null and emptying the associated text field.
                         currentEquipment = null;
                         equipmentField.text = '';
@@ -413,6 +413,30 @@ class EquipmentPageState extends State<EquipmentPage> {
                   },
                 ),
                 const SizedBox(height: 15),
+
+                //admin only new equipment button
+                if (user.adminStatus)
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: const Color(
+                            0xFFdedede), // changes color of the text
+                        backgroundColor: const Color(
+                            0xFF963e3e), // changes the color of the button
+                      ),
+                      onPressed: () {
+                       /* Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                              const NewEquipmentPage(),
+                            ));
+
+                            */
+                      },
+                      child: const Text('Create New Equipment')),
+
+                if (user.adminStatus) const SizedBox(height: 15),
+
                 Flexible(
                     child: Container(
                         decoration: BoxDecoration(
@@ -435,31 +459,34 @@ class EquipmentPageState extends State<EquipmentPage> {
                                 Text(displayIDs[i],
                                     textAlign: TextAlign.center),
                                 ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      foregroundColor: const Color(0xFFdedede), // changes color of the text
-                                      backgroundColor: const Color(0xFF963e3e), // changes the color of the button
-                                    ),
-                                    /*style: ButtonStyle( 0xFFdedede
+                                  style: ElevatedButton.styleFrom(
+                                    foregroundColor: const Color(
+                                        0xFFdedede), // changes color of the text
+                                    backgroundColor: const Color(
+                                        0xFF963e3e), // changes the color of the button
+                                  ),
+                                  /*style: ButtonStyle( 0xFFdedede
                                         shape: MaterialStateProperty.all<
                                                 RoundedRectangleBorder>(
                                             RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12.0),
                                     ))),
                                     */
-                                    onPressed: () {
-                                      user.equipment = displayIDs[i];
-                                      Navigator.push(context, MaterialPageRoute(
-                                        builder: (context) => const EquipmentDetailPage(),
-                                      ));
-                                    },
-                                    child: const Padding(
-                                      padding: EdgeInsets.all(15.0),
-                                      child: Text(
-                                          'Select',
-                                          style: TextStyle(fontSize: 14)
-                                      ),
-                                    ),
+                                  onPressed: () {
+                                    user.equipment = displayIDs[i];
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const EquipmentDetailPage(),
+                                        ));
+                                  },
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(15.0),
+                                    child: Text('Select',
+                                        style: TextStyle(fontSize: 14)),
                                   ),
+                                ),
                               ])
                             ]),
                         ]))))

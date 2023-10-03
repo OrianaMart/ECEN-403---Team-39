@@ -62,6 +62,8 @@ class RequestDetailPageState extends State<RequestDetailPage> {
                   Text('Request Timestamp: ${requestDetails[4]}'),
 
                   if (!user.adminStatus) const StudentRequestDetails(),
+
+                  if (user.adminStatus) const AdminRequestDetails(),
                 ]))));
   }
 }
@@ -112,9 +114,12 @@ class StudentRequestDetailsState extends State<StudentRequestDetails> {
                   setState(() {
                     invalidRequest = false;
                   });
-                  Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => const HomePage(),
-                  ));;
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomePage(),
+                      ));
+                  ;
                 }
                 break;
             }
@@ -130,5 +135,78 @@ class StudentRequestDetailsState extends State<StudentRequestDetails> {
       ),
       if (invalidRequest) const Text('Invalid Request')
     ]);
+  }
+}
+
+class AdminRequestDetails extends StatefulWidget {
+  const AdminRequestDetails({Key? key}) : super(key: key);
+  @override
+  AdminRequestDetailsState createState(){
+    return AdminRequestDetailsState();
+  }
+}
+
+class AdminRequestDetailsState extends State<AdminRequestDetails>{
+  final uinField = TextEditingController();
+
+  bool invalidUin = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+          children: [
+            TextFormField(controller: uinField,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: 'UIN',
+                  helperText: 'Verify Students UIN for Approval',
+                  errorText: invalidUin ? 'Incorrect UIN': null),
+            ),
+
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor:
+                  const Color(0xFFdedede), // changes color of the text
+                  backgroundColor: const Color(
+                      0xFF963e3e), // changes the color of the button
+                ),
+                onPressed: () async {
+                  if(uinField.text.toString() != '') {
+                    if (await approveRequest(
+                        user.requestID, int.parse(uinField.text.toString()),
+                        user.username) == 'Approved') {
+                      setState(() {
+                        invalidUin = false;
+                      });
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomePage()));
+                    } else {
+                      setState(() {
+                        invalidUin = true;
+                      });
+                    }
+                  }
+                },
+                child: const Text('Approve Request')),
+
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor:
+                  const Color(0xFFdedede), // changes color of the text
+                  backgroundColor: const Color(
+                      0xFF963e3e), // changes the color of the button
+                ),
+                onPressed: () async {
+                  if (await denyRequest(user.requestID) == 'Denied') {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomePage()));
+                  }
+                },
+                child: const Text('Deny Request')),
+          ],
+        );
   }
 }
