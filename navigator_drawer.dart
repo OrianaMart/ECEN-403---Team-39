@@ -15,7 +15,7 @@ class NavigatorDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           const SizedBox(
-            height: 115,
+            height: 113,
             child: DrawerHeader(
               decoration: BoxDecoration(
                 color: Color(0xFF500000),
