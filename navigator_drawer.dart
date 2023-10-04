@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'login_screen.dart';
 import 'home_page.dart';
 import 'equipment_page.dart';
+import 'forms_page.dart';
 import 'Data.dart' as user;
 
 class NavigatorDrawer extends StatelessWidget {
@@ -133,6 +134,11 @@ class NavigatorDrawer extends StatelessWidget {
               user.checkoutID = '';
               user.requestID = '';
               // add more code here
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const FormsPage(),
+                  ));
             },
           ),
 
