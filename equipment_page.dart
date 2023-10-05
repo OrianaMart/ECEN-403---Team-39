@@ -28,7 +28,7 @@ class EquipmentPageState extends State<EquipmentPage> {
   String? currentLocation;
   String? currentEquipment;
 
-  String pageName = 'Equipment Search';
+  String pageName = 'Smart Inventory';
 
   @override
   void initState() {
@@ -104,6 +104,30 @@ class EquipmentPageState extends State<EquipmentPage> {
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
             child: Column(
               children: [
+                //Header for page
+                const Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'Equipment Search',
+                    style: TextStyle(
+                      fontSize: 28.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 7),
+
+                //Sub Header for page
+                const Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'Search for or checkout equipment.',
+                    style: TextStyle(
+                      fontSize: 17.0,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 15),
                 //Dropdown menu for selecting the category to search by
                 DropdownMenu<String>(
                     controller: categoryField,
@@ -424,7 +448,7 @@ class EquipmentPageState extends State<EquipmentPage> {
                             0xFF963e3e), // changes the color of the button
                       ),
                       onPressed: () {
-                       /* Navigator.push(
+                        /* Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
@@ -450,41 +474,51 @@ class EquipmentPageState extends State<EquipmentPage> {
                           const Align(
                             alignment: Alignment.centerLeft,
                             child: Text('Search Results:',
-                                style: TextStyle(fontSize: 20)),
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold)),
                           ),
-                          const Text('Equipment', textAlign: TextAlign.center),
+                          const SizedBox(height: 10),
                           for (int i = 0; i < displayIDs.length; i++)
                             Table(children: [
                               TableRow(children: <Widget>[
-                                Text(displayIDs[i],
-                                    textAlign: TextAlign.center),
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    foregroundColor: const Color(
-                                        0xFFdedede), // changes color of the text
-                                    backgroundColor: const Color(
-                                        0xFF963e3e), // changes the color of the button
-                                  ),
-                                  /*style: ButtonStyle( 0xFFdedede
-                                        shape: MaterialStateProperty.all<
-                                                RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12.0),
-                                    ))),
-                                    */
-                                  onPressed: () {
-                                    user.equipment = displayIDs[i];
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const EquipmentDetailPage(),
-                                        ));
-                                  },
-                                  child: const Padding(
-                                    padding: EdgeInsets.all(15.0),
-                                    child: Text('Select',
-                                        style: TextStyle(fontSize: 14)),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(displayIDs[i],
+                                      textAlign: TextAlign.center),
+                                ),
+                                SizedBox(
+                                  width: 25,
+                                  child: ElevatedButton(
+                                    style: ButtonStyle(
+                                      foregroundColor: MaterialStateProperty
+                                          .all<Color>(Colors
+                                              .white), // changes color of text
+                                      backgroundColor: MaterialStateProperty
+                                          .all<Color>(const Color(
+                                              0xFF963e3e)), // changes color of button
+                                      shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          // makes edges of button round instead of square
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                        ),
+                                      ), // changes the color of the button
+                                    ),
+                                    onPressed: () {
+                                      user.equipment = displayIDs[i];
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const EquipmentDetailPage(),
+                                          ));
+                                    },
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(10.0),
+                                      child: Text('Select',
+                                          style: TextStyle(fontSize: 15)),
+                                    ),
                                   ),
                                 ),
                               ])
