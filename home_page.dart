@@ -169,6 +169,12 @@ class StudentHomePageState extends State<StudentHomePage> {
         }
       }
 
+      //checks to see if there are checkouts but they are all fully checked in
+      if(historyIDs.isEmpty){
+        historyIDs.add('No Checkout History');
+        checkouts.add(historyIDs[0]);
+      }
+
       setState(() {
         //sets the state for the active requests
         requests;
