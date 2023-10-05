@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'database_functions.dart';
 import 'navigator_drawer.dart';
 import 'equipment_detail_page.dart';
+import 'new_equipment.dart';
 import 'Data.dart' as user;
 
 class EquipmentPage extends StatefulWidget {
@@ -51,11 +52,11 @@ class EquipmentPageState extends State<EquipmentPage> {
   @override
   Widget build(BuildContext context) {
     final List<DropdownMenuEntry<String>> categoryEntries =
-        <DropdownMenuEntry<String>>[];
+    <DropdownMenuEntry<String>>[];
     final List<DropdownMenuEntry<String>> locationEntries =
-        <DropdownMenuEntry<String>>[];
+    <DropdownMenuEntry<String>>[];
     final List<DropdownMenuEntry<String>> equipmentEntries =
-        <DropdownMenuEntry<String>>[];
+    <DropdownMenuEntry<String>>[];
 
     for (int i = 0; i < categories.length; i++) {
       categoryEntries
@@ -73,7 +74,7 @@ class EquipmentPageState extends State<EquipmentPage> {
     }
 
     return Scaffold(
-        // Creates smart inventory app bar at top
+      // Creates smart inventory app bar at top
         appBar: AppBar(
           //creates top bar of the app that includes navigation widget
           title: Text(
@@ -133,7 +134,7 @@ class EquipmentPageState extends State<EquipmentPage> {
                     controller: categoryField,
                     requestFocusOnTap: true,
                     enableSearch: true,
-                    width: 370,
+                    width: MediaQuery.of(context).size.width * .9,
                     label: const Text('Category'),
                     hintText: currentCategory,
                     //Prevents the hint text from going away
@@ -155,7 +156,7 @@ class EquipmentPageState extends State<EquipmentPage> {
 
                         //Obtains all of the equipment within the searched category
                         categoryIDs =
-                            await equipmentByCategory(selectedCategory);
+                        await equipmentByCategory(selectedCategory);
 
                         //empties the selectable locations to be refilled by those that are valid
                         locations = [];
@@ -255,7 +256,7 @@ class EquipmentPageState extends State<EquipmentPage> {
                   controller: locationField,
                   requestFocusOnTap: true,
                   enableSearch: true,
-                  width: 370,
+                  width: MediaQuery.of(context).size.width * .9,
                   label: const Text('Storage Location'),
                   enableFilter: true,
                   hintText: currentLocation,
@@ -357,7 +358,7 @@ class EquipmentPageState extends State<EquipmentPage> {
                   controller: equipmentField,
                   requestFocusOnTap: true,
                   enableSearch: true,
-                  width: 370,
+                  width: MediaQuery.of(context).size.width * .9,
                   enableFilter: true,
                   label: const Text('Equipment Name'),
                   hintText: currentEquipment,
@@ -448,14 +449,13 @@ class EquipmentPageState extends State<EquipmentPage> {
                             0xFF963e3e), // changes the color of the button
                       ),
                       onPressed: () {
-                        /* Navigator.push(
+                        user.equipment = '';
+                        Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
                               const NewEquipmentPage(),
                             ));
-
-                            */
                       },
                       child: const Text('Create New Equipment')),
 
@@ -463,67 +463,89 @@ class EquipmentPageState extends State<EquipmentPage> {
 
                 Flexible(
                     child: Container(
+                        width: double.infinity,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(20),
+                          color: const Color(0xFF87352F),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.8),
+                              spreadRadius: 3,
+                              blurRadius: 4,
+                              offset: const Offset(3, 4),
+                            ),
+                          ],
+                          border: Border.all(
+                            width: 3,
+                            color: const Color(0xFF500000),
+                          ),
                         ),
                         padding: const EdgeInsets.symmetric(
                             vertical: 15, horizontal: 20),
                         child: SingleChildScrollView(
                             child: Column(children: [
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text('Search Results:',
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold)),
-                          ),
-                          const SizedBox(height: 10),
-                          for (int i = 0; i < displayIDs.length; i++)
-                            Table(children: [
-                              TableRow(children: <Widget>[
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Text(displayIDs[i],
-                                      textAlign: TextAlign.center),
+                              const Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text('Search Results:',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                    ),
                                 ),
-                                SizedBox(
-                                  width: 25,
-                                  child: ElevatedButton(
-                                    style: ButtonStyle(
-                                      foregroundColor: MaterialStateProperty
-                                          .all<Color>(Colors
-                                              .white), // changes color of text
-                                      backgroundColor: MaterialStateProperty
-                                          .all<Color>(const Color(
-                                              0xFF963e3e)), // changes color of button
-                                      shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                          // makes edges of button round instead of square
-                                          borderRadius:
+                              ),
+                              const SizedBox(height: 10),
+                              for (int i = 0; i < displayIDs.length; i++)
+                                Table(children: [
+                                  TableRow(children: <Widget>[
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                          displayIDs[i],
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                          )
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 25,
+                                      child: ElevatedButton(
+                                        style: ButtonStyle(
+                                          foregroundColor: MaterialStateProperty
+                                              .all<Color>(const Color(0xFF500000)), // changes color of text
+                                          backgroundColor: MaterialStateProperty
+                                              .all<Color>(const Color(
+                                              0xFFdedede)), // changes color of button
+                                          shape: MaterialStateProperty.all<
+                                              RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                              // makes edges of button round instead of square
+                                              borderRadius:
                                               BorderRadius.circular(12.0),
+                                            ),
+                                          ), // changes the color of the button
                                         ),
-                                      ), // changes the color of the button
-                                    ),
-                                    onPressed: () {
-                                      user.equipment = displayIDs[i];
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
+                                        onPressed: () {
+                                          user.equipment = displayIDs[i];
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
                                                 const EquipmentDetailPage(),
-                                          ));
-                                    },
-                                    child: const Padding(
-                                      padding: EdgeInsets.all(10.0),
-                                      child: Text('Select',
-                                          style: TextStyle(fontSize: 15)),
+                                              ));
+                                        },
+                                        child: const Padding(
+                                          padding: EdgeInsets.all(10.0),
+                                          child: Text(
+                                              'Request',
+                                              style: TextStyle(fontSize: 15)),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              ])
-                            ]),
-                        ]))))
+                                  ])
+                                ]),
+                            ]))))
               ],
             ),
           ),
