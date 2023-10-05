@@ -178,6 +178,8 @@ class EquipmentDetailPageState extends State<EquipmentDetailPage> {
                     )),
 
               if (!user.adminStatus) const StudentEquipmentDetails(),
+
+              if(user.adminStatus) const AdminEquipmentDetails(),
             ],
           ),
         ),
@@ -288,4 +290,87 @@ class StudentEquipmentDetailsState extends State<StudentEquipmentDetails> {
       if (invalidPermissions) const Text('Invalid Permissions')
     ]);
   }
+}
+
+class AdminEquipmentDetails extends StatelessWidget {
+  const AdminEquipmentDetails({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const SizedBox(height: 15),
+        ElevatedButton(
+          style: ButtonStyle(
+            foregroundColor: MaterialStateProperty
+                .all<Color>(const Color(0xFF963e3e)), // changes color of text
+            backgroundColor: MaterialStateProperty
+                .all<Color>(const Color(
+                0xFFdedede)), // changes color of button
+            shape: MaterialStateProperty.all<
+                RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                // makes edges of button round instead of square
+                borderRadius:
+                BorderRadius.circular(12.0),
+              ),
+            ), // changes the color of the button
+          ),
+          onPressed: () {
+            /*
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                  const EquipmentDetailPage(),
+                ));
+                */
+          },
+          child: const Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Text(
+                'Edit Equipment',
+                style: TextStyle(fontSize: 15)),
+          ),
+        ),
+
+        const SizedBox(height: 5),
+        ElevatedButton(
+          style: ButtonStyle(
+            foregroundColor: MaterialStateProperty
+                .all<Color>(const Color(0xFFFFFFFF)), // changes color of text
+            backgroundColor: MaterialStateProperty
+                .all<Color>(const Color(
+                0xFF963e3e)), // changes color of button
+            shape: MaterialStateProperty.all<
+                RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                // makes edges of button round instead of square
+                borderRadius:
+                BorderRadius.circular(12.0),
+              ),
+            ), // changes the color of the button
+          ),
+          onPressed: () {
+            /*
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                  const EquipmentDetailPage(),
+                ));
+                */
+          },
+          child: const Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Text(
+                'Delete Equipment',
+                style: TextStyle(fontSize: 15)),
+          ),
+        ),
+      ]
+    );
+  }
+
+
 }
