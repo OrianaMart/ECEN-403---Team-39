@@ -56,7 +56,7 @@ class NavigatorDrawer extends StatelessWidget {
 
           //only displays notifications is user is an admin user
           if (user.adminStatus == true)
-          // Sends user to the notifications page when this button is pushed
+            // Sends user to the notifications page when this button is pushed
             ListTile(
               //Profile Drawer Option
               leading: const Icon(Icons.all_inbox),
@@ -97,7 +97,8 @@ class NavigatorDrawer extends StatelessWidget {
             ),
 
           // Sends users to equipment search page
-          ListTile(//Equipment Drawer Option
+          ListTile(
+            //Equipment Drawer Option
             leading: const Icon(Icons.shopping_cart),
             title: const Text(
               'Equipment',
@@ -134,17 +135,14 @@ class NavigatorDrawer extends StatelessWidget {
               user.checkoutID = '';
               user.requestID = '';
               // add more code here
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const FormsPage(),
-                  ));
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const FormsPage()));
             },
           ),
 
           //only displays notifications is user is an admin user
           if (user.adminStatus == true)
-          // Sends user to the history page when this button is pushed
+            // Sends user to the history page when this button is pushed
             ListTile(
               //Profile Drawer Option
               leading: const Icon(Icons.auto_stories_outlined),
@@ -163,10 +161,9 @@ class NavigatorDrawer extends StatelessWidget {
               },
             ),
 
-
           //only displays notifications is user is an admin user
           if (user.adminStatus == true)
-          // Sends user to the users page when this button is pushed
+            // Sends user to the users page when this button is pushed
             ListTile(
               //Profile Drawer Option
               leading: const Icon(Icons.person),
