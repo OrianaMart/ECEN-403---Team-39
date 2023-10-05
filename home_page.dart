@@ -239,11 +239,20 @@ class StudentHomePageState extends State<StudentHomePage> {
                                   fontSize: 20,
                                 )),
                             ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                foregroundColor: const Color(
-                                    0xFFdedede), // changes color of the text
-                                backgroundColor: const Color(
-                                    0xFF963e3e), // changes the color of the button
+                              style: ButtonStyle(
+                                foregroundColor: MaterialStateProperty
+                                    .all<Color>(const Color(0xFF500000)), // changes color of text
+                                backgroundColor: MaterialStateProperty
+                                    .all<Color>(const Color(
+                                    0xFFdedede)), // changes color of button
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    // makes edges of button round instead of square
+                                    borderRadius:
+                                    BorderRadius.circular(12.0),
+                                  ),
+                                ), // changes the color of the button
                               ),
                               /*style: ButtonStyle( 0xFFdedede
                                           shape: MaterialStateProperty.all<
@@ -355,19 +364,21 @@ class StudentHomePageState extends State<StudentHomePage> {
                                   fontSize: 20,
                                 )),
                             ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                foregroundColor: const Color(
-                                    0xFFdedede), // changes color of the text
-                                backgroundColor: const Color(
-                                    0xFF963e3e), // changes the color of the button
+                              style: ButtonStyle(
+                                foregroundColor: MaterialStateProperty
+                                    .all<Color>(const Color(0xFF500000)), // changes color of text
+                                backgroundColor: MaterialStateProperty
+                                    .all<Color>(const Color(
+                                    0xFFdedede)), // changes color of button
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    // makes edges of button round instead of square
+                                    borderRadius:
+                                    BorderRadius.circular(12.0),
+                                  ),
+                                ), // changes the color of the button
                               ),
-                              /*style: ButtonStyle( 0xFFdedede
-                                          shape: MaterialStateProperty.all<
-                                                  RoundedRectangleBorder>(
-                                              RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12.0),
-                                      ))),
-                                      */
                               onPressed: () {
                                 //sets the information to be displayed when the user reaches the history details
                                 user.equipment = checkouts[i];
@@ -558,7 +569,7 @@ class AdminHomePageState extends State<AdminHomePage> {
             padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color: const Color(0xFF963e3e),
+              color: const Color(0xFF87352F),
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.8),
@@ -682,7 +693,7 @@ class AdminHomePageState extends State<AdminHomePage> {
                             foregroundColor: const Color(
                                 0xFFdedede), // changes color of the text
                             backgroundColor: const Color(
-                                0xFF963e3e), // changes the color of the button
+                                0xFF87352F), // changes the color of the button
                           ),
                           /*style: ButtonStyle( 0xFFdedede
                                         shape: MaterialStateProperty.all<
@@ -722,7 +733,7 @@ class AdminHomePageState extends State<AdminHomePage> {
             padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color: const Color(0xFF963e3e),
+              color: const Color(0xFF87352F),
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.8),
@@ -849,7 +860,7 @@ class AdminHomePageState extends State<AdminHomePage> {
                             foregroundColor: const Color(
                                 0xFFdedede), // changes color of the text
                             backgroundColor: const Color(
-                                0xFF963e3e), // changes the color of the button
+                                0xFF87352F), // changes the color of the button
                           ),
                           /*style: ButtonStyle( 0xFFdedede
                                         shape: MaterialStateProperty.all<
