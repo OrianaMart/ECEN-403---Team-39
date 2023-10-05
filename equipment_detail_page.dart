@@ -28,9 +28,9 @@ class EquipmentDetailPageState extends State<EquipmentDetailPage> {
     return Scaffold(
       appBar: AppBar(
         //creates top bar of the app that includes navigation widget
-        title: Text(
-          user.equipment,
-          style: const TextStyle(
+        title: const Text(
+          'Smart Inventory',
+          style: TextStyle(
             fontSize: 24.0,
           ),
           textAlign: TextAlign.center,
