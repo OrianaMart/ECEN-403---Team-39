@@ -46,6 +46,7 @@ class NavigatorDrawer extends StatelessWidget {
               user.equipment = '';
               user.checkoutID = '';
               user.requestID = '';
+              user.mlCategory = null;
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
@@ -71,6 +72,7 @@ class NavigatorDrawer extends StatelessWidget {
                 user.equipment = '';
                 user.checkoutID = '';
                 user.requestID = '';
+                user.mlCategory = null;
                 //Navigator to profile page goes here
               },
             ),
@@ -92,6 +94,7 @@ class NavigatorDrawer extends StatelessWidget {
                 user.equipment = '';
                 user.checkoutID = '';
                 user.requestID = '';
+                user.mlCategory = null;
                 //Navigator to profile page goes here
               },
             ),
@@ -111,6 +114,7 @@ class NavigatorDrawer extends StatelessWidget {
               user.equipment = '';
               user.checkoutID = '';
               user.requestID = '';
+              user.mlCategory = null;
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
@@ -134,6 +138,7 @@ class NavigatorDrawer extends StatelessWidget {
               user.equipment = '';
               user.checkoutID = '';
               user.requestID = '';
+              user.mlCategory = null;
               // add more code here
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => const FormsPage()));
@@ -157,6 +162,7 @@ class NavigatorDrawer extends StatelessWidget {
                 user.equipment = '';
                 user.checkoutID = '';
                 user.requestID = '';
+                user.mlCategory = null;
                 //Navigator to history page goes here
               },
             ),
@@ -178,6 +184,7 @@ class NavigatorDrawer extends StatelessWidget {
                 user.equipment = '';
                 user.checkoutID = '';
                 user.requestID = '';
+                user.mlCategory = null;
                 //Navigator to user page goes here
               },
             ),
@@ -197,7 +204,12 @@ class NavigatorDrawer extends StatelessWidget {
               user.equipment = '';
               user.checkoutID = '';
               user.requestID = '';
-              // add more code here
+              user.mlCategory = 'Display';
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const EquipmentPage(),
+                  ));
             },
           ),
 
@@ -213,11 +225,6 @@ class NavigatorDrawer extends StatelessWidget {
               ),
             ),
             onTap: () {
-              user.equipment = '';
-              user.checkoutID = '';
-              user.requestID = '';
-              user.username = '';
-              user.adminStatus = false;
               _logoutConfirmation(context);
               //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
               // add more code here
@@ -253,6 +260,12 @@ Future<void> _logoutConfirmation(BuildContext context) async {
               child: const Text('Cancel')),
           TextButton(
               onPressed: () {
+                user.equipment = '';
+                user.checkoutID = '';
+                user.requestID = '';
+                user.username = '';
+                user.mlCategory = null;
+                user.adminStatus = false;
                 _performLogout(context);
               },
               style: TextButton.styleFrom(foregroundColor: Colors.blue),
@@ -265,7 +278,6 @@ Future<void> _logoutConfirmation(BuildContext context) async {
 
 //Function to perform the actions of logging out or not when either button is pushed on pop out dialogue box
 void _performLogout(BuildContext context) {
-  Navigator.of(context).pop();
   Navigator.of(context).pushReplacement(
     MaterialPageRoute(
       builder: (context) => const LoginScreen(),

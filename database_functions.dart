@@ -1248,11 +1248,28 @@ Future<String> editUserAccount(
             for(final child in uinResult.children){
                 //if there is a child with the same uin and different username
                 if(child.key.toString() != username){
-                    //responds invalid email
+                    //responds invalid uin
                     return 'Invalid UIN';
                 }
             }
         }
+
+        //checks if the phone number is used in a different account
+        Query phoneQuery = usersRef.orderByChild('phoneNumber').equalTo(phoneNumber);
+        DataSnapshot phoneResult = await phoneQuery.get();
+
+        //checks if the phoneNumber is already in use
+        if (phoneResult.exists) {
+            //iterates through the accounts where the phoneNumber matches
+            for(final child in phoneResult.children){
+                //if there is a child with the same phone number and different username
+                if(child.key.toString() != username){
+                    //responds invalid phone Number
+                    return 'Invalid Phone Number';
+                }
+            }
+        }
+
         await usersRef.child(username).update({
             'uin': uin,
             'firstName': firstName,

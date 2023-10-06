@@ -9,3 +9,6 @@ bool adminStatus = false;
 String equipment = '';
 String requestID = '';
 String checkoutID = '';
+
+//global for machine learning
+String? mlCategory;

@@ -1,5 +1,8 @@
+import 'package:database_demo_app/equipment_page.dart';
+import 'package:database_demo_app/new_equipment.dart';
 import 'package:flutter/material.dart';
 import 'database_functions.dart';
+import 'form_requirement_page.dart';
 import 'Data.dart' as user;
 
 class EquipmentDetailPage extends StatefulWidget {
@@ -14,12 +17,20 @@ class EquipmentDetailPageState extends State<EquipmentDetailPage> {
   //variables to be filled by the equipment details
   var equipmentDetails = List<String>.filled(5, '', growable: true);
 
+  bool forms = false;
+
   @override
   void initState() {
     super.initState();
     () async {
       equipmentDetails = await getEquipmentInfo(user.equipment);
-      setState(() {});
+      if(equipmentDetails.length > 5) {
+        forms = true;
+      }
+      setState(() {
+        equipmentDetails;
+        forms;
+      });
     }();
   }
 
@@ -162,7 +173,7 @@ class EquipmentDetailPageState extends State<EquipmentDetailPage> {
               ),
 
               //Displays the information for the equipment if forms are required
-              if (equipmentDetails.length > 5)
+              if (forms)
                 const Text(
                   'Required Forms: ',
                   style: TextStyle(
@@ -171,7 +182,7 @@ class EquipmentDetailPageState extends State<EquipmentDetailPage> {
                   ),
                 ),
 
-              if (equipmentDetails.length > 5)
+              if (forms)
                 Text(equipmentDetails[5],
                     style: const TextStyle(
                       fontSize: 17.0,
@@ -179,7 +190,7 @@ class EquipmentDetailPageState extends State<EquipmentDetailPage> {
 
               if (!user.adminStatus) const StudentEquipmentDetails(),
 
-              if(user.adminStatus) const AdminEquipmentDetails(),
+              if (user.adminStatus) AdminEquipmentDetails(forms: forms),
             ],
           ),
         ),
@@ -230,7 +241,6 @@ class StudentEquipmentDetailsState extends State<StudentEquipmentDetails> {
                 ),
               ), // changes the color of the button
             ),
-
             onPressed: () async {
               if (amountField.text.toString() != '') {
                 switch (await generateNewRequest(user.username, user.equipment,
@@ -293,84 +303,158 @@ class StudentEquipmentDetailsState extends State<StudentEquipmentDetails> {
 }
 
 class AdminEquipmentDetails extends StatelessWidget {
-  const AdminEquipmentDetails({Key? key}) : super(key: key);
+  const AdminEquipmentDetails({Key? key, required this.forms}) : super(key: key);
+  final bool forms;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: 15),
-        ElevatedButton(
-          style: ButtonStyle(
-            foregroundColor: MaterialStateProperty
-                .all<Color>(const Color(0xFF963e3e)), // changes color of text
-            backgroundColor: MaterialStateProperty
-                .all<Color>(const Color(
-                0xFFdedede)), // changes color of button
-            shape: MaterialStateProperty.all<
-                RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                // makes edges of button round instead of square
-                borderRadius:
-                BorderRadius.circular(12.0),
-              ),
-            ), // changes the color of the button
-          ),
-          onPressed: () {
-            /*
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                  const EquipmentDetailPage(),
-                ));
-                */
-          },
-          child: const Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Text(
-                'Edit Equipment',
-                style: TextStyle(fontSize: 15)),
-          ),
+    return Column(children: [
+      const SizedBox(height: 15),
+      ElevatedButton(
+        style: ButtonStyle(
+          foregroundColor: MaterialStateProperty.all<Color>(
+              const Color(0xFF963e3e)), // changes color of text
+          backgroundColor: MaterialStateProperty.all<Color>(
+              const Color(0xFFdedede)), // changes color of button
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              // makes edges of button round instead of square
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+          ), // changes the color of the button
         ),
-
-        const SizedBox(height: 5),
-        ElevatedButton(
-          style: ButtonStyle(
-            foregroundColor: MaterialStateProperty
-                .all<Color>(const Color(0xFFFFFFFF)), // changes color of text
-            backgroundColor: MaterialStateProperty
-                .all<Color>(const Color(
-                0xFF963e3e)), // changes color of button
-            shape: MaterialStateProperty.all<
-                RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                // makes edges of button round instead of square
-                borderRadius:
-                BorderRadius.circular(12.0),
-              ),
-            ), // changes the color of the button
-          ),
-          onPressed: () {
-            /*
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                  const EquipmentDetailPage(),
-                ));
-                */
-          },
-          child: const Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Text(
-                'Delete Equipment',
-                style: TextStyle(fontSize: 15)),
-          ),
+        onPressed: () {
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const NewEquipmentPage(),
+              ));
+        },
+        child: const Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Text('Edit Equipment', style: TextStyle(fontSize: 15)),
         ),
-      ]
-    );
+      ),
+      const SizedBox(height: 5),
+      ElevatedButton(
+        style: ButtonStyle(
+          foregroundColor: MaterialStateProperty.all<Color>(
+              const Color(0xFF963e3e)), // changes color of text
+          backgroundColor: MaterialStateProperty.all<Color>(
+              const Color(0xFFdedede)), // changes color of button
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              // makes edges of button round instead of square
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+          ), // changes the color of the button
+        ),
+        onPressed: () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const AddFormRequirementPage(),
+            ),
+          );
+        },
+        child: const Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Text('Add Form Requirement', style: TextStyle(fontSize: 15)),
+        ),
+      ),
+      const SizedBox(height: 5),
+      if(forms)
+      ElevatedButton(
+        style: ButtonStyle(
+          foregroundColor: MaterialStateProperty.all<Color>(
+              const Color(0xFF963e3e)), // changes color of text
+          backgroundColor: MaterialStateProperty.all<Color>(
+              const Color(0xFFdedede)), // changes color of button
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              // makes edges of button round instead of square
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+          ), // changes the color of the button
+        ),
+        onPressed: () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const RemoveFormRequirementPage(),
+            ),
+          );
+        },
+        child: const Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Text('Remove Form Requirement', style: TextStyle(fontSize: 15)),
+        ),
+      ),
+      if(forms)
+      const SizedBox(height: 5),
+      ElevatedButton(
+        style: ButtonStyle(
+          foregroundColor: MaterialStateProperty.all<Color>(
+              const Color(0xFFFFFFFF)), // changes color of text
+          backgroundColor: MaterialStateProperty.all<Color>(
+              const Color(0xFF963e3e)), // changes color of button
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              // makes edges of button round instead of square
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+          ), // changes the color of the button
+        ),
+        onPressed: () {
+          _removalConfirmation(context);
+        },
+        child: const Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Text('Delete Equipment', style: TextStyle(fontSize: 15)),
+        ),
+      ),
+    ]);
   }
+}
 
 
+//Function to make a pop out dialogue box appear when delete button is pushed
+Future<void> _removalConfirmation(BuildContext context) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Delete Equipment'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[Text('Are you sure you want to permanently delete "${user.equipment}"')],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.grey,
+              ),
+              child: const Text('Go Back')),
+          TextButton(
+              onPressed: () async {
+                if(await removeEquipment(user.equipment) == 'Removed') {
+                  user.equipment = '';
+                  user.checkoutID = '';
+                  user.requestID = '';
+                  user.username = '';
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => const EquipmentPage(),
+                    ),
+                  );
+                }
+              },
+              style: TextButton.styleFrom(foregroundColor: Colors.blue),
+              child: const Text('Delete')),
+        ],
+      );
+    },
+  );
 }
