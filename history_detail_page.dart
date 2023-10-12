@@ -1,6 +1,7 @@
 import 'package:database_demo_app/history_page.dart';
 import 'package:flutter/material.dart';
 import 'database_functions.dart';
+import 'home_page.dart';
 import 'Data.dart' as user;
 
 class HistoryDetailPage extends StatefulWidget {
@@ -15,12 +16,22 @@ class HistoryDetailPageState extends State<HistoryDetailPage> {
   //variables to be filled by the equipment details
   var historyDetails = List<String>.filled(9, '', growable: true);
 
+  int amount = 0;
+
   @override
   void initState() {
     super.initState();
     () async {
       historyDetails = await getHistoryInfo(user.checkoutID);
-      setState(() {});
+      if (historyDetails.length > 6) {
+        amount = int.parse(historyDetails[3]) - int.parse(historyDetails[6]);
+      } else {
+        amount = int.parse(historyDetails[3]);
+      }
+      setState(() {
+        historyDetails;
+        amount;
+      });
     }();
   }
 
@@ -243,45 +254,127 @@ class HistoryDetailPageState extends State<HistoryDetailPage> {
                     ),
 
                   if(user.adminStatus)
-                    const AdminHistoryDetails(),
+                    AdminHistoryDetails(amountAllowed: amount),
 
                 ]))));
   }
 }
 
 class AdminHistoryDetails extends StatefulWidget {
-  const AdminHistoryDetails({Key? key}) : super(key: key);
+  const AdminHistoryDetails({Key? key, required this.amountAllowed})
+      : super(key: key);
+  final int amountAllowed;
   @override
   AdminHistoryDetailsState createState() {
     return AdminHistoryDetailsState();
   }
 }
 class AdminHistoryDetailsState extends State<AdminHistoryDetails> {
+  final uinField = TextEditingController();
+  final amountField = TextEditingController();
+
+  bool invalidUin = false;
+  bool invalidAmount = false;
 
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      ElevatedButton(
-        style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.all<Color>(
-              const Color(0xFFFFFFFF)), // changes color of text
-          backgroundColor: MaterialStateProperty.all<Color>(
-              const Color(0xFF963e3e)), // changes color of button
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              // makes edges of button round instead of square
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-          ), // changes the color of the button
-        ),
-        onPressed: () {
-          _removalConfirmation(context);
-        },
-        child: const Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Text('Delete History Entry', style: TextStyle(fontSize: 15)),
-        ),
+      if(widget.amountAllowed > 0)
+      TextFormField(
+        controller: uinField,
+        keyboardType: TextInputType.number,
+        decoration: InputDecoration(
+            labelText: 'UIN',
+            helperText: 'Verify Students UIN for Verification',
+            errorText: invalidUin ? 'Incorrect UIN' : null),
       ),
+      if(widget.amountAllowed > 0)
+      TextFormField(
+        controller: amountField,
+        keyboardType: TextInputType.number,
+        decoration: InputDecoration(
+            labelText: 'Check-In Amount',
+            errorText: invalidAmount ? 'Invalid Check-In Amount' : null),
+      ),
+      if(widget.amountAllowed > 0)
+      ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            foregroundColor:
+            const Color(0xFFdedede), // changes color of the text
+            backgroundColor:
+            const Color(0xFF963e3e), // changes the color of the button
+          ),
+          onPressed: () async {
+            if (amountField.text.toString() != '') {
+              if (int.parse(amountField.text.toString()) < 1 ||
+                  int.parse(amountField.text.toString()) > widget.amountAllowed) {
+                setState(() {
+                  invalidAmount = true;
+                  invalidUin = false;
+                });
+              } else {
+                if (uinField.text.toString() != '') {
+                  switch (await verifyCheckIn(
+                      user.checkoutID,
+                      int.parse(uinField.text.toString()),
+                      int.parse(amountField.text.toString()),
+                      user.username)) {
+                    case 'Invalid Amount':
+                      {
+                        invalidAmount = true;
+                        invalidUin = false;
+                      }
+                      break;
+
+                    case 'Invalid UIN':
+                      {
+                        invalidAmount = false;
+                        invalidUin = true;
+                      }
+                      break;
+
+                    case 'Checked In':
+                      {
+                        setState(() {
+                          invalidAmount = false;
+                          invalidUin = false;
+                        });
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomePage()));
+                      }
+                      break;
+                  }
+                  setState(() {
+                    invalidUin;
+                    invalidAmount;
+                  });
+                }
+              }
+            }
+          },
+          child: const Text('Verify Check-In')),
+      ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            foregroundColor:
+            const Color(0xFFdedede), // changes color of the text
+            backgroundColor:
+            const Color(0xFF963e3e), // changes the color of the button
+          ),
+          onPressed: () async {},
+          child: const Text('Edit Checkout History')),
+      ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            foregroundColor:
+            const Color(0xFFdedede), // changes color of the text
+            backgroundColor:
+            const Color(0xFF963e3e), // changes the color of the button
+          ),
+          onPressed: () async {
+            _removalConfirmation(context);
+          },
+          child: const Text('Delete Checkout History')),
     ]);
   }
 }

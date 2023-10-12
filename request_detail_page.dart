@@ -51,120 +51,123 @@ class RequestDetailPageState extends State<RequestDetailPage> {
         ),
         body: Center(
             child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                child: Column(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                child: Column(children: [
+                  const Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'Request Details',
+                      style: TextStyle(
+                        fontSize: 28.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+
+                  //Displays the information for the equipment
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          'Request Details',
+                      const Text(
+                        "Request ID: ",
+                        style: TextStyle(
+                          fontSize: 17.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        user.requestID,
+                        style: const TextStyle(
+                          fontSize: 17.0,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  if (user.adminStatus)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Username: ",
                           style: TextStyle(
-                            fontSize: 28.0,
+                            fontSize: 17.0,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 15),
+                        Text(
+                          requestDetails[1],
+                          style: const TextStyle(
+                            fontSize: 17.0,
+                          ),
+                        ),
+                      ],
+                    ),
 
-                      //Displays the information for the equipment
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Request ID: ",
-                            style: TextStyle(
-                              fontSize: 17.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            user.requestID,
-                            style: const TextStyle(
-                              fontSize: 17.0,
-                            ),
-                          ),
-                        ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Requested Equipment: ",
+                        style: TextStyle(
+                          fontSize: 17.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-
-                      if(user.adminStatus) Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Username: ",
-                            style: TextStyle(
-                              fontSize: 17.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            requestDetails[1],
-                            style: const TextStyle(
-                              fontSize: 17.0,
-                            ),
-                          ),
-                        ],
+                      Text(
+                        requestDetails[2],
+                        style: const TextStyle(
+                          fontSize: 17.0,
+                        ),
                       ),
+                    ],
+                  ),
 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Requested Equipment: ",
-                            style: TextStyle(
-                              fontSize: 17.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            requestDetails[2],
-                            style: const TextStyle(
-                              fontSize: 17.0,
-                            ),
-                          ),
-                        ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Requested Amount: ",
+                        style: TextStyle(
+                          fontSize: 17.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Requested Amount: ",
-                            style: TextStyle(
-                              fontSize: 17.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            requestDetails[3],
-                            style: const TextStyle(
-                              fontSize: 17.0,
-                            ),
-                          ),
-                        ],
+                      Text(
+                        requestDetails[3],
+                        style: const TextStyle(
+                          fontSize: 17.0,
+                        ),
                       ),
+                    ],
+                  ),
 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Request Timestamp: ",
-                            style: TextStyle(
-                              fontSize: 17.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            requestDetails[4],
-                            style: const TextStyle(
-                              fontSize: 17.0,
-                            ),
-                          ),
-                        ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Request Timestamp: ",
+                        style: TextStyle(
+                          fontSize: 17.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      const SizedBox(height: 15),
+                      Text(
+                        requestDetails[4],
+                        style: const TextStyle(
+                          fontSize: 17.0,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 15),
 
-                      if (!user.adminStatus) const StudentRequestDetails(),
-                    ]))));
+                  if (!user.adminStatus) const StudentRequestDetails(),
+
+                  if (user.adminStatus) const AdminRequestDetails(),
+                ]))));
   }
 }
 
@@ -188,9 +191,9 @@ class StudentRequestDetailsState extends State<StudentRequestDetails> {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             foregroundColor:
-            const Color(0xFFdedede), // changes color of the text
+                const Color(0xFFdedede), // changes color of the text
             backgroundColor:
-            const Color(0xFF963e3e), // changes the color of the button
+                const Color(0xFF963e3e), // changes the color of the button
           ),
           /*style: ButtonStyle( 0xFFdedede
                                         shape: MaterialStateProperty.all<
@@ -214,9 +217,12 @@ class StudentRequestDetailsState extends State<StudentRequestDetails> {
                   setState(() {
                     invalidRequest = false;
                   });
-                  Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => const HomePage(),
-                  ));;
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomePage(),
+                      ));
+                  ;
                 }
                 break;
             }
@@ -232,5 +238,78 @@ class StudentRequestDetailsState extends State<StudentRequestDetails> {
       ),
       if (invalidRequest) const Text('Invalid Request')
     ]);
+  }
+}
+
+class AdminRequestDetails extends StatefulWidget {
+  const AdminRequestDetails({Key? key}) : super(key: key);
+  @override
+  AdminRequestDetailsState createState(){
+    return AdminRequestDetailsState();
+  }
+}
+
+class AdminRequestDetailsState extends State<AdminRequestDetails>{
+  final uinField = TextEditingController();
+
+  bool invalidUin = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        TextFormField(controller: uinField,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(labelText: 'UIN',
+              helperText: 'Verify Students UIN for Approval',
+              errorText: invalidUin ? 'Incorrect UIN': null),
+        ),
+
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              foregroundColor:
+              const Color(0xFFdedede), // changes color of the text
+              backgroundColor: const Color(
+                  0xFF963e3e), // changes the color of the button
+            ),
+            onPressed: () async {
+              if(uinField.text.toString() != '') {
+                if (await approveRequest(
+                    user.requestID, int.parse(uinField.text.toString()),
+                    user.username) == 'Approved') {
+                  setState(() {
+                    invalidUin = false;
+                  });
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const HomePage()));
+                } else {
+                  setState(() {
+                    invalidUin = true;
+                  });
+                }
+              }
+            },
+            child: const Text('Approve Request')),
+
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              foregroundColor:
+              const Color(0xFFdedede), // changes color of the text
+              backgroundColor: const Color(
+                  0xFF963e3e), // changes the color of the button
+            ),
+            onPressed: () async {
+              if (await denyRequest(user.requestID) == 'Denied') {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const HomePage()));
+              }
+            },
+            child: const Text('Deny Request')),
+      ],
+    );
   }
 }

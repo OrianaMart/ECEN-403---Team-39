@@ -455,7 +455,7 @@ class AdminHomePageState extends State<AdminHomePage> {
             usernames.add(temp[1]);
 
             //gets the users info
-            var temp2 = await getUserInfo(usernames[i]);
+            var temp2 = await getUserInfo(usernames.last);
 
             //adds the users uin to the list of uins with active requests
             requestUins.add(temp2[1]);
