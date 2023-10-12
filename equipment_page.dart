@@ -495,7 +495,7 @@ class EquipmentPageState extends State<EquipmentPage> {
                 const SizedBox(height: 15),
 
                 //admin only new equipment button
-                if (user.adminStatus && user.mlCategory == '')
+                if (user.adminStatus && user.mlCategory == null)
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         foregroundColor: const Color(
