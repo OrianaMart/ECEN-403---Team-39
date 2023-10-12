@@ -3,6 +3,7 @@ import 'login_screen.dart';
 import 'home_page.dart';
 import 'equipment_page.dart';
 import 'forms_page.dart';
+import 'history_page.dart';
 import 'Data.dart' as user;
 
 class NavigatorDrawer extends StatelessWidget {
@@ -46,6 +47,7 @@ class NavigatorDrawer extends StatelessWidget {
               user.equipment = '';
               user.checkoutID = '';
               user.requestID = '';
+              user.viewedUser = '';
               user.mlCategory = null;
               Navigator.pushReplacement(
                   context,
@@ -72,6 +74,7 @@ class NavigatorDrawer extends StatelessWidget {
                 user.equipment = '';
                 user.checkoutID = '';
                 user.requestID = '';
+                user.viewedUser = '';
                 user.mlCategory = null;
                 //Navigator to profile page goes here
               },
@@ -94,6 +97,7 @@ class NavigatorDrawer extends StatelessWidget {
                 user.equipment = '';
                 user.checkoutID = '';
                 user.requestID = '';
+                user.viewedUser = '';
                 user.mlCategory = null;
                 //Navigator to profile page goes here
               },
@@ -114,6 +118,7 @@ class NavigatorDrawer extends StatelessWidget {
               user.equipment = '';
               user.checkoutID = '';
               user.requestID = '';
+              user.viewedUser = '';
               user.mlCategory = null;
               Navigator.pushReplacement(
                   context,
@@ -138,6 +143,7 @@ class NavigatorDrawer extends StatelessWidget {
               user.equipment = '';
               user.checkoutID = '';
               user.requestID = '';
+              user.viewedUser = '';
               user.mlCategory = null;
               // add more code here
               Navigator.pushReplacement(context,
@@ -162,7 +168,13 @@ class NavigatorDrawer extends StatelessWidget {
                 user.equipment = '';
                 user.checkoutID = '';
                 user.requestID = '';
+                user.viewedUser = '';
                 user.mlCategory = null;
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HistoryPage(),
+                    ));
                 //Navigator to history page goes here
               },
             ),
@@ -184,6 +196,7 @@ class NavigatorDrawer extends StatelessWidget {
                 user.equipment = '';
                 user.checkoutID = '';
                 user.requestID = '';
+                user.viewedUser = '';
                 user.mlCategory = null;
                 //Navigator to user page goes here
               },
@@ -204,6 +217,7 @@ class NavigatorDrawer extends StatelessWidget {
               user.equipment = '';
               user.checkoutID = '';
               user.requestID = '';
+              user.viewedUser = '';
               user.mlCategory = 'Display';
               Navigator.pushReplacement(
                   context,
@@ -264,6 +278,7 @@ Future<void> _logoutConfirmation(BuildContext context) async {
                 user.checkoutID = '';
                 user.requestID = '';
                 user.username = '';
+                user.viewedUser = '';
                 user.mlCategory = null;
                 user.adminStatus = false;
                 _performLogout(context);

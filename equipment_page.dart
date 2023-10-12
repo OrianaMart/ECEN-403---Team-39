@@ -26,7 +26,6 @@ class EquipmentPageState extends State<EquipmentPage> {
   var displayIDs = List<String>.filled(0, '', growable: true);
   var searchIDs = List<String>.filled(0, '', growable: true);
 
-
   String? currentCategory;
   String? currentLocation;
   String? currentEquipment;
@@ -39,14 +38,14 @@ class EquipmentPageState extends State<EquipmentPage> {
   void initState() {
     super.initState();
     //if the users an admin
-    if(user.adminStatus) {
+    if (user.adminStatus) {
       //change page description and buttonText
       pageDescription = 'Search for equipment';
       buttonText = 'Get Info';
     }
 
     //checks to see if it is in machine learning mode
-    if(user.mlCategory != null) {
+    if (user.mlCategory != null) {
       pageName = 'Machine Learning';
       pageDescription = 'Search equipment within identified category';
       buttonText = 'Get Info';
@@ -55,7 +54,7 @@ class EquipmentPageState extends State<EquipmentPage> {
     }
 
     () async {
-      if(user.mlCategory != null) {
+      if (user.mlCategory != null) {
         //if the page is ml search
         categoryIDs = await equipmentByCategory(user.mlCategory!);
         displayIDs = categoryIDs;
@@ -103,11 +102,11 @@ class EquipmentPageState extends State<EquipmentPage> {
   @override
   Widget build(BuildContext context) {
     final List<DropdownMenuEntry<String>> categoryEntries =
-    <DropdownMenuEntry<String>>[];
+        <DropdownMenuEntry<String>>[];
     final List<DropdownMenuEntry<String>> locationEntries =
-    <DropdownMenuEntry<String>>[];
+        <DropdownMenuEntry<String>>[];
     final List<DropdownMenuEntry<String>> equipmentEntries =
-    <DropdownMenuEntry<String>>[];
+        <DropdownMenuEntry<String>>[];
 
     for (int i = 0; i < categories.length; i++) {
       categoryEntries
@@ -125,7 +124,7 @@ class EquipmentPageState extends State<EquipmentPage> {
     }
 
     return Scaffold(
-      // Creates smart inventory app bar at top
+        // Creates smart inventory app bar at top
         appBar: AppBar(
           //creates top bar of the app that includes navigation widget
           title: const Text(
@@ -209,7 +208,7 @@ class EquipmentPageState extends State<EquipmentPage> {
 
                         //Obtains all of the equipment within the searched category
                         categoryIDs =
-                        await equipmentByCategory(selectedCategory);
+                            await equipmentByCategory(selectedCategory);
 
                         //empties the selectable locations to be refilled by those that are valid
                         locations = [];
@@ -508,8 +507,7 @@ class EquipmentPageState extends State<EquipmentPage> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                              const NewEquipmentPage(),
+                              builder: (context) => const NewEquipmentPage(),
                             ));
                       },
                       child: const Text('Create New Equipment')),
@@ -539,68 +537,69 @@ class EquipmentPageState extends State<EquipmentPage> {
                             vertical: 15, horizontal: 20),
                         child: SingleChildScrollView(
                             child: Column(children: [
-                              const Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text('Search Results:',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                    ),
-                                ),
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Search Results:',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
                               ),
-                              const SizedBox(height: 10),
-                              for (int i = 0; i < displayIDs.length; i++)
-                                Table(children: [
-                                  TableRow(children: <Widget>[
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                          displayIDs[i],
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                          )
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          for (int i = 0; i < displayIDs.length; i++)
+                            Table(children: [
+                              TableRow(children: <Widget>[
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(displayIDs[i],
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      )),
+                                ),
+                                if (displayIDs[0] != 'No Equipment')
+                                  SizedBox(
+                                    width: 25,
+                                    child: ElevatedButton(
+                                      style: ButtonStyle(
+                                        foregroundColor: MaterialStateProperty
+                                            .all<Color>(const Color(
+                                                0xFF500000)), // changes color of text
+                                        backgroundColor: MaterialStateProperty
+                                            .all<Color>(const Color(
+                                                0xFFdedede)), // changes color of button
+                                        shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            // makes edges of button round instead of square
+                                            borderRadius:
+                                                BorderRadius.circular(12.0),
+                                          ),
+                                        ), // changes the color of the button
+                                      ),
+                                      onPressed: () {
+                                        user.equipment = displayIDs[i];
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const EquipmentDetailPage(),
+                                            ));
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Text(buttonText,
+                                            style:
+                                                const TextStyle(fontSize: 15)),
                                       ),
                                     ),
-                                    SizedBox(
-                                      width: 25,
-                                      child: ElevatedButton(
-                                        style: ButtonStyle(
-                                          foregroundColor: MaterialStateProperty
-                                              .all<Color>(const Color(0xFF500000)), // changes color of text
-                                          backgroundColor: MaterialStateProperty
-                                              .all<Color>(const Color(
-                                              0xFFdedede)), // changes color of button
-                                          shape: MaterialStateProperty.all<
-                                              RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                              // makes edges of button round instead of square
-                                              borderRadius:
-                                              BorderRadius.circular(12.0),
-                                            ),
-                                          ), // changes the color of the button
-                                        ),
-                                        onPressed: () {
-                                          user.equipment = displayIDs[i];
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                const EquipmentDetailPage(),
-                                              ));
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Text(
-                                              buttonText,
-                                              style: const TextStyle(fontSize: 15)),
-                                        ),
-                                      ),
-                                    ),
-                                  ])
-                                ]),
-                            ]))))
+                                  ),
+                              ])
+                            ]),
+                        ]))))
               ],
             ),
           ),
