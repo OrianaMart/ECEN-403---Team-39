@@ -439,16 +439,18 @@ Future<void> _removalConfirmation(BuildContext context) async {
               child: const Text('Go Back')),
           TextButton(
               onPressed: () async {
-                if(await removeEquipment(user.equipment) == 'Removed') {
-                  user.equipment = '';
-                  user.checkoutID = '';
-                  user.requestID = '';
-                  user.username = '';
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => const EquipmentPage(),
-                    ),
-                  );
+                if(user.equipment != '') {
+                  if (await removeEquipment(user.equipment) == 'Removed') {
+                    user.equipment = '';
+                    user.checkoutID = '';
+                    user.requestID = '';
+                    user.username = '';
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => const EquipmentPage(),
+                      ),
+                    );
+                  }
                 }
               },
               style: TextButton.styleFrom(foregroundColor: Colors.blue),
