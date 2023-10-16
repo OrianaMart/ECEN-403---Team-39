@@ -1,7 +1,8 @@
-import 'package:database_demo_app/history_page.dart';
+import 'history_page.dart';
 import 'package:flutter/material.dart';
 import 'database_functions.dart';
 import 'home_page.dart';
+import 'edit_history.dart';
 import 'Data.dart' as user;
 
 class HistoryDetailPage extends StatefulWidget {
@@ -362,8 +363,14 @@ class AdminHistoryDetailsState extends State<AdminHistoryDetails> {
             backgroundColor:
             const Color(0xFF963e3e), // changes the color of the button
           ),
-          onPressed: () async {},
+          onPressed: () async {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const EditHistoryPage()));
+          },
           child: const Text('Edit Checkout History')),
+      if(widget.amountAllowed == 0)
       ElevatedButton(
           style: ElevatedButton.styleFrom(
             foregroundColor:

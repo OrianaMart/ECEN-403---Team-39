@@ -1,4 +1,4 @@
-import 'package:database_demo_app/equipment_detail_page.dart';
+import 'equipment_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'database_functions.dart';
 import 'equipment_page.dart';
@@ -182,6 +182,7 @@ class NewEquipmentPageState extends State<NewEquipmentPage> {
               ),
               TextFormField(
                 controller: amountField,
+                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   labelText: 'Amount',
                   errorText: invalidAmount ? 'Incorrect Amount' : null,
