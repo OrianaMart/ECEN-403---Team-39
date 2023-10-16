@@ -1,5 +1,6 @@
-import 'package:database_demo_app/equipment_page.dart';
-import 'package:database_demo_app/new_equipment.dart';
+import 'equipment_page.dart';
+import 'history_page.dart';
+import 'new_equipment.dart';
 import 'package:flutter/material.dart';
 import 'database_functions.dart';
 import 'form_requirement_page.dart';
@@ -388,6 +389,33 @@ class AdminEquipmentDetails extends StatelessWidget {
         ),
       ),
       if(forms)
+      const SizedBox(height: 5),
+
+      ElevatedButton(
+        style: ButtonStyle(
+          foregroundColor: MaterialStateProperty.all<Color>(
+              const Color(0xFF963e3e)), // changes color of text
+          backgroundColor: MaterialStateProperty.all<Color>(
+              const Color(0xFFdedede)), // changes color of button
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              // makes edges of button round instead of square
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+          ), // changes the color of the button
+        ),
+        onPressed: () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => const HistoryPage(),
+            ),
+          );
+        },
+        child: const Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Text('View Checkout History', style: TextStyle(fontSize: 15)),
+        ),
+      ),
       const SizedBox(height: 5),
       ElevatedButton(
         style: ButtonStyle(

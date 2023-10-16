@@ -34,34 +34,71 @@ class HistoryPageState extends State<HistoryPage> {
     super.initState();
 
     () async {
-      //if there is no preset uin or equipment
-      if (user.equipment == '' && user.viewedUser == '') {
+      List<String> tempNames = [];
+      List<String> tempEquipment = [];
+      allCheckouts.add(await allHistoryIDs());
+      for (int i = 0; i < allCheckouts[0].length; i++) {
+        var temp = await getHistoryInfo(allCheckouts[0][i]);
+        tempNames.add(temp[1]);
+        if (!usernames.contains(temp[1])) {
+          usernames.add(temp[1]);
+        }
+        if (!equipment.contains(temp[2])) {
+          equipment.add(temp[2]);
+        }
+        tempEquipment.add(temp[2]);
+      }
+      allCheckouts.add(tempNames);
+      allCheckouts.add(tempEquipment);
+
+      results = [];
+      results.add(allCheckouts[0]);
+      results.add(allCheckouts[1]);
+      results.add(allCheckouts[2]);
+
+      for (int i = 0; i < usernames.length; i++) {
+        var temp = await getUserInfo(usernames[i]);
+        uins.add(temp[1]);
+      }
+
+      if (user.equipment != '') {
+        currentEquipment = user.equipment;
+        results = [];
+        List<String> tempIDs = [];
         List<String> tempNames = [];
         List<String> tempEquipment = [];
-        allCheckouts.add(await allHistoryIDs());
+
         for (int i = 0; i < allCheckouts[0].length; i++) {
-          var temp = await getHistoryInfo(allCheckouts[0][i]);
-          tempNames.add(temp[1]);
-          if (!usernames.contains(temp[1])) {
-            usernames.add(temp[1]);
+          if (allCheckouts[2][i] == currentEquipment) {
+            tempIDs.add(allCheckouts[0][i]);
+            tempNames.add(allCheckouts[1][i]);
+            tempEquipment.add(allCheckouts[2][i]);
           }
-          if (!equipment.contains(temp[2])) {
-            equipment.add(temp[2]);
-          }
-          tempEquipment.add(temp[2]);
         }
-        allCheckouts.add(tempNames);
-        allCheckouts.add(tempEquipment);
+        results.add(tempIDs);
+        results.add(tempNames);
+        results.add(tempEquipment);
+      }
+
+      if (user.viewedUser != '') {
+        var temp = await getUserInfo(user.viewedUser);
+        currentUin = temp[1];
 
         results = [];
-        results.add(allCheckouts[0]);
-        results.add(allCheckouts[1]);
-        results.add(allCheckouts[2]);
+        List<String> tempIDs = [];
+        List<String> tempNames = [];
+        List<String> tempEquipment = [];
 
-        for (int i = 0; i < usernames.length; i++) {
-          var temp = await getUserInfo(usernames[i]);
-          uins.add(temp[1]);
+        for (int i = 0; i < allCheckouts[0].length; i++) {
+          if (allCheckouts[1][i] == user.viewedUser) {
+            tempIDs.add(allCheckouts[0][i]);
+            tempNames.add(allCheckouts[1][i]);
+            tempEquipment.add(allCheckouts[2][i]);
+          }
         }
+        results.add(tempIDs);
+        results.add(tempNames);
+        results.add(tempEquipment);
       }
 
       setState(() {
@@ -154,6 +191,7 @@ class HistoryPageState extends State<HistoryPage> {
                 DropdownMenu<String>(
                     controller: equipmentField,
                     initialSelection: user.equipment,
+                    enabled: user.equipment == '',
                     requestFocusOnTap: true,
                     enableSearch: true,
                     width: MediaQuery.of(context).size.width * .9,
@@ -205,7 +243,6 @@ class HistoryPageState extends State<HistoryPage> {
                       } else {
                         results = [];
                         if (currentUin == '' || currentUin == null) {
-
                           results.add(allCheckouts[0]);
                           results.add(allCheckouts[1]);
                           results.add(allCheckouts[2]);
@@ -240,6 +277,8 @@ class HistoryPageState extends State<HistoryPage> {
                 const SizedBox(height: 15),
                 DropdownMenu<String>(
                   controller: uinField,
+                  initialSelection: user.viewedUser,
+                  enabled: user.viewedUser == '',
                   requestFocusOnTap: true,
                   enableSearch: true,
                   width: MediaQuery.of(context).size.width * .9,
