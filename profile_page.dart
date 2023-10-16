@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'database_functions.dart';
-import 'login_screen.dart';
-import 'home_page.dart';
-import 'equipment_page.dart';
 import 'navigator_drawer.dart';
-import 'sign_up.dart';
 import 'Data.dart' as user;
 
 class ProfilePage extends StatefulWidget {

@@ -189,7 +189,7 @@ class SignUpPageState extends State<SignUpPage> {
                   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~CHECK ERROR CASES
                 }
                     Navigator.pushReplacement(context, MaterialPageRoute(
-                      builder: (context) => HomePage(),
+                      builder: (context) => const HomePage(),
                     ));
                   },
                 style: ElevatedButton.styleFrom(

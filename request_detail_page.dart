@@ -222,7 +222,6 @@ class StudentRequestDetailsState extends State<StudentRequestDetails> {
                       MaterialPageRoute(
                         builder: (context) => const HomePage(),
                       ));
-                  ;
                 }
                 break;
             }

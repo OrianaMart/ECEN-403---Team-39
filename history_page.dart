@@ -453,6 +453,18 @@ class HistoryPageState extends State<HistoryPage> {
                                 ),
                               ])
                             ]),
+                              if(results[0].isEmpty)
+                                const Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'No Checkout History Found',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
                         ]))))
               ],
             ),
