@@ -242,36 +242,44 @@ class ScanController extends GetxController {
     }
   }
 
-  //This method closes the camera and performs related actions
+  // This method closes the camera and performs related actions
   void closeCamera() async {
     print('Closing camera: modelPred=${modelPred.value}');
-    //Check if modelPred has a value
+    // Check if modelPred has a value
     if (modelPred.value.isNotEmpty) {
-      isCameraClosed = true; //Set flag to indicate that the camera is closed
-      //Attempt to stop the image stream
-      try {
-        await _cameraController!.stopImageStream();
-      } catch (e) {
-        print('Error stopping image stream: $e');
-      }
+      isCameraClosed = true; // Set flag to indicate that the camera is closed
 
-      //Attempt to dispose of the camera
-      try {
-        await _cameraController!.dispose();
-      } catch (e) {
-        print('Error disposing camera: $e');
+      if (_cameraController != null) {
+        if (_cameraController.value.isInitialized) {
+          if (_cameraController.value.isStreamingImages) {
+            try {
+              await _cameraController.stopImageStream();
+            } catch (e) {
+              print('Error stopping image stream: $e');
+              // Handle the error
+            }
+          }
+
+          try {
+            await _cameraController.dispose();
+          } catch (e) {
+            print('Error disposing camera: $e');
+            // Handle the error
+          }
+        }
       }
 
       // Reinitialize the camera and model after closing
       //reinitializeCameraAndModel();
 
-      //Navigate to ScanPage
+      // Navigate to ScanPage
       Get.off(() => ScanPage());
       print('Camera closed and navigated back to ScanPage');
     } else {
       print('Camera not closed because modelPred is empty');
     }
   }
+
 
   //This method captures an image from the camera and stores it in the image list
   void capture() {
