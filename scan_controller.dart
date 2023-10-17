@@ -12,7 +12,7 @@ import 'package:ml_testapp_v2/main.dart';
 /*
 *Author: Oriana V Martin
 * UIN: 527008754
-* Date: October 16,2023
+* Date: October 17,2023
 *
 * Description:
 - Imported necessary packages for camera, image processing, and TensorFlow Lite.
@@ -35,9 +35,10 @@ class ScanController extends GetxController {
   int _imageCount = 0; //Counter for tracking images
   final RxString modelPred = ''.obs; //Reactive variable to store model predictions
   Timer? conditionCheckTimer; //Timer for periodic checks
-  final Duration _checkInterval = Duration(seconds: 2); //Adjust interval as needed
+  final Duration _checkInterval = Duration(seconds: 3); //Adjust interval as needed
   bool isCameraClosed = false; //Flag to indicate if the camera is closed
   bool isScanning = false; //Flag to indicate if scanning is in progress
+  bool isClosingCamera = false; // Flag to track if the camera is being closed
 
   //Getter methods
   CameraController get cameraController => _cameraController; //Retrieve the camera controller
@@ -154,11 +155,12 @@ class ScanController extends GetxController {
   void onInit() {
     startCameraAndModel(); //Initialize the camera and model
 
-    //Start the periodic check for 'modelPred' condition
+    // Start the periodic check for 'modelPred' condition
     conditionCheckTimer = Timer.periodic(_checkInterval, (Timer timer) {
-      //Check the condition and close the camera if 'modelPred' has a value
-      if(modelPred.value.isNotEmpty) {
-        closeCamera(); //Close the camera if 'modelPred' has a value
+      // Check the condition and close the camera if 'modelPred' has a value
+      if (modelPred.value.isNotEmpty && !isClosingCamera) {
+        isClosingCamera = true; // Set the flag to indicate camera closing
+        closeCamera(); // Close the camera if 'modelPred' has a value
       }
     });
 
@@ -232,6 +234,7 @@ class ScanController extends GetxController {
         if (filteredPredictions.isNotEmpty) {
           modelPred.value = filteredPredictions[0]['label'];
           print('Model Prediction: ${modelPred.value}');
+          closeCamera();
         } else {
           //Reset modelPred value
           modelPred.value = '';
@@ -249,23 +252,23 @@ class ScanController extends GetxController {
     if (modelPred.value.isNotEmpty) {
       isCameraClosed = true; // Set flag to indicate that the camera is closed
 
-      if (_cameraController != null) {
-        if (_cameraController.value.isInitialized) {
-          if (_cameraController.value.isStreamingImages) {
-            try {
-              await _cameraController.stopImageStream();
-            } catch (e) {
-              print('Error stopping image stream: $e');
-              // Handle the error
-            }
-          }
-
+      if (_cameraController.value.isInitialized) {
+        if (_cameraController.value.isStreamingImages) {
           try {
-            await _cameraController.dispose();
+            await _cameraController.stopImageStream();
+            print('Image stream stopped.');
           } catch (e) {
-            print('Error disposing camera: $e');
+            print('Error stopping image stream: $e');
             // Handle the error
           }
+        }
+
+        try {
+          await _cameraController.dispose();
+          print('Camera controller disposed.');
+        } catch (e) {
+          print('Error disposing camera: $e');
+          // Handle the error
         }
       }
 
