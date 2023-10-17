@@ -50,7 +50,6 @@ class ScanController extends GetxController {
   void dispose() {
     _isInitialized.value = false; //Reset initialization flag
     conditionCheckTimer?.cancel(); //Cancel the condition check timer if it is still active
-    if (_cameraController != null) {
       if (_cameraController.value.isInitialized) {
         //If the camera is initialized, stop the image stream
         _cameraController.stopImageStream().then((_) {
@@ -61,7 +60,6 @@ class ScanController extends GetxController {
           });
         });
       }
-    }
     super.dispose(); //Call the base class's dispose method
   }
 
