@@ -1,4 +1,3 @@
-import 'package:database_demo_app/history_page.dart';
 import 'package:flutter/material.dart';
 import 'database_functions.dart';
 import 'Data.dart' as user;
@@ -147,6 +146,25 @@ class HistoryDetailPageState extends State<HistoryDetailPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text(
+                            "Amount Checked Out: ",
+                            style: TextStyle(
+                              fontSize: 17.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            historyDetails[3],
+                            style: const TextStyle(
+                              fontSize: 17.0,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
                             "Admin Approved Checkout: ",
                             style: TextStyle(
                               fontSize: 17.0,
@@ -261,74 +279,7 @@ class AdminHistoryDetailsState extends State<AdminHistoryDetails> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      ElevatedButton(
-        style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.all<Color>(
-              const Color(0xFFFFFFFF)), // changes color of text
-          backgroundColor: MaterialStateProperty.all<Color>(
-              const Color(0xFF963e3e)), // changes color of button
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              // makes edges of button round instead of square
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-          ), // changes the color of the button
-        ),
-        onPressed: () {
-          _removalConfirmation(context);
-        },
-        child: const Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Text('Delete History Entry', style: TextStyle(fontSize: 15)),
-        ),
-      ),
+      Text(user.adminStatus.toString())
     ]);
   }
-}
-
-
-//Function to make a pop out dialogue box appear when delete button is pushed
-Future<void> _removalConfirmation(BuildContext context) async {
-  return showDialog<void>(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Delete History'),
-        content:  const SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[Text('Are you sure you want to permanently delete this history entry?')],
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.grey,
-              ),
-              child: const Text('Go Back')),
-          TextButton(
-              onPressed: () async {
-                if(user.checkoutID != '') {
-                  if (await removeHistory(user.checkoutID) == 'Removed') {
-                    user.equipment = '';
-                    user.checkoutID = '';
-                    user.requestID = '';
-                    user.username = '';
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => const HistoryPage(),
-                      ),
-                    );
-                  }
-                }
-              },
-              style: TextButton.styleFrom(foregroundColor: Colors.blue),
-              child: const Text('Delete')),
-        ],
-      );
-    },
-  );
 }

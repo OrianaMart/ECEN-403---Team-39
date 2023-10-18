@@ -4,6 +4,7 @@ import 'navigator_drawer.dart';
 import 'equipment_page.dart';
 import 'request_detail_page.dart';
 import 'history_detail_page.dart';
+import 'profile_page.dart';
 import 'Data.dart' as user;
 
 class HomePage extends StatefulWidget {
@@ -170,7 +171,7 @@ class StudentHomePageState extends State<StudentHomePage> {
       }
 
       //checks to see if there are checkouts but they are all fully checked in
-      if (historyIDs.isEmpty) {
+      if(historyIDs.isEmpty){
         historyIDs.add('No Checkout History');
         checkouts.add(historyIDs[0]);
       }
@@ -239,11 +240,20 @@ class StudentHomePageState extends State<StudentHomePage> {
                                   fontSize: 20,
                                 )),
                             ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                foregroundColor: const Color(
-                                    0xFFdedede), // changes color of the text
-                                backgroundColor: const Color(
-                                    0xFF963e3e), // changes the color of the button
+                              style: ButtonStyle(
+                                foregroundColor: MaterialStateProperty
+                                    .all<Color>(const Color(0xFF500000)), // changes color of text
+                                backgroundColor: MaterialStateProperty
+                                    .all<Color>(const Color(
+                                    0xFFdedede)), // changes color of button
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    // makes edges of button round instead of square
+                                    borderRadius:
+                                    BorderRadius.circular(12.0),
+                                  ),
+                                ), // changes the color of the button
                               ),
                               /*style: ButtonStyle( 0xFFdedede
                                           shape: MaterialStateProperty.all<
@@ -355,19 +365,21 @@ class StudentHomePageState extends State<StudentHomePage> {
                                   fontSize: 20,
                                 )),
                             ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                foregroundColor: const Color(
-                                    0xFFdedede), // changes color of the text
-                                backgroundColor: const Color(
-                                    0xFF963e3e), // changes the color of the button
+                              style: ButtonStyle(
+                                foregroundColor: MaterialStateProperty
+                                    .all<Color>(const Color(0xFF500000)), // changes color of text
+                                backgroundColor: MaterialStateProperty
+                                    .all<Color>(const Color(
+                                    0xFFdedede)), // changes color of button
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    // makes edges of button round instead of square
+                                    borderRadius:
+                                    BorderRadius.circular(12.0),
+                                  ),
+                                ), // changes the color of the button
                               ),
-                              /*style: ButtonStyle( 0xFFdedede
-                                          shape: MaterialStateProperty.all<
-                                                  RoundedRectangleBorder>(
-                                              RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12.0),
-                                      ))),
-                                      */
                               onPressed: () {
                                 //sets the information to be displayed when the user reaches the history details
                                 user.equipment = checkouts[i];
@@ -443,7 +455,7 @@ class AdminHomePageState extends State<AdminHomePage> {
       var usernames = List<String>.filled(0, '', growable: true);
 
       //checks to see if there are any requests
-      if (allRequests[0] != 'No Requests') {
+      if(allRequests[0] != 'No Requests') {
         //iterates through all request IDs
         for (int i = 0; i < allRequests.length; i++) {
           //checks request info to get username
@@ -455,7 +467,7 @@ class AdminHomePageState extends State<AdminHomePage> {
             usernames.add(temp[1]);
 
             //gets the users info
-            var temp2 = await getUserInfo(usernames[i]);
+            var temp2 = await getUserInfo(usernames.last);
 
             //adds the users uin to the list of uins with active requests
             requestUins.add(temp2[1]);
@@ -478,7 +490,7 @@ class AdminHomePageState extends State<AdminHomePage> {
       usernames = [];
 
       //checks to see if there is any history
-      if (allHistory[0] != 'No Checkout History') {
+      if(allHistory[0] != 'No Checkout History') {
         //iterates through all history IDs
         for (int i = 0; i < allHistory.length; i++) {
           //creates a temp to hold the history info
@@ -497,7 +509,7 @@ class AdminHomePageState extends State<AdminHomePage> {
           }
           temp = [];
         }
-        for (int i = 0; i < usernames.length; i++) {
+        for(int i = 0; i < usernames.length; i++) {
           //gets the users info
           var temp = await getUserInfo(usernames[i]);
 
@@ -506,7 +518,7 @@ class AdminHomePageState extends State<AdminHomePage> {
         }
       }
       //checks if there is any active checkout history
-      if (historyUins.isEmpty) {
+      if(historyUins.isEmpty){
         historyUins.add('No Active Checkouts');
       }
 
@@ -525,24 +537,26 @@ class AdminHomePageState extends State<AdminHomePage> {
     final List<DropdownMenuEntry<String>> requestUinEntries =
         <DropdownMenuEntry<String>>[];
     final List<DropdownMenuEntry<String>> historyUinEntries =
-        <DropdownMenuEntry<String>>[];
+    <DropdownMenuEntry<String>>[];
 
-    if (requestUins.isNotEmpty && requestUins[0] == 'No Active Requests') {
+    if(requestUins.isNotEmpty && requestUins[0] == 'No Active Requests'){
       requestUinEntries
           .add(DropdownMenuEntry(value: '0', label: requestUins[0]));
     } else {
       for (int i = 0; i < requestUins.length; i++) {
-        requestUinEntries.add(
+        requestUinEntries
+            .add(
             DropdownMenuEntry(value: requestUins[i], label: requestUins[i]));
       }
     }
 
-    if (historyUins.isNotEmpty && historyUins[0] == 'No Active Checkouts') {
+    if(historyUins.isNotEmpty && historyUins[0] == 'No Active Checkouts'){
       historyUinEntries
           .add(DropdownMenuEntry(value: '0', label: historyUins[0]));
     } else {
       for (int i = 0; i < historyUins.length; i++) {
-        historyUinEntries.add(
+        historyUinEntries
+            .add(
             DropdownMenuEntry(value: historyUins[i], label: historyUins[i]));
       }
     }
@@ -551,13 +565,12 @@ class AdminHomePageState extends State<AdminHomePage> {
       children: [
         //Display container for requests
         Container(
-            constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height * .45),
+            constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height*.45),
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color: const Color(0xFF963e3e),
+              color: const Color(0xFF87352F),
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.8),
@@ -625,7 +638,7 @@ class AdminHomePageState extends State<AdminHomePage> {
                         var username = await userByUIN(int.parse(selectedUin));
 
                         //checks that the uin is valid
-                        if (username[0] != 'I') {
+                        if(username[0] != 'I') {
                           //sets the request IDs to those valid for the selected user account
                           requestIDs = await findRequests(username);
 
@@ -655,6 +668,7 @@ class AdminHomePageState extends State<AdminHomePage> {
                         currentRequestUin = null;
                       }
 
+
                       //sets the state to save all the logic that has gone down yo
                       setState(() {
                         requestIDs;
@@ -680,7 +694,7 @@ class AdminHomePageState extends State<AdminHomePage> {
                             foregroundColor: const Color(
                                 0xFFdedede), // changes color of the text
                             backgroundColor: const Color(
-                                0xFF963e3e), // changes the color of the button
+                                0xFF87352F), // changes the color of the button
                           ),
                           /*style: ButtonStyle( 0xFFdedede
                                         shape: MaterialStateProperty.all<
@@ -715,13 +729,12 @@ class AdminHomePageState extends State<AdminHomePage> {
         const SizedBox(height: 20),
 
         Container(
-            constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height * .45),
+          constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height*.45),
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color: const Color(0xFF963e3e),
+              color: const Color(0xFF87352F),
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.8),
@@ -789,7 +802,7 @@ class AdminHomePageState extends State<AdminHomePage> {
                         var username = await userByUIN(int.parse(selectedUin));
 
                         //checks that there is a valid uin
-                        if (username[0] != 'I') {
+                        if(username[0] != 'I') {
                           //sets the history IDs to those valid for the selected user account
                           historyIDs = await historyIDbyUser(username);
 
@@ -798,8 +811,8 @@ class AdminHomePageState extends State<AdminHomePage> {
                             //temp variable gets the history information
                             var temp = await getHistoryInfo(historyIDs[i]);
 
-                            if (temp.length < 7 ||
-                                int.parse(temp[3]) - int.parse(temp[6]) > 0) {
+                            if (temp.length < 7 || int.parse(temp[3]) - int
+                                .parse(temp[6]) > 0) {
                               //fills requested equipment list for displaying equipment names
                               historyEquipment.add(temp[2]);
                             } else {
@@ -848,7 +861,7 @@ class AdminHomePageState extends State<AdminHomePage> {
                             foregroundColor: const Color(
                                 0xFFdedede), // changes color of the text
                             backgroundColor: const Color(
-                                0xFF963e3e), // changes the color of the button
+                                0xFF87352F), // changes the color of the button
                           ),
                           /*style: ButtonStyle( 0xFFdedede
                                         shape: MaterialStateProperty.all<
@@ -865,13 +878,13 @@ class AdminHomePageState extends State<AdminHomePage> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      const HistoryDetailPage(),
+                                  const HistoryDetailPage(),
                                 ));
                           },
                           child: const Padding(
                             padding: EdgeInsets.all(15.0),
                             child:
-                                Text('Select', style: TextStyle(fontSize: 14)),
+                            Text('Select', style: TextStyle(fontSize: 14)),
                           ),
                         ),
                       ])
