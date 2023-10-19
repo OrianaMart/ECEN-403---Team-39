@@ -4,6 +4,9 @@ import 'home_page.dart';
 import 'equipment_page.dart';
 import 'forms_page.dart';
 import 'history_page.dart';
+import 'profile_page.dart';
+import 'users_page.dart';
+import 'scan_controller.dart';
 import 'Data.dart' as user;
 
 class NavigatorDrawer extends StatelessWidget {
@@ -100,6 +103,11 @@ class NavigatorDrawer extends StatelessWidget {
                 user.viewedUser = '';
                 user.mlCategory = null;
                 //Navigator to profile page goes here
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ProfilePage(),
+                    ));
               },
             ),
 
@@ -199,6 +207,11 @@ class NavigatorDrawer extends StatelessWidget {
                 user.viewedUser = '';
                 user.mlCategory = null;
                 //Navigator to user page goes here
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const UsersPage(),
+                    ));
               },
             ),
 
@@ -218,11 +231,11 @@ class NavigatorDrawer extends StatelessWidget {
               user.checkoutID = '';
               user.requestID = '';
               user.viewedUser = '';
-              user.mlCategory = 'Display';
-              Navigator.pushReplacement(
+              user.mlCategory = null;
+              Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const EquipmentPage(),
+                    builder: (context) => ModelPage(),
                   ));
             },
           ),
@@ -293,9 +306,6 @@ Future<void> _logoutConfirmation(BuildContext context) async {
 
 //Function to perform the actions of logging out or not when either button is pushed on pop out dialogue box
 void _performLogout(BuildContext context) {
-  Navigator.of(context).pushReplacement(
-    MaterialPageRoute(
-      builder: (context) => const LoginScreen(),
-    ),
-  );
+  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+      const LoginScreen()), (Route<dynamic> route) => false);
 }

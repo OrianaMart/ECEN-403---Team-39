@@ -24,27 +24,77 @@ class EquipmentPageState extends State<EquipmentPage> {
   var locations = List<String>.filled(0, '', growable: true);
   var locationIDs = List<String>.filled(0, '', growable: true);
   var displayIDs = List<String>.filled(0, '', growable: true);
+  var searchIDs = List<String>.filled(0, '', growable: true);
 
   String? currentCategory;
   String? currentLocation;
   String? currentEquipment;
 
-  String pageName = 'Smart Inventory';
+  String pageName = 'Equipment';
+  String pageDescription = 'Search for or checkout equipment';
+  String buttonText = 'Request';
 
   @override
   void initState() {
     super.initState();
+    //if the users an admin
+    if (user.adminStatus) {
+      //change page description and buttonText
+      pageDescription = 'Search for equipment';
+      buttonText = 'Get Info';
+    }
+
+    //checks to see if it is in machine learning mode
+    if (user.mlCategory != null) {
+      pageName = 'Machine Learning';
+      pageDescription = 'Search equipment within identified category';
+      buttonText = 'Get Info';
+      categories.add(user.mlCategory!);
+      currentCategory = user.mlCategory;
+    }
+
     () async {
-      categories = await allCategories();
-      locations = await allLocations();
-      allIDs = await allEquipment();
+      if (user.mlCategory != null) {
+        //if the page is ml search
+        categoryIDs = await equipmentByCategory(user.mlCategory!);
+        displayIDs = categoryIDs;
+        allIDs = categoryIDs;
+        //iterates through the categoryIDs to locate all locations available for the selected category
+        for (int i = 0; i < categoryIDs.length; i++) {
+          //Obtains the location for each equipment in the category
+          var temp = await getEquipmentInfo(categoryIDs[i]);
+
+          //checks to see if the location has already been saved
+          if (!locations.contains(temp[2])) {
+            //if the location has yet to be saved, it is saved to the list of locations
+            locations.add(temp[2]);
+          }
+        }
+      } else {
+        //if the page is equipment search
+        categories = await allCategories();
+        locations = await allLocations();
+        allIDs = await allEquipment();
+      }
+
+      displayIDs = allIDs;
+
       setState(() {
         allIDs;
         categories;
         locations;
-        displayIDs = allIDs;
+        displayIDs;
+        searchIDs = displayIDs;
         locationIDs = [];
         categoryIDs = [];
+
+        //change page settings
+        pageName;
+        pageDescription;
+        buttonText;
+
+        //Machine Learning
+        currentCategory;
       });
     }();
   }
@@ -52,11 +102,11 @@ class EquipmentPageState extends State<EquipmentPage> {
   @override
   Widget build(BuildContext context) {
     final List<DropdownMenuEntry<String>> categoryEntries =
-    <DropdownMenuEntry<String>>[];
+        <DropdownMenuEntry<String>>[];
     final List<DropdownMenuEntry<String>> locationEntries =
-    <DropdownMenuEntry<String>>[];
+        <DropdownMenuEntry<String>>[];
     final List<DropdownMenuEntry<String>> equipmentEntries =
-    <DropdownMenuEntry<String>>[];
+        <DropdownMenuEntry<String>>[];
 
     for (int i = 0; i < categories.length; i++) {
       categoryEntries
@@ -68,18 +118,18 @@ class EquipmentPageState extends State<EquipmentPage> {
           .add(DropdownMenuEntry(value: locations[i], label: locations[i]));
     }
 
-    for (int i = 0; i < displayIDs.length; i++) {
+    for (int i = 0; i < searchIDs.length; i++) {
       equipmentEntries
-          .add(DropdownMenuEntry(value: displayIDs[i], label: displayIDs[i]));
+          .add(DropdownMenuEntry(value: searchIDs[i], label: searchIDs[i]));
     }
 
     return Scaffold(
-      // Creates smart inventory app bar at top
+        // Creates smart inventory app bar at top
         appBar: AppBar(
           //creates top bar of the app that includes navigation widget
-          title: Text(
-            pageName,
-            style: const TextStyle(
+          title: const Text(
+            'Smart Inventory',
+            style: TextStyle(
               fontSize: 24.0,
             ),
             textAlign: TextAlign.center,
@@ -106,11 +156,11 @@ class EquipmentPageState extends State<EquipmentPage> {
             child: Column(
               children: [
                 //Header for page
-                const Align(
+                Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    'Equipment Search',
-                    style: TextStyle(
+                    '$pageName Search',
+                    style: const TextStyle(
                       fontSize: 28.0,
                       fontWeight: FontWeight.bold,
                     ),
@@ -119,11 +169,11 @@ class EquipmentPageState extends State<EquipmentPage> {
                 const SizedBox(height: 7),
 
                 //Sub Header for page
-                const Align(
+                Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    'Search for or checkout equipment.',
-                    style: TextStyle(
+                    pageDescription,
+                    style: const TextStyle(
                       fontSize: 17.0,
                     ),
                   ),
@@ -132,6 +182,8 @@ class EquipmentPageState extends State<EquipmentPage> {
                 //Dropdown menu for selecting the category to search by
                 DropdownMenu<String>(
                     controller: categoryField,
+                    enabled: (pageName != 'Machine Learning'),
+                    initialSelection: user.mlCategory,
                     requestFocusOnTap: true,
                     enableSearch: true,
                     width: MediaQuery.of(context).size.width * .9,
@@ -156,7 +208,7 @@ class EquipmentPageState extends State<EquipmentPage> {
 
                         //Obtains all of the equipment within the searched category
                         categoryIDs =
-                        await equipmentByCategory(selectedCategory);
+                            await equipmentByCategory(selectedCategory);
 
                         //empties the selectable locations to be refilled by those that are valid
                         locations = [];
@@ -246,6 +298,7 @@ class EquipmentPageState extends State<EquipmentPage> {
 
                         //Updates all potentially changed equipment variables
                         displayIDs;
+                        searchIDs = displayIDs;
                         currentEquipment;
                         equipmentField.text;
                       });
@@ -348,6 +401,7 @@ class EquipmentPageState extends State<EquipmentPage> {
 
                       //equipment dropdown menu variables
                       displayIDs;
+                      searchIDs = displayIDs;
                       currentEquipment;
                       equipmentField.text;
                     });
@@ -440,7 +494,7 @@ class EquipmentPageState extends State<EquipmentPage> {
                 const SizedBox(height: 15),
 
                 //admin only new equipment button
-                if (user.adminStatus)
+                if (user.adminStatus && user.mlCategory == null)
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         foregroundColor: const Color(
@@ -453,8 +507,7 @@ class EquipmentPageState extends State<EquipmentPage> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                              const NewEquipmentPage(),
+                              builder: (context) => const NewEquipmentPage(),
                             ));
                       },
                       child: const Text('Create New Equipment')),
@@ -484,68 +537,69 @@ class EquipmentPageState extends State<EquipmentPage> {
                             vertical: 15, horizontal: 20),
                         child: SingleChildScrollView(
                             child: Column(children: [
-                              const Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text('Search Results:',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                    ),
-                                ),
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Search Results:',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
                               ),
-                              const SizedBox(height: 10),
-                              for (int i = 0; i < displayIDs.length; i++)
-                                Table(children: [
-                                  TableRow(children: <Widget>[
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                          displayIDs[i],
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                          )
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          for (int i = 0; i < displayIDs.length; i++)
+                            Table(children: [
+                              TableRow(children: <Widget>[
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(displayIDs[i],
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      )),
+                                ),
+                                if (displayIDs[0] != 'No Equipment')
+                                  SizedBox(
+                                    width: 25,
+                                    child: ElevatedButton(
+                                      style: ButtonStyle(
+                                        foregroundColor: MaterialStateProperty
+                                            .all<Color>(const Color(
+                                                0xFF500000)), // changes color of text
+                                        backgroundColor: MaterialStateProperty
+                                            .all<Color>(const Color(
+                                                0xFFdedede)), // changes color of button
+                                        shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            // makes edges of button round instead of square
+                                            borderRadius:
+                                                BorderRadius.circular(12.0),
+                                          ),
+                                        ), // changes the color of the button
+                                      ),
+                                      onPressed: () {
+                                        user.equipment = displayIDs[i];
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const EquipmentDetailPage(),
+                                            ));
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Text(buttonText,
+                                            style:
+                                                const TextStyle(fontSize: 15)),
                                       ),
                                     ),
-                                    SizedBox(
-                                      width: 25,
-                                      child: ElevatedButton(
-                                        style: ButtonStyle(
-                                          foregroundColor: MaterialStateProperty
-                                              .all<Color>(const Color(0xFF500000)), // changes color of text
-                                          backgroundColor: MaterialStateProperty
-                                              .all<Color>(const Color(
-                                              0xFFdedede)), // changes color of button
-                                          shape: MaterialStateProperty.all<
-                                              RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                              // makes edges of button round instead of square
-                                              borderRadius:
-                                              BorderRadius.circular(12.0),
-                                            ),
-                                          ), // changes the color of the button
-                                        ),
-                                        onPressed: () {
-                                          user.equipment = displayIDs[i];
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                const EquipmentDetailPage(),
-                                              ));
-                                        },
-                                        child: const Padding(
-                                          padding: EdgeInsets.all(10.0),
-                                          child: Text(
-                                              'Request',
-                                              style: TextStyle(fontSize: 15)),
-                                        ),
-                                      ),
-                                    ),
-                                  ])
-                                ]),
-                            ]))))
+                                  ),
+                              ])
+                            ]),
+                        ]))))
               ],
             ),
           ),

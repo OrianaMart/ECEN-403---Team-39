@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'database_functions.dart';
 import 'navigator_drawer.dart';
 import 'history_detail_page.dart';
+import 'users_page.dart';
 import 'Data.dart' as user;
 
 class HistoryPage extends StatefulWidget {
@@ -146,12 +147,25 @@ class HistoryPageState extends State<HistoryPage> {
           backgroundColor: const Color(0xFF500000),
           leading: Builder(
             builder: (BuildContext context) {
-              return IconButton(
-                icon: const Icon(Icons.menu),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-              );
+              if (user.viewedUser == '' && user.equipment == '') {
+                return IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                );
+              } else {
+                return IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const UsersPage(),
+                        ));
+                  },
+                );
+              }
             },
           ),
         ),

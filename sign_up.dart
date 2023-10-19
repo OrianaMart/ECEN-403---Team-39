@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'database_functions.dart';
 import 'login_screen.dart';
 import 'home_page.dart';
+import 'users_page.dart';
+import 'Data.dart' as user;
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -22,70 +24,114 @@ class SignUpPageState extends State<SignUpPage> {
   final TextEditingController teamNumberField = TextEditingController();
   final TextEditingController courseNumberField = TextEditingController();
 
+  bool invalidUsername = false;
+  bool invalidUin = false;
+  bool invalidEmail = false;
+  bool invalidPhoneNumber = false;
+  bool invalidCourseNumber = false;
+  bool invalidPassword = false;
+
+  String pageName = 'Create your account.';
+
+  @override
+  void initState() {
+    super.initState();
+
+    () async {
+      //if a logged in admin is accessing this page
+      if (user.adminStatus) {
+        //if the logged in admin is editing an account
+        if (user.viewedUser != '') {
+          pageName = 'Edit account';
+
+          var temp = await getUserInfo(user.viewedUser);
+          setState(() {
+            firstNameField.text = temp[2];
+            lastNameField.text = temp[3];
+            emailField.text = temp[4];
+            confirmEmailField.text = temp[4];
+            phoneNumberField.text = temp[5];
+            uinField.text = temp[1];
+          });
+
+        } else {
+          pageName = 'Create admin account.';
+        }
+      }
+
+      setState(() {
+        pageName;
+      });
+    } ();
+  }
 
   @override
   Widget build(BuildContext context) {
     // Creates the app bar at the top of the screen
     return Scaffold(
-      appBar: AppBar( //creates top bar of the app
+      appBar: AppBar(
+        //creates top bar of the app
         title: const Text(
           'Smart Inventory',
           style: TextStyle(
             fontSize: 24.0,
           ),
-        textAlign: TextAlign.center,
+          textAlign: TextAlign.center,
         ),
         centerTitle: true,
-        backgroundColor: const Color(0xFF500000), //Sets background color of top bar to maroon
+        backgroundColor: const Color(
+            0xFF500000), //Sets background color of top bar to maroon
       ),
-
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: ListView(
             //mainAxisAlignment:MainAxisAlignment.start,
             children: <Widget>[
-
               //Creates the text at the top of the account creation screen
               const SizedBox(height: 15),
-                const Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    'Create your account.',
-                    style: TextStyle(
-                      fontSize: 28.0,
-                      fontWeight: FontWeight.bold,
-                    ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  pageName,
+                  style: const TextStyle(
+                    fontSize: 28.0,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Text(
-                    "Create a free account or return to",
-                    style: TextStyle(
-                      fontSize: 17.0,
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(context, MaterialPageRoute(
-                        builder: (context) => const LoginScreen(),
-                      ));
-                    },
-                    child: const Text(
-                      'log in.',
+              ),
+              if (!user.adminStatus)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Create a free account or return to",
                       style: TextStyle(
-                        color: Colors.blue,
                         fontSize: 17.0,
                       ),
                     ),
-                  ),
-                ],
-              ),
-              //const SizedBox(height: 15),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ));
+                      },
+                      child: const Text(
+                        'log in.',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 17.0,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              if (user.adminStatus && user.viewedUser != '') const SizedBox(height: 15),
 
               // Personal Information Text
+              if(user.viewedUser == '')
               const Align(
                 alignment: Alignment.topLeft,
                 child: Text(
@@ -107,69 +153,96 @@ class SignUpPageState extends State<SignUpPage> {
               TextFormField(
                 controller: emailField,
                 decoration: const InputDecoration(
-                    labelText: 'E-mail',
-                    hintText: 'ex: email@tamu.edu'
-                ),
+                    labelText: 'E-mail', hintText: 'ex: email@tamu.edu'),
               ),
               TextFormField(
                 controller: confirmEmailField,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                     labelText: 'Confirm E-mail',
                     hintText: 'ex: email@tamu.edu',
-                ),
+                    errorText: invalidEmail ? 'Invalid Email' : null),
               ),
               TextFormField(
                 controller: phoneNumberField,
-                decoration: const InputDecoration(labelText: 'Phone Number'),
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                    labelText: 'Phone Number',
+                    errorText:
+                        invalidPhoneNumber ? 'Invalid Phone Number' : null),
               ),
               TextFormField(
                 controller: uinField,
-                decoration: const InputDecoration(labelText: 'UIN'),
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                    labelText: 'UIN',
+                    errorText: invalidUin ? 'Invalid UIN' : null),
               ),
 
               //Course Information Text
               const Align(
                 child: SizedBox(height: 40),
               ),
-              const Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  'Step 2: Course Information',
-                  style: TextStyle(
-                    fontSize: 17.0,
-                    fontWeight: FontWeight.bold,
+              if (!user.adminStatus)
+                const Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'Step 2: Course Information',
+                    style: TextStyle(
+                      fontSize: 17.0,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              ),
-              TextFormField(
-                controller: teamNumberField,
-                decoration: const InputDecoration(labelText: 'Team Number'),
-              ),
-              TextFormField(
-                controller: courseNumberField,
-                decoration: const InputDecoration(
-                    labelText: 'Course Number',
-                    hintText: 'ex: 403 or 404'
+              if (!user.adminStatus)
+                TextFormField(
+                  controller: teamNumberField,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(labelText: 'Team Number'),
                 ),
-              ),
+              if (!user.adminStatus)
+                TextFormField(
+                  controller: courseNumberField,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                      labelText: 'Course Number',
+                      hintText: 'ex: 403 or 404',
+                      errorText:
+                          invalidCourseNumber ? 'Invalid Course Number' : null),
+                ),
 
-              //Account Information Text
-              const Align(
-                child: SizedBox(height: 40),
-              ),
-              const Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  'Step 3: Account Information',
-                  style: TextStyle(
-                    fontSize: 17.0,
-                    fontWeight: FontWeight.bold,
+              if (!user.adminStatus)
+                //Account Information Text
+                const Align(
+                  child: SizedBox(height: 40),
+                ),
+              if (!user.adminStatus)
+                const Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'Step 3: Account Information',
+                    style: TextStyle(
+                      fontSize: 17.0,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              ),
+              if (user.adminStatus && user.viewedUser == '')
+                const Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'Step 2: Account Information',
+                    style: TextStyle(
+                      fontSize: 17.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               TextFormField(
                 controller: usernameField,
-                decoration: const InputDecoration(labelText: 'Username'),
+                decoration: InputDecoration(
+                    labelText: 'Username',
+                    errorText:
+                        invalidUsername ? 'Username Already Exists' : null),
               ),
               TextFormField(
                 controller: passwordField,
@@ -177,26 +250,191 @@ class SignUpPageState extends State<SignUpPage> {
               ),
               TextFormField(
                 controller: confirmPasswordField,
-                decoration: const InputDecoration(labelText: 'Confirm Password'),
+                decoration: InputDecoration(
+                    labelText: 'Confirm Password',
+                    errorText:
+                        invalidPassword ? 'Passwords Do Not Match' : null),
               ),
 
-            // Submits information to data base and proceeds user to student home page
-            const SizedBox(height: 5),
-            ElevatedButton(
-              onPressed: () async{
-                switch(await createStudentUser(usernameField.text, passwordField.text, int.parse(uinField.text), firstNameField.text, lastNameField.text, emailField.text, int.parse(phoneNumberField.text), int.parse(teamNumberField.text), int.parse(courseNumberField.text))){
+              // Submits information to data base and proceeds user to student home page
+              const SizedBox(height: 5),
+              if (!user.adminStatus)
+                ElevatedButton(
+                  onPressed: () async {
+                    invalidUsername = false;
+                    invalidUin = false;
+                    invalidEmail = false;
+                    invalidPhoneNumber = false;
+                    invalidCourseNumber = false;
+                    invalidPassword = false;
 
-                  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~CHECK ERROR CASES
-                }
-                    Navigator.pushReplacement(context, MaterialPageRoute(
-                      builder: (context) => HomePage(),
-                    ));
+                    if (emailField.text != confirmEmailField.text) {
+                      invalidEmail = true;
+                    }
+                    if (passwordField.text != confirmPasswordField.text) {
+                      invalidPassword = true;
+                    }
+
+                    if (!invalidEmail && !invalidPassword) {
+                      switch (await createStudentUser(
+                          usernameField.text,
+                          passwordField.text,
+                          int.parse(uinField.text),
+                          firstNameField.text,
+                          lastNameField.text,
+                          emailField.text,
+                          int.parse(phoneNumberField.text),
+                          int.parse(teamNumberField.text),
+                          int.parse(courseNumberField.text))) {
+                        case 'Invalid Username':
+                          {
+                            invalidUsername = true;
+                          }
+                          break;
+
+                        case 'Invalid UIN':
+                          {
+                            invalidUin = true;
+                          }
+                          break;
+
+                        case 'Invalid Email':
+                          {
+                            invalidEmail = true;
+                          }
+                          break;
+
+                        case 'Invalid Phone Number':
+                          {
+                            invalidPhoneNumber = true;
+                          }
+                          break;
+
+                        case 'Invalid Course Number':
+                          {
+                            invalidCourseNumber = true;
+                          }
+                          break;
+
+                        case 'Created':
+                          {
+                            user.username = usernameField.text.toString();
+                            user.adminStatus = false;
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const HomePage(),
+                                ));
+                            setState(() {
+                              invalidUsername = false;
+                              invalidUin = false;
+                              invalidEmail = false;
+                              invalidPhoneNumber = false;
+                              invalidCourseNumber = false;
+                              invalidPassword = false;
+                            });
+                          }
+                          break;
+                      }
+                    }
+
+                    setState(() {
+                      invalidUsername;
+                      invalidUin;
+                      invalidEmail;
+                      invalidPhoneNumber;
+                      invalidCourseNumber;
+                      invalidPassword;
+                    });
                   },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF963e3e),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF963e3e),
+                  ),
+                  child: const Text('Submit'),
                 ),
-              child: const Text('Submit'),
-              ),
+
+              if(user.adminStatus && user.viewedUser == '')
+                ElevatedButton(
+                  onPressed: () async {
+                    invalidUsername = false;
+                    invalidUin = false;
+                    invalidEmail = false;
+                    invalidPhoneNumber = false;
+                    invalidPassword = false;
+
+                    if (emailField.text != confirmEmailField.text) {
+                      invalidEmail = true;
+                    }
+                    if (passwordField.text != confirmPasswordField.text) {
+                      invalidPassword = true;
+                    }
+
+                    if (!invalidEmail && !invalidPassword) {
+                      switch (await createAdminUser(
+                          usernameField.text,
+                          passwordField.text,
+                          int.parse(uinField.text),
+                          firstNameField.text,
+                          lastNameField.text,
+                          emailField.text,
+                          int.parse(phoneNumberField.text))) {
+                        case 'Invalid Username':
+                          {
+                            invalidUsername = true;
+                          }
+                          break;
+
+                        case 'Invalid UIN':
+                          {
+                            invalidUin = true;
+                          }
+                          break;
+
+                        case 'Invalid Email':
+                          {
+                            invalidEmail = true;
+                          }
+                          break;
+
+                        case 'Invalid Phone Number':
+                          {
+                            invalidPhoneNumber = true;
+                          }
+                          break;
+
+                        case 'Created':
+                          {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const UsersPage(),
+                                ));
+                            setState(() {
+                              invalidUsername = false;
+                              invalidUin = false;
+                              invalidEmail = false;
+                              invalidPhoneNumber = false;
+                              invalidCourseNumber = false;
+                              invalidPassword = false;
+                            });
+                          }
+                          break;
+                      }
+                    }
+
+                    setState(() {
+                      invalidUsername;
+                      invalidUin;
+                      invalidEmail;
+                      invalidPhoneNumber;
+                      invalidPassword;
+                    });
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF963e3e),
+                  ),
+                  child: const Text('Submit'),
+                ),
             ],
           ),
         ),

@@ -1,18 +1,17 @@
-//import 'dart:developer';
 import 'dart:async';
-import 'dart:typed_data';
 import 'package:camera/camera.dart';
-//import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_tflite/flutter_tflite.dart';
 import 'package:get/get.dart';
 import 'package:image/image.dart' as img;
-//import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:ml_testapp_v2/main.dart';
+import 'Data.dart' as user;
+import 'equipment_page.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /*
 *Author: Oriana V Martin
 * UIN: 527008754
-* Date: October 17,2023
+* Date: October 16,2023
 *
 * Description:
 - Imported necessary packages for camera, image processing, and TensorFlow Lite.
@@ -23,6 +22,109 @@ import 'package:ml_testapp_v2/main.dart';
 - Comments and documentation added to the code for clarity.
 * */
 
+class ModelPage extends StatelessWidget {
+  const ModelPage({Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    return GetMaterialApp(
+      title: 'My App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Home Page'),
+        ),
+        body: Center(
+          child: ElevatedButton(
+            onPressed: () {
+              Get.to(() => ScanPage()); // Navigate to ScanPage
+            },
+            child: const Text('Open Scan Page'),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+class ScanPage extends StatelessWidget {
+  ScanPage({Key? key}) : super(key: key);
+
+  final ScanController scanController = Get.put(ScanController());
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Scan Page'),
+      ),
+      body: Center(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  if (scanController.isScanning) {
+                    //Send an error snack bar when scanning is in progress
+                    Get.snackbar(
+                      'Error',
+                      'Scan has not been reset. Please reset the scan first.',
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Colors.red,
+                      colorText: Colors.white,
+                      duration: const Duration(seconds: 3),
+                    );
+                  } else {
+                    // Trigger camera capture or start image stream here
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const CameraView(),
+                        ));
+                    scanController.startImageStream();
+                  }
+                },
+                child: const Text('Scan Item'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  // Reinitialize the camera and model
+                  scanController.reinitializeCameraAndModel();
+                },
+                child: const Text('Reset Scan'),
+              ),
+              Obx(
+                    () => Text('Model Prediction: ${scanController.modelPred.value}'),
+              )]
+        ),
+      ),
+    );
+  }
+}
+
+class CameraView extends StatelessWidget {
+  const CameraView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GetX<ScanController>(builder: (controller) {
+      if(!controller.isInitialized) {
+        return Container();
+      }
+      return SizedBox(
+          height: Get.height,
+          width: Get.width,
+          child: CameraPreview(controller.cameraController));
+    }
+    );
+  }
+}
 
 class ScanController extends GetxController {
 
@@ -35,10 +137,9 @@ class ScanController extends GetxController {
   int _imageCount = 0; //Counter for tracking images
   final RxString modelPred = ''.obs; //Reactive variable to store model predictions
   Timer? conditionCheckTimer; //Timer for periodic checks
-  final Duration _checkInterval = Duration(seconds: 3); //Adjust interval as needed
+  final Duration _checkInterval = Duration(seconds: 2); //Adjust interval as needed
   bool isCameraClosed = false; //Flag to indicate if the camera is closed
   bool isScanning = false; //Flag to indicate if scanning is in progress
-  bool isClosingCamera = false; // Flag to track if the camera is being closed
 
   //Getter methods
   CameraController get cameraController => _cameraController; //Retrieve the camera controller
@@ -50,6 +151,7 @@ class ScanController extends GetxController {
   void dispose() {
     _isInitialized.value = false; //Reset initialization flag
     conditionCheckTimer?.cancel(); //Cancel the condition check timer if it is still active
+    if (_cameraController != null) {
       if (_cameraController.value.isInitialized) {
         //If the camera is initialized, stop the image stream
         _cameraController.stopImageStream().then((_) {
@@ -60,6 +162,7 @@ class ScanController extends GetxController {
           });
         });
       }
+    }
     super.dispose(); //Call the base class's dispose method
   }
 
@@ -153,12 +256,11 @@ class ScanController extends GetxController {
   void onInit() {
     startCameraAndModel(); //Initialize the camera and model
 
-    // Start the periodic check for 'modelPred' condition
+    //Start the periodic check for 'modelPred' condition
     conditionCheckTimer = Timer.periodic(_checkInterval, (Timer timer) {
-      // Check the condition and close the camera if 'modelPred' has a value
-      if (modelPred.value.isNotEmpty && !isClosingCamera) {
-        isClosingCamera = true; // Set the flag to indicate camera closing
-        closeCamera(); // Close the camera if 'modelPred' has a value
+      //Check the condition and close the camera if 'modelPred' has a value
+      if(modelPred.value.isNotEmpty) {
+        closeCamera(); //Close the camera if 'modelPred' has a value
       }
     });
 
@@ -232,7 +334,6 @@ class ScanController extends GetxController {
         if (filteredPredictions.isNotEmpty) {
           modelPred.value = filteredPredictions[0]['label'];
           print('Model Prediction: ${modelPred.value}');
-          closeCamera();
         } else {
           //Reset modelPred value
           modelPred.value = '';
@@ -250,23 +351,23 @@ class ScanController extends GetxController {
     if (modelPred.value.isNotEmpty) {
       isCameraClosed = true; // Set flag to indicate that the camera is closed
 
-      if (_cameraController.value.isInitialized) {
-        if (_cameraController.value.isStreamingImages) {
+      if (_cameraController != null) {
+        if (_cameraController.value.isInitialized) {
+          if (_cameraController.value.isStreamingImages) {
+            try {
+              await _cameraController.stopImageStream();
+            } catch (e) {
+              print('Error stopping image stream: $e');
+              // Handle the error
+            }
+          }
+
           try {
-            await _cameraController.stopImageStream();
-            print('Image stream stopped.');
+            await _cameraController.dispose();
           } catch (e) {
-            print('Error stopping image stream: $e');
+            print('Error disposing camera: $e');
             // Handle the error
           }
-        }
-
-        try {
-          await _cameraController.dispose();
-          print('Camera controller disposed.');
-        } catch (e) {
-          print('Error disposing camera: $e');
-          // Handle the error
         }
       }
 
@@ -274,7 +375,8 @@ class ScanController extends GetxController {
       //reinitializeCameraAndModel();
 
       // Navigate to ScanPage
-      Get.off(() => ScanPage());
+      user.mlCategory = modelPred.value;
+      Get.off(() => const EquipmentPage());
       print('Camera closed and navigated back to ScanPage');
     } else {
       print('Camera not closed because modelPred is empty');
