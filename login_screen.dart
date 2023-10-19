@@ -104,7 +104,7 @@ class LoginScreenState extends State<LoginScreen> {
                           invalidLogin = false;
                         });
                         Navigator.pushReplacement(context, MaterialPageRoute(
-                          builder: (context) => const HomePage(),
+                          builder: (context) => HomePage(),
                         ));
                       }
                       break;
@@ -117,7 +117,7 @@ class LoginScreenState extends State<LoginScreen> {
                           invalidLogin = false;
                         });
                         Navigator.pushReplacement(context, MaterialPageRoute(
-                          builder: (context) => const HomePage(),
+                          builder: (context) => HomePage(),
                         ));
                       }
                       break;

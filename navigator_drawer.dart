@@ -4,7 +4,6 @@ import 'home_page.dart';
 import 'equipment_page.dart';
 import 'forms_page.dart';
 import 'history_page.dart';
-import 'profile_page.dart';
 import 'Data.dart' as user;
 
 class NavigatorDrawer extends StatelessWidget {
@@ -101,11 +100,6 @@ class NavigatorDrawer extends StatelessWidget {
                 user.viewedUser = '';
                 user.mlCategory = null;
                 //Navigator to profile page goes here
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ProfilePage(),
-                    ));
               },
             ),
 

@@ -79,7 +79,7 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   const Text(
-                    "Return to",
+                    "Input recovery email or return to",
                     style: TextStyle(
                       fontSize: 17.0,
                     ),

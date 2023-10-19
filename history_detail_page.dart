@@ -1,8 +1,5 @@
-import 'history_page.dart';
 import 'package:flutter/material.dart';
 import 'database_functions.dart';
-import 'home_page.dart';
-import 'edit_history.dart';
 import 'Data.dart' as user;
 
 class HistoryDetailPage extends StatefulWidget {
@@ -17,22 +14,12 @@ class HistoryDetailPageState extends State<HistoryDetailPage> {
   //variables to be filled by the equipment details
   var historyDetails = List<String>.filled(9, '', growable: true);
 
-  int amount = 0;
-
   @override
   void initState() {
     super.initState();
     () async {
       historyDetails = await getHistoryInfo(user.checkoutID);
-      if (historyDetails.length > 6) {
-        amount = int.parse(historyDetails[3]) - int.parse(historyDetails[6]);
-      } else {
-        amount = int.parse(historyDetails[3]);
-      }
-      setState(() {
-        historyDetails;
-        amount;
-      });
+      setState(() {});
     }();
   }
 
@@ -159,6 +146,25 @@ class HistoryDetailPageState extends State<HistoryDetailPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text(
+                            "Amount Checked Out: ",
+                            style: TextStyle(
+                              fontSize: 17.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            historyDetails[3],
+                            style: const TextStyle(
+                              fontSize: 17.0,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
                             "Admin Approved Checkout: ",
                             style: TextStyle(
                               fontSize: 17.0,
@@ -255,180 +261,25 @@ class HistoryDetailPageState extends State<HistoryDetailPage> {
                     ),
 
                   if(user.adminStatus)
-                    AdminHistoryDetails(amountAllowed: amount),
+                    const AdminHistoryDetails(),
 
                 ]))));
   }
 }
 
 class AdminHistoryDetails extends StatefulWidget {
-  const AdminHistoryDetails({Key? key, required this.amountAllowed})
-      : super(key: key);
-  final int amountAllowed;
+  const AdminHistoryDetails({Key? key}) : super(key: key);
   @override
   AdminHistoryDetailsState createState() {
     return AdminHistoryDetailsState();
   }
 }
 class AdminHistoryDetailsState extends State<AdminHistoryDetails> {
-  final uinField = TextEditingController();
-  final amountField = TextEditingController();
-
-  bool invalidUin = false;
-  bool invalidAmount = false;
 
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      if(widget.amountAllowed > 0)
-      TextFormField(
-        controller: uinField,
-        keyboardType: TextInputType.number,
-        decoration: InputDecoration(
-            labelText: 'UIN',
-            helperText: 'Verify Students UIN for Verification',
-            errorText: invalidUin ? 'Incorrect UIN' : null),
-      ),
-      if(widget.amountAllowed > 0)
-      TextFormField(
-        controller: amountField,
-        keyboardType: TextInputType.number,
-        decoration: InputDecoration(
-            labelText: 'Check-In Amount',
-            errorText: invalidAmount ? 'Invalid Check-In Amount' : null),
-      ),
-      if(widget.amountAllowed > 0)
-      ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            foregroundColor:
-            const Color(0xFFdedede), // changes color of the text
-            backgroundColor:
-            const Color(0xFF963e3e), // changes the color of the button
-          ),
-          onPressed: () async {
-            if (amountField.text.toString() != '') {
-              if (int.parse(amountField.text.toString()) < 1 ||
-                  int.parse(amountField.text.toString()) > widget.amountAllowed) {
-                setState(() {
-                  invalidAmount = true;
-                  invalidUin = false;
-                });
-              } else {
-                if (uinField.text.toString() != '') {
-                  switch (await verifyCheckIn(
-                      user.checkoutID,
-                      int.parse(uinField.text.toString()),
-                      int.parse(amountField.text.toString()),
-                      user.username)) {
-                    case 'Invalid Amount':
-                      {
-                        invalidAmount = true;
-                        invalidUin = false;
-                      }
-                      break;
-
-                    case 'Invalid UIN':
-                      {
-                        invalidAmount = false;
-                        invalidUin = true;
-                      }
-                      break;
-
-                    case 'Checked In':
-                      {
-                        setState(() {
-                          invalidAmount = false;
-                          invalidUin = false;
-                        });
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const HomePage()));
-                      }
-                      break;
-                  }
-                  setState(() {
-                    invalidUin;
-                    invalidAmount;
-                  });
-                }
-              }
-            }
-          },
-          child: const Text('Verify Check-In')),
-      ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            foregroundColor:
-            const Color(0xFFdedede), // changes color of the text
-            backgroundColor:
-            const Color(0xFF963e3e), // changes the color of the button
-          ),
-          onPressed: () async {
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const EditHistoryPage()));
-          },
-          child: const Text('Edit Checkout History')),
-      if(widget.amountAllowed == 0)
-      ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            foregroundColor:
-            const Color(0xFFdedede), // changes color of the text
-            backgroundColor:
-            const Color(0xFF963e3e), // changes the color of the button
-          ),
-          onPressed: () async {
-            _removalConfirmation(context);
-          },
-          child: const Text('Delete Checkout History')),
+      Text(user.adminStatus.toString())
     ]);
   }
-}
-
-
-//Function to make a pop out dialogue box appear when delete button is pushed
-Future<void> _removalConfirmation(BuildContext context) async {
-  return showDialog<void>(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Delete History'),
-        content:  const SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[Text('Are you sure you want to permanently delete this history entry?')],
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.grey,
-              ),
-              child: const Text('Go Back')),
-          TextButton(
-              onPressed: () async {
-                if(user.checkoutID != '') {
-                  if (await removeHistory(user.checkoutID) == 'Removed') {
-                    user.equipment = '';
-                    user.checkoutID = '';
-                    user.requestID = '';
-                    user.username = '';
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => const HistoryPage(),
-                      ),
-                    );
-                  }
-                }
-              },
-              style: TextButton.styleFrom(foregroundColor: Colors.blue),
-              child: const Text('Delete')),
-        ],
-      );
-    },
-  );
 }

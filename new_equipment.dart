@@ -1,7 +1,5 @@
-import 'equipment_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'database_functions.dart';
-import 'equipment_page.dart';
 import 'Data.dart' as user;
 
 class NewEquipmentPage extends StatefulWidget {
@@ -28,12 +26,6 @@ class NewEquipmentPageState extends State<NewEquipmentPage> {
   bool invalidName = false;
   bool invalidAmount = false;
 
-  //variables for initial values
-  String? category;
-  String? location;
-  String name = '';
-  String amount = '';
-
   @override
   void initState() {
     super.initState();
@@ -42,29 +34,16 @@ class NewEquipmentPageState extends State<NewEquipmentPage> {
       //page is being used to edit equipment
       pageName = 'Edit';
       creating = false;
-
     }
     //gets information for dropdowns
     () async {
       categories = await allCategories();
       locations = await allLocations();
-
-      if(!creating){
-        var temp = await getEquipmentInfo(user.equipment);
-        category = temp[1];
-        name = temp[0];
-        location = temp[2];
-        amount = temp[4];
-
-        nameField.text = name;
-        amountField.text = amount;
-      }
-
-      setState(() {
-        categories;
-        locations;
-      });
     }();
+    setState(() {
+      categories;
+      locations;
+    });
   }
 
   @override
@@ -146,7 +125,6 @@ class NewEquipmentPageState extends State<NewEquipmentPage> {
                 enableSearch: true,
                 width: MediaQuery.of(context).size.width * .9,
                 enableFilter: true,
-                initialSelection: category,
                 label: const Text('Category'),
                 //makes the dropdown menu scrollable
                 menuHeight: 300,
@@ -163,7 +141,6 @@ class NewEquipmentPageState extends State<NewEquipmentPage> {
                 enableSearch: true,
                 width: MediaQuery.of(context).size.width * .9,
                 enableFilter: true,
-                initialSelection: location,
                 label: const Text('Storage Location'),
                 //makes the dropdown menu scrollable
                 menuHeight: 300,
@@ -175,17 +152,14 @@ class NewEquipmentPageState extends State<NewEquipmentPage> {
               TextFormField(
                 controller: nameField,
                 enabled: creating,
-                decoration: InputDecoration(
-                  labelText: 'Equipment Name',
-                  errorText: invalidName ? 'Equipment Already Exists' : null,
+                decoration: InputDecoration(labelText: 'Equipment Name',
+                errorText: invalidName ? 'Equipment Already Exists': null,
                 ),
               ),
               TextFormField(
                 controller: amountField,
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  labelText: 'Amount',
-                  errorText: invalidAmount ? 'Incorrect Amount' : null,
+                decoration: InputDecoration(labelText: 'Amount',
+                  errorText: invalidAmount ? 'Amount Must be Positive': null,
                 ),
               ),
 
@@ -193,69 +167,41 @@ class NewEquipmentPageState extends State<NewEquipmentPage> {
               const SizedBox(height: 5),
               ElevatedButton(
                 onPressed: () async {
-                  if (nameField.text != '' &&
-                      amountField.text != '' &&
-                      categoryField.text != '' &&
-                      locationField.text != '') {
+                  if(nameField.text != '' && amountField.text != '' && categoryField.text != '' && locationField.text != '') {
                     //if no category is left empty
                     if (creating) {
                       //if in creation mode
                       switch (await newEquipment(
-                          nameField.text,
-                          int.parse(amountField.text),
-                          categoryField.text,
-                          locationField.text)) {
-                        case 'Creation Failed':
-                          {
-                            setState(() {
-                              invalidName = true;
-                              invalidAmount = false;
-                            });
-                          }
-                          break;
+                          nameField.text, int.parse(amountField.text),
+                          categoryField.text, locationField.text)) {
+                        case  'Creation Failed': {
+                          setState(() {
+                            invalidName = true;
+                            invalidAmount = false;
+                          });
+                        }
+                        break;
 
-                        case 'Invalid Amount':
-                          {
-                            setState(() {
-                              invalidName = false;
-                              invalidAmount = true;
-                            });
-                          }
-                          break;
+                        case 'Invalid Amount': {
+                          setState(() {
+                            invalidName = false;
+                            invalidAmount = true;
+                          });
+                        }
+                        break;
 
-                        case 'Created':
-                          {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const EquipmentPage(),
-                                ));
-                            setState(() {
-                              invalidName = false;
-                              invalidAmount = false;
-                            });
-                          }
-                          break;
+                        case 'Created': {
+                          Navigator.pop(context);
+                          setState(() {
+                            invalidName = false;
+                            invalidAmount = false;
+                          });
+                        }
+                        break;
                       }
                     } else {
                       //if in editing mode
-                      if(await editEquipment(nameField.text, int.parse(amountField.text), categoryField.text, locationField.text) == 'Updated') {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const EquipmentDetailPage(),
-                            ));
-                        setState(() {
-                          invalidName = false;
-                          invalidAmount = false;
-                        });
-                      } else {
 
-                        setState(() {
-                          invalidName = false;
-                          invalidAmount = true;
-                        });
-                      }
                     }
                   }
                 },
