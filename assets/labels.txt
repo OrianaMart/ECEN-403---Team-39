@@ -1,14 +1,3 @@
-Battery
-Connector
-Display
-Fan/Heat Sink
-Line/Gate Driver
-MCU Dev Board
-Motor
-Motor Driver
-Perf/Proto Board
-Power DC-DC
-Power Supply
-Sensor
-Storage Device
-Transformer
+0 Battery
+1 Connector
+2 Display
