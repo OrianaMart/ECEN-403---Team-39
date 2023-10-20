@@ -1,3 +1,0 @@
-0 Battery
-1 Connector
-2 Display
