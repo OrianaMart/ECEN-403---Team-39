@@ -6,7 +6,7 @@ import 'forms_page.dart';
 import 'history_page.dart';
 import 'profile_page.dart';
 import 'users_page.dart';
-import 'scan_controller.dart';
+//import 'scan_controller.dart';
 import 'Data.dart' as user;
 
 class NavigatorDrawer extends StatelessWidget {
@@ -232,11 +232,6 @@ class NavigatorDrawer extends StatelessWidget {
               user.requestID = '';
               user.viewedUser = '';
               user.mlCategory = null;
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ModelPage(),
-                  ));
             },
           ),
 

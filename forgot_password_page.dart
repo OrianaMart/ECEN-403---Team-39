@@ -75,6 +75,7 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   ),
                 ),
               ),
+          Flexible( child:
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -102,6 +103,7 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   ),
                 ],
               ),
+          ),
               const SizedBox(height: 15),
               TextField(
                 controller: emailField,
