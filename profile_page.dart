@@ -106,45 +106,25 @@ class ProfilePageState extends State<ProfilePage> {
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
           child: Column(
             children: [
-              CircleAvatar(
-                radius: 53, // Change this radius for the width of the circular border
-                backgroundColor: const Color(0xFF500000),
-                child: CircleAvatar(
-                  radius: 48, // This radius is the radius of the picture in the circle avatar itself.
-                  backgroundImage: Image.asset(
-                   'assets/seal_avatar.jpg'
-                  ).image,
+              // Username information for students
+              const Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Username: ',
+                  style: TextStyle(
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-              // Username information for students
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.account_circle),
-                  //const SizedBox(height: 10),
-                  //const Spacer(),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                        const Text(
-                          'Username: ',
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            //fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      const SizedBox(height: 2),
-                        Text(
-                          username,
-                          style: const TextStyle(
-                            fontSize: 23.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                    ],
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  username,
+                  style: const TextStyle(
+                    fontSize: 23.0,
                   ),
-                ],
+                ),
               ),
               const SizedBox(height: 20),
 

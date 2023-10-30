@@ -78,7 +78,7 @@ class HomePageState extends State<HomePage> {
             // The top widget on the home page that shows requests the student currently has sent out
 
             //Displays the users name that was found earlier
-            /*Text(
+            Text(
               '$firstName $lastName',
               style: const TextStyle(
                 color: Color(0xFF000000),
@@ -87,19 +87,6 @@ class HomePageState extends State<HomePage> {
               ),
             ),
 
-             */
-            CircleAvatar(
-              radius: 40, // Change this radius for the width of the circular border
-              backgroundColor: const Color(0xFF500000),
-              child: CircleAvatar(
-                radius: 38, // This radius is the radius of the picture in the circle avatar itself.
-                backgroundImage: Image.asset(
-                    'assets/default_avatar.jpg'
-                ).image,
-              ),
-            ),
-            // Username information for students
-            const SizedBox(height: 20),
             //if the user is a student, it displays the student home page column
             if (!user.adminStatus) const StudentHomePage(),
 
@@ -210,7 +197,7 @@ class StudentHomePageState extends State<StudentHomePage> {
             padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color: const Color(0xFF87352F),
+              color: const Color(0xFF963e3e),
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.8),
@@ -310,7 +297,7 @@ class StudentHomePageState extends State<StudentHomePage> {
           },
           style: ElevatedButton.styleFrom(
             foregroundColor:
-                const Color(0xFF87352F), // changes color of the text
+                const Color(0xFF963e3e), // changes color of the text
             backgroundColor:
                 const Color(0xFFdedede), // changes the color of the button
           ),
@@ -327,7 +314,7 @@ class StudentHomePageState extends State<StudentHomePage> {
             padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color: const Color(0xFF87352F),
+              color: const Color(0xFF963e3e),
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.8),

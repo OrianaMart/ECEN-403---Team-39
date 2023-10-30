@@ -74,18 +74,6 @@ class FormsPageState extends State<FormsPage> {
                   decoration: BoxDecoration(
                     color: const Color(0xFF963e3e),
                     borderRadius: BorderRadius.circular(12.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.8),
-                        spreadRadius: 3,
-                        blurRadius: 4,
-                        offset: const Offset(3, 4),
-                      ),
-                    ],
-                    border: Border.all(
-                      width: 3,
-                      color: const Color(0xFF500000),
-                    ),
                   ),
                   padding: const EdgeInsets.all(16.0),
                   child: const Column(

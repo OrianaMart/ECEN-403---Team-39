@@ -1,8 +1,7 @@
-//import 'package:database_demo_app/equipment_detail_page.dart';
+import 'package:database_demo_app/equipment_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'database_functions.dart';
 import 'Data.dart' as user;
-import 'equipment_detail_page.dart';
 
 class AddFormRequirementPage extends StatefulWidget {
   const AddFormRequirementPage({super.key});

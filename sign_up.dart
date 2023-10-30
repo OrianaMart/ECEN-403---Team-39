@@ -31,6 +31,8 @@ class SignUpPageState extends State<SignUpPage> {
   bool invalidCourseNumber = false;
   bool invalidPassword = false;
 
+  bool student = false;
+
   String pageName = 'Create your account.';
 
   @override
@@ -45,15 +47,25 @@ class SignUpPageState extends State<SignUpPage> {
           pageName = 'Edit account';
 
           var temp = await getUserInfo(user.viewedUser);
+
+          print(temp);
+          if(temp.length > 6 && temp[6] != 'null'){
+            student = true;
+          }
+          print(student);
           setState(() {
+            student;
             firstNameField.text = temp[2];
             lastNameField.text = temp[3];
             emailField.text = temp[4];
             confirmEmailField.text = temp[4];
             phoneNumberField.text = temp[5];
             uinField.text = temp[1];
+            if(student) {
+              teamNumberField.text = temp[7];
+              courseNumberField.text = temp[6];
+            }
           });
-
         } else {
           pageName = 'Create admin account.';
         }
@@ -61,8 +73,9 @@ class SignUpPageState extends State<SignUpPage> {
 
       setState(() {
         pageName;
+        student;
       });
-    } ();
+    }();
   }
 
   @override
@@ -128,10 +141,10 @@ class SignUpPageState extends State<SignUpPage> {
                     ),
                   ],
                 ),
-              if (user.adminStatus && user.viewedUser != '') const SizedBox(height: 15),
+              if (user.adminStatus && user.viewedUser != '')
+                const SizedBox(height: 15),
 
               // Personal Information Text
-              if(user.viewedUser == '')
               const Align(
                 alignment: Alignment.topLeft,
                 child: Text(
@@ -182,7 +195,7 @@ class SignUpPageState extends State<SignUpPage> {
               const Align(
                 child: SizedBox(height: 40),
               ),
-              if (!user.adminStatus)
+              if (!user.adminStatus || student)
                 const Align(
                   alignment: Alignment.topLeft,
                   child: Text(
@@ -193,13 +206,13 @@ class SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                 ),
-              if (!user.adminStatus)
+              if (!user.adminStatus || student)
                 TextFormField(
                   controller: teamNumberField,
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(labelText: 'Team Number'),
                 ),
-              if (!user.adminStatus)
+              if (!user.adminStatus || student)
                 TextFormField(
                   controller: courseNumberField,
                   keyboardType: TextInputType.number,
@@ -237,24 +250,27 @@ class SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                 ),
-              TextFormField(
-                controller: usernameField,
-                decoration: InputDecoration(
-                    labelText: 'Username',
-                    errorText:
-                        invalidUsername ? 'Username Already Exists' : null),
-              ),
-              TextFormField(
-                controller: passwordField,
-                decoration: const InputDecoration(labelText: 'Password'),
-              ),
-              TextFormField(
-                controller: confirmPasswordField,
-                decoration: InputDecoration(
-                    labelText: 'Confirm Password',
-                    errorText:
-                        invalidPassword ? 'Passwords Do Not Match' : null),
-              ),
+              if (user.viewedUser == '')
+                TextFormField(
+                  controller: usernameField,
+                  decoration: InputDecoration(
+                      labelText: 'Username',
+                      errorText:
+                          invalidUsername ? 'Username Already Exists' : null),
+                ),
+              if (user.viewedUser == '')
+                TextFormField(
+                  controller: passwordField,
+                  decoration: const InputDecoration(labelText: 'Password'),
+                ),
+              if (user.viewedUser == '')
+                TextFormField(
+                  controller: confirmPasswordField,
+                  decoration: InputDecoration(
+                      labelText: 'Confirm Password',
+                      errorText:
+                          invalidPassword ? 'Passwords Do Not Match' : null),
+                ),
 
               // Submits information to data base and proceeds user to student home page
               const SizedBox(height: 5),
@@ -353,7 +369,88 @@ class SignUpPageState extends State<SignUpPage> {
                   child: const Text('Submit'),
                 ),
 
-              if(user.adminStatus && user.viewedUser == '')
+              //edit user
+              if (user.viewedUser != '')
+                ElevatedButton(
+                    onPressed: () async {
+                      invalidEmail = false;
+                      invalidPhoneNumber = false;
+                      invalidCourseNumber = false;
+
+                      if (emailField.text != confirmEmailField.text) {
+                        invalidEmail = true;
+                      }
+
+                      int teamNumber = 0;
+                      int courseNumber = 0;
+
+                      if(teamNumberField.text != '') {
+                        teamNumber = int.parse(teamNumberField.text);
+                      }
+
+                      if(courseNumberField.text != '') {
+                        if(int.parse(courseNumberField.text) == 403 || int.parse(courseNumberField.text) == 404) {
+                          courseNumber = int.parse(courseNumberField.text);
+                        } else {
+                          invalidCourseNumber = true;
+                        }
+                      }
+
+                      if(!invalidEmail && !invalidCourseNumber) {
+                        switch (await editUserAccount(
+                            user.viewedUser,
+                            int.parse(uinField.text),
+                            firstNameField.text,
+                            lastNameField.text,
+                            emailField.text,
+                            int.parse(phoneNumberField.text),
+                            teamNumber,
+                            courseNumber)) {
+                          case 'Invalid Email':
+                            {
+                              invalidEmail = true;
+                            }
+
+                            break;
+
+                          case 'Invalid Phone Number':
+                            {
+                              invalidPhoneNumber = true;
+                            }
+
+                            break;
+
+                          case 'Updated':
+                            {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const UsersPage(),
+                                  ));
+                              setState(() {
+                                invalidEmail = false;
+                                invalidPhoneNumber = false;
+                                invalidCourseNumber = false;
+                              });
+                            }
+                            break;
+                        }
+
+                      }
+                      setState(() {
+                        invalidEmail;
+                        invalidPhoneNumber;
+                        invalidCourseNumber;
+                      });
+
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF963e3e),
+                    ),
+                    child: const Text('Submit')
+                ),
+
+              if (user.adminStatus && user.viewedUser == '')
                 ElevatedButton(
                   onPressed: () async {
                     invalidUsername = false;
