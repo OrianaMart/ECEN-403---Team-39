@@ -1,0 +1,14 @@
+0 Battery
+1 Connector
+2 Display
+3 Fan/Heat Sink
+4 Line/Gate Driver
+5 MCU Dev Board
+6 Motor
+7 Motor Driver
+8 Perf/Proto Board
+9 Power DC-DC
+10 Power Supply
+11 Sensor
+12 Storage Device
+13 Transformer
