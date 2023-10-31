@@ -106,25 +106,45 @@ class ProfilePageState extends State<ProfilePage> {
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
           child: Column(
             children: [
-              // Username information for students
-              const Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  'Username: ',
-                  style: TextStyle(
-                    fontSize: 25.0,
-                    fontWeight: FontWeight.bold,
-                  ),
+              CircleAvatar(
+                radius:
+                    53, // Change this radius for the width of the circular border
+                backgroundColor: const Color(0xFF500000),
+                child: CircleAvatar(
+                  radius:
+                      48, // This radius is the radius of the picture in the circle avatar itself.
+                  backgroundImage: Image.asset('assets/seal_avatar.jpg').image,
                 ),
               ),
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  username,
-                  style: const TextStyle(
-                    fontSize: 23.0,
+              // Username information for students
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.account_circle),
+                  //const SizedBox(height: 10),
+                  //const Spacer(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Username: ',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          //fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        username,
+                        style: const TextStyle(
+                          fontSize: 23.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
+                ],
               ),
               const SizedBox(height: 20),
 
@@ -233,7 +253,7 @@ class ProfilePageState extends State<ProfilePage> {
               ),
 
               if (!user.adminStatus || courseNumber != 'null')
-              const SizedBox(height: 20),
+                const SizedBox(height: 20),
 
               // Class for students
               if (!user.adminStatus || courseNumber != 'null')
@@ -259,8 +279,7 @@ class ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
 
-              if(user.adminStatus)
-                const AdminUserDetails(),
+              if (user.adminStatus) const AdminUserDetails(),
             ],
           ),
         ),
@@ -268,7 +287,6 @@ class ProfilePageState extends State<ProfilePage> {
     );
   }
 }
-
 
 class AdminUserDetails extends StatelessWidget {
   const AdminUserDetails({Key? key}) : super(key: key);
@@ -291,10 +309,9 @@ class AdminUserDetails extends StatelessWidget {
           ), // changes the color of the button
         ),
         onPressed: () {
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => const SignUpPage(),
-              ));
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => const SignUpPage(),
+          ));
         },
         child: const Padding(
           padding: EdgeInsets.all(10.0),
@@ -328,32 +345,31 @@ class AdminUserDetails extends StatelessWidget {
         ),
       ),
       const SizedBox(height: 5),
-      if(user.username != user.viewedUser)
-      ElevatedButton(
-        style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.all<Color>(
-              const Color(0xFFFFFFFF)), // changes color of text
-          backgroundColor: MaterialStateProperty.all<Color>(
-              const Color(0xFF963e3e)), // changes color of button
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              // makes edges of button round instead of square
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-          ), // changes the color of the button
+      if (user.username != user.viewedUser)
+        ElevatedButton(
+          style: ButtonStyle(
+            foregroundColor: MaterialStateProperty.all<Color>(
+                const Color(0xFFFFFFFF)), // changes color of text
+            backgroundColor: MaterialStateProperty.all<Color>(
+                const Color(0xFF963e3e)), // changes color of button
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                // makes edges of button round instead of square
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+            ), // changes the color of the button
+          ),
+          onPressed: () {
+            _removalConfirmation(context);
+          },
+          child: const Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Text('Delete Account', style: TextStyle(fontSize: 15)),
+          ),
         ),
-        onPressed: () {
-          _removalConfirmation(context);
-        },
-        child: const Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Text('Delete Account', style: TextStyle(fontSize: 15)),
-        ),
-      ),
     ]);
   }
 }
-
 
 //Function to make a pop out dialogue box appear when delete button is pushed
 Future<void> _removalConfirmation(BuildContext context) async {
@@ -365,7 +381,10 @@ Future<void> _removalConfirmation(BuildContext context) async {
         title: const Text('Delete Account'),
         content: SingleChildScrollView(
           child: ListBody(
-            children: <Widget>[Text('Are you sure you want to permanently delete "${user.viewedUser}"')],
+            children: <Widget>[
+              Text(
+                  'Are you sure you want to permanently delete "${user.viewedUser}"')
+            ],
           ),
         ),
         actions: <Widget>[
@@ -379,7 +398,7 @@ Future<void> _removalConfirmation(BuildContext context) async {
               child: const Text('Go Back')),
           TextButton(
               onPressed: () async {
-                if(user.viewedUser != '' && user.username != user.viewedUser) {
+                if (user.viewedUser != '' && user.username != user.viewedUser) {
                   if (await removeUser(user.viewedUser) == 'Removed') {
                     user.equipment = '';
                     user.checkoutID = '';

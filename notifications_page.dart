@@ -58,7 +58,6 @@ class NotificationsPageState extends State<NotificationsPage> {
   bool invalidSubject = false;
   bool invalidMessage = false;
 
-
   @override
   void initState() {
     super.initState();
@@ -160,23 +159,20 @@ class NotificationsPageState extends State<NotificationsPage> {
                 const SizedBox(
                   height: 10,
                 ),
-                SizedBox(
-                  height: 60,
-                  child: TextFormField(
-                    controller: subjectController,
-                    decoration: InputDecoration(
-                      icon: const Icon(
-                        Icons.subject_rounded,
-                        color: Color(0xFF500000),
-                      ),
-                      labelText: 'Subject',
-                      errorText: invalidSubject ? 'Enter Subject' : null,
-                      contentPadding: const EdgeInsets.symmetric(vertical: 9),
+                TextFormField(
+                  controller: subjectController,
+                  decoration: InputDecoration(
+                    icon: const Icon(
+                      Icons.subject_rounded,
+                      color: Color(0xFF500000),
                     ),
-                    style: const TextStyle(fontSize: 20),
-                    maxLines: 1,
-                    minLines: 1,
+                    labelText: 'Subject',
+                    errorText: invalidSubject ? 'Enter Subject' : null,
+                    contentPadding: const EdgeInsets.symmetric(vertical: 9),
                   ),
+                  style: const TextStyle(fontSize: 20),
+                  maxLines: 1,
+                  minLines: 1,
                 ),
                 const SizedBox(
                   height: 10,

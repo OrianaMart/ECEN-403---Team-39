@@ -1,6 +1,6 @@
-import 'package:database_demo_app/equipment_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'database_functions.dart';
+import 'equipment_detail_page.dart';
 import 'Data.dart' as user;
 
 class AddFormRequirementPage extends StatefulWidget {

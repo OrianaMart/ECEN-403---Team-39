@@ -41,6 +41,7 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
             "user_email": email,
           }
         }));
+    return response;
   }
 
   @override
@@ -75,32 +76,34 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   ),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Text(
-                    "Input recovery email or return to",
-                    style: TextStyle(
-                      fontSize: 17.0,
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LoginScreen(),
-                          ));
-                    },
-                    child: const Text(
-                      'log in.',
+              Flexible(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Input recovery email or return to",
                       style: TextStyle(
-                        color: Colors.blue,
                         fontSize: 17.0,
                       ),
                     ),
-                  ),
-                ],
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ));
+                      },
+                      child: const Text(
+                        'log in.',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 17.0,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 15),
               TextField(
@@ -129,20 +132,21 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         default:
                           {
                             //sends email to the email address with the name, username, and password
-                            await sendPasswordEmail(
+                            if(await sendPasswordEmail(
                                 emailField.text.toString(),
                                 '${response[0]} ${response[1]}',
                                 response[2],
-                                response[3]);
-                            setState(() {
-                              invalidEmail = false;
-                              emailField.text = '';
-                            });
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const LoginScreen(),
-                                ));
+                                response[3]) == 'OK') {
+                              setState(() {
+                                invalidEmail = false;
+                                emailField.text = '';
+                              });
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const LoginScreen(),
+                                  ));
+                            }
                           }
                           break;
                       }
