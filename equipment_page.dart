@@ -77,7 +77,6 @@ class EquipmentPageState extends State<EquipmentPage> {
         } else {
           //there is no equipment for the category found by the ml
           allIDs.add('No Equipment');
-          locations.add('No Locations');
         }
       } else {
         //if the page is equipment search
