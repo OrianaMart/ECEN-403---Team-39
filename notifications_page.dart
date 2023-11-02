@@ -122,11 +122,35 @@ class NotificationsPageState extends State<NotificationsPage> {
       drawer: const NavigatorDrawer(),
 
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(25.0, 40, 20, 0),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         child: Form(
           child: SingleChildScrollView(
             child: Column(
               children: [
+                const Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'Notifications',
+                    style: TextStyle(
+                      fontSize: 28.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 7),
+
+                //Sub Header for page
+                const Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'Send email notification to a student',
+                    style: TextStyle(
+                      fontSize: 17.0,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 15),
+
                 DropdownMenu<String>(
                     controller: uinField,
                     requestFocusOnTap: true,

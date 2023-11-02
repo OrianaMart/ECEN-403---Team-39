@@ -7,7 +7,7 @@ import 'history_page.dart';
 import 'profile_page.dart';
 import 'users_page.dart';
 import 'notifications_page.dart';
-import 'scan_controller.dart';
+import 'model_controller.dart';
 import 'Data.dart' as user;
 
 class NavigatorDrawer extends StatelessWidget {
@@ -241,7 +241,7 @@ class NavigatorDrawer extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const ModelPage(),
+                    builder: (context) => const ScanningPage(),
                   ));
             },
           ),
