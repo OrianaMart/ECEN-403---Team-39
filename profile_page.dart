@@ -106,37 +106,135 @@ class ProfilePageState extends State<ProfilePage> {
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
           child: Column(
             children: [
-              CircleAvatar(
-                radius:
-                    53, // Change this radius for the width of the circular border
+              /*CircleAvatar(
+                radius: 53, // Change this radius for the width of the circular border
                 backgroundColor: const Color(0xFF500000),
                 child: CircleAvatar(
-                  radius:
-                      48, // This radius is the radius of the picture in the circle avatar itself.
-                  backgroundImage: Image.asset('assets/seal_avatar.jpg').image,
+                  radius: 48, // This radius is the radius of the picture in the circle avatar itself.
+                  backgroundImage: Image.asset(
+                   'assets/seal_avatar.jpg'
+                  ).image,
                 ),
               ),
+
+               */
               // Username information for students
-              const SizedBox(height: 20),
+              //const SizedBox(height: 5),
+              //const Divider(
+              //  color: Colors.grey,
+              //),
+              const SizedBox(height: 5),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const Icon(Icons.account_circle),
-                  //const SizedBox(height: 10),
+                  const Icon(Icons.account_circle, size: 45, color: Color(0xFF87352F)),
+                  const SizedBox(width: 20),
+                  //const Spacer(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                        const Text(
+                          'Username: ',
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF8B8B8B),
+                          ),
+                        ),
+                      const SizedBox(height: 2),
+                        Text(
+                          username,
+                          style: const TextStyle(
+                            fontSize: 23.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 5),
+              const Divider(
+                color: Colors.grey,
+              ),
+              const SizedBox(height: 5),
+
+              // Name information for students (first and last name are populated on the same line
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Icon(Icons.people, size: 45, color: Color(0xFF87352F)),
+                  const SizedBox(width: 20),
                   //const Spacer(),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'Username: ',
+                        'Name: ',
                         style: TextStyle(
-                          fontSize: 20.0,
-                          //fontWeight: FontWeight.bold,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF8B8B8B),
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            firstName,
+                            style: const TextStyle(
+                              fontSize: 23.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const Text(
+                            ' ',
+                            style: TextStyle(
+                              fontSize: 23.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            lastName,
+                            style: const TextStyle(
+                              fontSize: 23.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 5),
+              const Divider(
+                color: Colors.grey,
+              ),
+              const SizedBox(height: 5),
+
+              // UIN information for students
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Icon(Icons.numbers, size: 45, color: Color(0xFF87352F)),
+                  const SizedBox(width: 20),
+                  //const Spacer(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'UIN: ',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF8B8B8B),
                         ),
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        username,
+                        uin,
                         style: const TextStyle(
                           fontSize: 23.0,
                           fontWeight: FontWeight.bold,
@@ -146,140 +244,126 @@ class ProfilePageState extends State<ProfilePage> {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
-
-              // Name information for students (first and last name are populated on the same line
-              const Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  'Name: ',
-                  style: TextStyle(
-                    fontSize: 25.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+              const SizedBox(height: 5),
+              const Divider(
+                color: Colors.grey,
               ),
+              const SizedBox(height: 5),
+
+              // Email information for students
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text(
-                    firstName,
-                    style: const TextStyle(
-                      fontSize: 23.0,
-                      //fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const Text(
-                    ' ',
-                    style: TextStyle(
-                      fontSize: 23.0,
-                      //fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    lastName,
-                    style: const TextStyle(
-                      fontSize: 23.0,
-                      //fontWeight: FontWeight.bold,
-                    ),
+                  const Icon(Icons.email, size: 45, color: Color(0xFF87352F)),
+                  const SizedBox(width: 20),
+                  //const Spacer(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Email: ',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF8B8B8B),
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        email,
+                        style: const TextStyle(
+                          fontSize: 23.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
-
-              // UIN information for students
-              const Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  'UIN: ',
-                  style: TextStyle(
-                    fontSize: 25.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+              const SizedBox(height: 5),
+              const Divider(
+                color: Colors.grey,
               ),
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  uin,
-                  style: const TextStyle(
-                    fontSize: 23.0,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-
-              // Email information for students
-              const Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  'Email: ',
-                  style: TextStyle(
-                    fontSize: 25.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  email,
-                  style: const TextStyle(
-                    fontSize: 23.0,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 5),
 
               // Phone number information for students
-              const Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  'Phone Number: ',
-                  style: TextStyle(
-                    fontSize: 25.0,
-                    fontWeight: FontWeight.bold,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Icon(Icons.local_phone_rounded, size: 45, color: Color(0xFF87352F)),
+                  const SizedBox(width: 20),
+                  //const Spacer(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Phone Number: ',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF8B8B8B),
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        phoneNumber,
+                        style: const TextStyle(
+                          fontSize: 23.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
+                ],
               ),
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  phoneNumber,
-                  style: const TextStyle(
-                    fontSize: 23.0,
-                  ),
-                ),
+              const SizedBox(height: 5),
+              const Divider(
+                color: Colors.grey,
               ),
+              const SizedBox(height: 5),
 
               if (!user.adminStatus || courseNumber != 'null')
-                const SizedBox(height: 20),
+              //const SizedBox(height: 20),
 
               // Class for students
               if (!user.adminStatus || courseNumber != 'null')
-                const Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    'Course Information: ',
-                    style: TextStyle(
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Icon(Icons.book, size: 45, color: Color(0xFF87352F)),
+                    const SizedBox(width: 20),
+                    //const Spacer(),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Course Information: ',
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF8B8B8B),
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          'ECEN $courseNumber - Team $teamNumber',
+                          style: const TextStyle(
+                            fontSize: 23.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
+                  ],
                 ),
-              if (!user.adminStatus || courseNumber != 'null')
-                Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'ECEN $courseNumber - Team $teamNumber',
-                    style: const TextStyle(
-                      fontSize: 23.0,
-                      //fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+              const SizedBox(height: 5),
+              const Divider(
+                color: Colors.grey,
+              ),
+              const SizedBox(height: 5),
 
-              if (user.adminStatus) const AdminUserDetails(),
+              if(user.adminStatus)
+                const AdminUserDetails(),
             ],
           ),
         ),
@@ -287,6 +371,7 @@ class ProfilePageState extends State<ProfilePage> {
     );
   }
 }
+
 
 class AdminUserDetails extends StatelessWidget {
   const AdminUserDetails({Key? key}) : super(key: key);
@@ -309,9 +394,10 @@ class AdminUserDetails extends StatelessWidget {
           ), // changes the color of the button
         ),
         onPressed: () {
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) => const SignUpPage(),
-          ));
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const SignUpPage(),
+              ));
         },
         child: const Padding(
           padding: EdgeInsets.all(10.0),
@@ -345,31 +431,32 @@ class AdminUserDetails extends StatelessWidget {
         ),
       ),
       const SizedBox(height: 5),
-      if (user.username != user.viewedUser)
-        ElevatedButton(
-          style: ButtonStyle(
-            foregroundColor: MaterialStateProperty.all<Color>(
-                const Color(0xFFFFFFFF)), // changes color of text
-            backgroundColor: MaterialStateProperty.all<Color>(
-                const Color(0xFF963e3e)), // changes color of button
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                // makes edges of button round instead of square
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-            ), // changes the color of the button
-          ),
-          onPressed: () {
-            _removalConfirmation(context);
-          },
-          child: const Padding(
-            padding: EdgeInsets.all(10.0),
-            child: Text('Delete Account', style: TextStyle(fontSize: 15)),
-          ),
+      if(user.username != user.viewedUser)
+      ElevatedButton(
+        style: ButtonStyle(
+          foregroundColor: MaterialStateProperty.all<Color>(
+              const Color(0xFFFFFFFF)), // changes color of text
+          backgroundColor: MaterialStateProperty.all<Color>(
+              const Color(0xFF963e3e)), // changes color of button
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+              // makes edges of button round instead of square
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+          ), // changes the color of the button
         ),
+        onPressed: () {
+          _removalConfirmation(context);
+        },
+        child: const Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Text('Delete Account', style: TextStyle(fontSize: 15)),
+        ),
+      ),
     ]);
   }
 }
+
 
 //Function to make a pop out dialogue box appear when delete button is pushed
 Future<void> _removalConfirmation(BuildContext context) async {
@@ -381,10 +468,7 @@ Future<void> _removalConfirmation(BuildContext context) async {
         title: const Text('Delete Account'),
         content: SingleChildScrollView(
           child: ListBody(
-            children: <Widget>[
-              Text(
-                  'Are you sure you want to permanently delete "${user.viewedUser}"')
-            ],
+            children: <Widget>[Text('Are you sure you want to permanently delete "${user.viewedUser}"')],
           ),
         ),
         actions: <Widget>[
@@ -398,7 +482,7 @@ Future<void> _removalConfirmation(BuildContext context) async {
               child: const Text('Go Back')),
           TextButton(
               onPressed: () async {
-                if (user.viewedUser != '' && user.username != user.viewedUser) {
+                if(user.viewedUser != '' && user.username != user.viewedUser) {
                   if (await removeUser(user.viewedUser) == 'Removed') {
                     user.equipment = '';
                     user.checkoutID = '';
