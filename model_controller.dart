@@ -77,7 +77,7 @@ class _ScanningPage extends State<ScanningPage> {
 
   //Function to capture an image using the device's camera
   pickImageCamera() async {
-    var image = await imagepicker.pickImage(source: ImageSource.camera);
+    var image = await imagepicker.pickImage(source: ImageSource.camera, imageQuality: 25);
     if (image == null) {
       return null;
     } else {
@@ -88,7 +88,7 @@ class _ScanningPage extends State<ScanningPage> {
 
   //Function to select an image from the device's gallery
   pickImageGallery() async {
-    var image = await imagepicker.pickImage(source: ImageSource.gallery);
+    var image = await imagepicker.pickImage(source: ImageSource.gallery, imageQuality: 25);
     if (image == null) {
       return null;
     } else {
