@@ -100,7 +100,6 @@ class HomePageState extends State<HomePage> {
             ),
             // Username information for students
             const SizedBox(height: 20),
-
             //if the user is a student, it displays the student home page column
             if (!user.adminStatus) const StudentHomePage(),
 

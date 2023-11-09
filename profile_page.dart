@@ -135,6 +135,7 @@ class ProfilePageState extends State<ProfilePage> {
                     children: [
                         const Text(
                           'Username: ',
+                          softWrap: true,
                           style: TextStyle(
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold,
@@ -144,6 +145,7 @@ class ProfilePageState extends State<ProfilePage> {
                       const SizedBox(height: 2),
                         Text(
                           username,
+                          softWrap: true,
                           style: const TextStyle(
                             fontSize: 23.0,
                             fontWeight: FontWeight.bold,
@@ -163,14 +165,14 @@ class ProfilePageState extends State<ProfilePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const Icon(Icons.people, size: 45, color: Color(0xFF87352F)),
+                  const Icon(Icons.person, size: 45, color: Color(0xFF87352F)),
                   const SizedBox(width: 20),
                   //const Spacer(),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'Name: ',
+                        'First Name: ',
                         style: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.bold,
@@ -178,31 +180,16 @@ class ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                       const SizedBox(height: 2),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            firstName,
-                            style: const TextStyle(
-                              fontSize: 23.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const Text(
-                            ' ',
-                            style: TextStyle(
-                              fontSize: 23.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            lastName,
-                            style: const TextStyle(
-                              fontSize: 23.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
+
+                      Text(
+                        '$firstName $lastName',
+                        //softWrap: true,
+                        style: const TextStyle(
+                          fontSize: 23.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        softWrap: true,
+                        overflow: TextOverflow.clip,
                       ),
                     ],
                   ),
@@ -361,6 +348,56 @@ class ProfilePageState extends State<ProfilePage> {
                 color: Colors.grey,
               ),
               const SizedBox(height: 5),
+              //TESTING SOFT WRAP
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'TESTING NAME: ',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF8B8B8B),
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    'abcdhalfksjdfhlaksjdhfawefuhalskdjhfawehliaweufhaskjdfhlkawehjfliawuefhlaksjdfhawhefliawuefhajkshflawieufhaskjdfhalefhjkaw',
+                    style: const TextStyle(
+                      fontSize: 23.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    softWrap: true,
+                  ),
+                ],
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Text(
+                    'TESTING NAME: ',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF8B8B8B),
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  /*Flexible(
+                    Text(
+                    'abcdhalfksjdfhlaksjdhfawefuhalskdjhfawehliaweufhaskjdfhlkawehjfliawuefhlaksjdfhawhefliawuefhajkshflawieufhaskjdfhalefhjkaw',
+                    style: const TextStyle(
+                      fontSize: 23.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    softWrap: true,
+                  ),
+                  )
+
+                   */
+                ],
+              ),
 
               if(user.adminStatus)
                 const AdminUserDetails(),

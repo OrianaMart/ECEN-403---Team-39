@@ -175,7 +175,7 @@ Future<String> newEquipment(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //Function for adding a new individual student form to the system
 Future<String> newForm(
-    String formName, String user) async
+    String formName, String user, String info) async
 {
     //Sets a database reference to the forms section
     DatabaseReference formsRef = FirebaseDatabase.instance.ref('forms');
@@ -195,8 +195,8 @@ Future<String> newForm(
         formRef.set({
             'formName': formName,
             'user': user,
-            'info': 'info',
-            'verification': true
+            'info': info,
+            'verification': false
         });
         DatabaseReference userRef = FirebaseDatabase.instance.ref('users/$user/forms');
         userRef.update({formName: formKey});

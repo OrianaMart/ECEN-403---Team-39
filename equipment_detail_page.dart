@@ -405,7 +405,7 @@ class AdminEquipmentDetails extends StatelessWidget {
           ), // changes the color of the button
         ),
         onPressed: () {
-          Navigator.of(context).pushReplacement(
+          Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => const HistoryPage(),
             ),

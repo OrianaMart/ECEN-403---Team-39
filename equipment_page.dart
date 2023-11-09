@@ -56,27 +56,19 @@ class EquipmentPageState extends State<EquipmentPage> {
     () async {
       if (user.mlCategory != null) {
         //if the page is ml search
-
         categoryIDs = await equipmentByCategory(user.mlCategory!);
+        displayIDs = categoryIDs;
+        allIDs = categoryIDs;
+        //iterates through the categoryIDs to locate all locations available for the selected category
+        for (int i = 0; i < categoryIDs.length; i++) {
+          //Obtains the location for each equipment in the category
+          var temp = await getEquipmentInfo(categoryIDs[i]);
 
-        //checks if the category has associated equipment
-        if (categoryIDs[0] != 'Invalid Category') {
-          //there is equipment in the category found
-          allIDs = categoryIDs;
-          //iterates through the categoryIDs to locate all locations available for the selected category
-          for (int i = 0; i < categoryIDs.length; i++) {
-            //Obtains the location for each equipment in the category
-            var temp = await getEquipmentInfo(categoryIDs[i]);
-
-            //checks to see if the location has already been saved
-            if (!locations.contains(temp[2])) {
-              //if the location has yet to be saved, it is saved to the list of locations
-              locations.add(temp[2]);
-            }
+          //checks to see if the location has already been saved
+          if (!locations.contains(temp[2])) {
+            //if the location has yet to be saved, it is saved to the list of locations
+            locations.add(temp[2]);
           }
-        } else {
-          //there is no equipment for the category found by the ml
-          allIDs.add('No Equipment');
         }
       } else {
         //if the page is equipment search
@@ -520,8 +512,7 @@ class EquipmentPageState extends State<EquipmentPage> {
                       },
                       child: const Text('Create New Equipment')),
 
-                if (user.adminStatus && user.mlCategory == null)
-                  const SizedBox(height: 15),
+                if (user.adminStatus) const SizedBox(height: 15),
 
                 Flexible(
                     child: Container(
@@ -560,30 +551,16 @@ class EquipmentPageState extends State<EquipmentPage> {
                           const SizedBox(height: 10),
                           for (int i = 0; i < displayIDs.length; i++)
                             Table(children: [
-                              if (displayIDs[0] == 'No Equipment')
-                              const TableRow(children: <Widget>[
-                                  Align(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      'No Equipment Found',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
+                              TableRow(children: <Widget>[
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(displayIDs[i],
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
                                         color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                              ]),
-                              if (displayIDs[0] != 'No Equipment')
-                                TableRow(children: <Widget>[
-                                  Align(
-                                    alignment: Alignment.center,
-                                    child: Text(displayIDs[i],
-                                        textAlign: TextAlign.center,
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                        )),
-                                  ),
+                                      )),
+                                ),
+                                if (displayIDs[0] != 'No Equipment')
                                   SizedBox(
                                     width: 25,
                                     child: ElevatedButton(
@@ -620,7 +597,7 @@ class EquipmentPageState extends State<EquipmentPage> {
                                       ),
                                     ),
                                   ),
-                                ]),
+                              ])
                             ]),
                         ]))))
               ],
