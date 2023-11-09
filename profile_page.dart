@@ -349,10 +349,10 @@ class ProfilePageState extends State<ProfilePage> {
               ),
               const SizedBox(height: 5),
               //TESTING SOFT WRAP
-              Column(
+              const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'TESTING NAME: ',
                     style: TextStyle(
                       fontSize: 18.0,
@@ -360,44 +360,18 @@ class ProfilePageState extends State<ProfilePage> {
                       color: Color(0xFF8B8B8B),
                     ),
                   ),
-                  const SizedBox(height: 2),
+                  SizedBox(height: 2),
                   Text(
                     'abcdhalfksjdfhlaksjdhfawefuhalskdjhfawehliaweufhaskjdfhlkawehjfliawuefhlaksjdfhawhefliawuefhajkshflawieufhaskjdfhalefhjkaw',
-                    style: const TextStyle(
-                      fontSize: 23.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    softWrap: true,
-                  ),
-                ],
-              ),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Text(
-                    'TESTING NAME: ',
                     style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF8B8B8B),
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  /*Flexible(
-                    Text(
-                    'abcdhalfksjdfhlaksjdhfawefuhalskdjhfawehliaweufhaskjdfhlkawehjfliawuefhlaksjdfhawhefliawuefhajkshflawieufhaskjdfhalefhjkaw',
-                    style: const TextStyle(
                       fontSize: 23.0,
                       fontWeight: FontWeight.bold,
                     ),
                     softWrap: true,
                   ),
-                  )
-
-                   */
                 ],
               ),
+
 
               if(user.adminStatus)
                 const AdminUserDetails(),
