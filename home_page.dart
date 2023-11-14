@@ -88,7 +88,7 @@ class HomePageState extends State<HomePage> {
             ),
 
              */
-            CircleAvatar(
+            /*CircleAvatar(
               radius: 40, // Change this radius for the width of the circular border
               backgroundColor: const Color(0xFF500000),
               child: CircleAvatar(
@@ -98,8 +98,10 @@ class HomePageState extends State<HomePage> {
                 ).image,
               ),
             ),
+
+             */
             // Username information for students
-            const SizedBox(height: 20),
+            //const SizedBox(height: 20),
             //if the user is a student, it displays the student home page column
             if (!user.adminStatus) const StudentHomePage(),
 
