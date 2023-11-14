@@ -4,6 +4,8 @@ import 'navigator_drawer.dart';
 import 'history_detail_page.dart';
 import 'Data.dart' as user;
 
+import 'internet_checker.dart';
+
 class HistoryPage extends StatefulWidget {
   const HistoryPage({Key? key}) : super(key: key);
   @override
@@ -149,6 +151,9 @@ class HistoryPageState extends State<HistoryPage> {
               return IconButton(
                 icon: const Icon(Icons.menu),
                 onPressed: () {
+                  //checks to see if the app is still connected to the internet
+                  connectionCheck(context);
+
                   Scaffold.of(context).openDrawer();
                 },
               );
@@ -436,6 +441,9 @@ class HistoryPageState extends State<HistoryPage> {
                                       ), // changes the color of the button
                                     ),
                                     onPressed: () {
+                                      //checks to see if the app is still connected to the internet
+                                      connectionCheck(context);
+
                                       user.checkoutID = results[0][i];
                                       Navigator.push(
                                           context,

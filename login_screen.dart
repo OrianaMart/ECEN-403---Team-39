@@ -5,6 +5,8 @@ import 'sign_up.dart';
 import 'forgot_password_page.dart';
 import 'Data.dart' as user;
 
+import 'internet_checker.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
   @override
@@ -77,6 +79,9 @@ class LoginScreenState extends State<LoginScreen> {
               alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: () {
+                  //checks to see if the app is still connected to the internet
+                  connectionCheck(context);
+
                   // Goes to forgot password page
                   Navigator.pushReplacement(context, MaterialPageRoute(
                     builder: (context) => const ForgotPasswordPage(),
@@ -91,8 +96,12 @@ class LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
+
             ElevatedButton(
               onPressed: () async{
+                //checks to see if the app is still connected to the internet
+                connectionCheck(context);
+
                 if(usernameField.text.toString() != '' && passwordField.text.toString() != '') {
                   switch (await authenticate(usernameField.text,
                       passwordField.text)) { // implement authentication
@@ -153,6 +162,9 @@ class LoginScreenState extends State<LoginScreen> {
                   ),
                   TextButton(
                     onPressed: () {
+                      //checks to see if the app is still connected to the internet
+                      connectionCheck(context);
+
                       Navigator.pushReplacement(context, MaterialPageRoute(
                           builder: (context) => const SignUpPage(),
                       ));

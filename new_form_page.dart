@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'database_functions.dart';
 import 'forms_page.dart';
 
+import 'internet_checker.dart';
+
 class NewFormPage extends StatefulWidget {
   const NewFormPage({super.key});
   @override
@@ -179,6 +181,9 @@ class NewFormPageState extends State<NewFormPage> {
               const SizedBox(height: 5),
               ElevatedButton(
                 onPressed: () async {
+                  //checks to see if the app is still connected to the internet
+                  connectionCheck(context);
+
                   invalidUin = false;
                   invalidForm = false;
 

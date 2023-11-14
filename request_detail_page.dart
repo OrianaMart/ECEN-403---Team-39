@@ -3,6 +3,8 @@ import 'database_functions.dart';
 import 'home_page.dart';
 import 'Data.dart' as user;
 
+import 'internet_checker.dart';
+
 class RequestDetailPage extends StatefulWidget {
   const RequestDetailPage({Key? key}) : super(key: key);
   @override
@@ -43,6 +45,9 @@ class RequestDetailPageState extends State<RequestDetailPage> {
               return IconButton(
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () {
+                  //checks to see if the app is still connected to the internet
+                  connectionCheck(context);
+
                   Navigator.pop(context);
                 },
               );
@@ -203,6 +208,9 @@ class StudentRequestDetailsState extends State<StudentRequestDetails> {
                                     ))),
                                     */
           onPressed: () async {
+            //checks to see if the app is still connected to the internet
+            connectionCheck(context);
+
             switch (await denyRequest(user.requestID)) {
               case 'Invalid Request':
                 {
@@ -272,6 +280,9 @@ class AdminRequestDetailsState extends State<AdminRequestDetails>{
                   0xFF963e3e), // changes the color of the button
             ),
             onPressed: () async {
+              //checks to see if the app is still connected to the internet
+              connectionCheck(context);
+
               if(uinField.text.toString() != '') {
                 if (await approveRequest(
                     user.requestID, int.parse(uinField.text.toString()),
@@ -300,6 +311,9 @@ class AdminRequestDetailsState extends State<AdminRequestDetails>{
                   0xFF963e3e), // changes the color of the button
             ),
             onPressed: () async {
+              //checks to see if the app is still connected to the internet
+              connectionCheck(context);
+
               if (await denyRequest(user.requestID) == 'Denied') {
                 Navigator.pushReplacement(
                     context,

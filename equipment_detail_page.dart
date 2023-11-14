@@ -6,6 +6,8 @@ import 'database_functions.dart';
 import 'form_requirement_page.dart';
 import 'Data.dart' as user;
 
+import 'internet_checker.dart';
+
 class EquipmentDetailPage extends StatefulWidget {
   const EquipmentDetailPage({Key? key}) : super(key: key);
   @override
@@ -25,7 +27,7 @@ class EquipmentDetailPageState extends State<EquipmentDetailPage> {
     super.initState();
     () async {
       equipmentDetails = await getEquipmentInfo(user.equipment);
-      if(equipmentDetails.length > 5) {
+      if (equipmentDetails.length > 5) {
         forms = true;
       }
       setState(() {
@@ -54,6 +56,9 @@ class EquipmentDetailPageState extends State<EquipmentDetailPage> {
             return IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
+                //checks to see if the app is still connected to the internet
+                connectionCheck(context);
+
                 Navigator.pop(context);
               },
             );
@@ -75,119 +80,191 @@ class EquipmentDetailPageState extends State<EquipmentDetailPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 25),
+              //const SizedBox(height: 25),
 
-              //Displays information for the equipment
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              const SizedBox(height: 5),
+              const Divider(
+                color: Colors.grey,
+              ),
+              const SizedBox(height: 5),
+              //TESTING SOFT WRAP
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    "Equipment Name: ",
+                    'Equipment Name: ',
                     style: TextStyle(
-                      fontSize: 17.0,
+                      fontSize: 18.0,
                       fontWeight: FontWeight.bold,
+                      color: Color(0xFF8B8B8B),
                     ),
+                    softWrap: true,
                   ),
+                  const SizedBox(height: 2),
                   Text(
                     user.equipment,
                     style: const TextStyle(
-                      fontSize: 17.0,
+                      fontSize: 23.0,
+                      fontWeight: FontWeight.bold,
                     ),
+                    softWrap: true,
                   ),
                 ],
               ),
+              const SizedBox(height: 5),
+              const Divider(
+                color: Colors.grey,
+              ),
+              const SizedBox(height: 5),
+              //Displays information for the equipment
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    "Equipment Category: ",
+                    'Equipment Category: ',
                     style: TextStyle(
-                      fontSize: 17.0,
+                      fontSize: 18.0,
                       fontWeight: FontWeight.bold,
+                      color: Color(0xFF8B8B8B),
                     ),
+                    softWrap: true,
                   ),
+                  const SizedBox(height: 2),
                   Text(
                     equipmentDetails[1],
                     style: const TextStyle(
-                      fontSize: 17.0,
+                      fontSize: 23.0,
+                      fontWeight: FontWeight.bold,
                     ),
+                    softWrap: true,
                   ),
                 ],
               ),
+              const SizedBox(height: 5),
+              const Divider(
+                color: Colors.grey,
+              ),
+              const SizedBox(height: 5),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    "Storage Location: ",
+                    'Storage Location: ',
                     style: TextStyle(
-                      fontSize: 17.0,
+                      fontSize: 18.0,
                       fontWeight: FontWeight.bold,
+                      color: Color(0xFF8B8B8B),
                     ),
+                    softWrap: true,
                   ),
+                  const SizedBox(height: 2),
                   Text(
                     equipmentDetails[2],
                     style: const TextStyle(
-                      fontSize: 17.0,
+                      fontSize: 23.0,
+                      fontWeight: FontWeight.bold,
                     ),
+                    softWrap: true,
                   ),
                 ],
               ),
+              const SizedBox(height: 5),
+              const Divider(
+                color: Colors.grey,
+              ),
+              const SizedBox(height: 5),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Text(
-                    "Amount Available: ",
+                    'Amount Available: ',
                     style: TextStyle(
-                      fontSize: 17.0,
+                      fontSize: 18.0,
                       fontWeight: FontWeight.bold,
+                      color: Color(0xFF8B8B8B),
                     ),
+                    softWrap: true,
                   ),
+                  const SizedBox(height: 2),
                   Text(
                     equipmentDetails[3],
                     style: const TextStyle(
-                      fontSize: 17.0,
+                      fontSize: 23.0,
+                      fontWeight: FontWeight.bold,
                     ),
+                    softWrap: true,
                   ),
                 ],
               ),
+              const SizedBox(height: 5),
+              const Divider(
+                color: Colors.grey,
+              ),
+              const SizedBox(height: 5),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Text(
-                    "Total Amount: ",
+                    'Total Amount: ',
                     style: TextStyle(
-                      fontSize: 17.0,
+                      fontSize: 18.0,
                       fontWeight: FontWeight.bold,
+                      color: Color(0xFF8B8B8B),
                     ),
+                    softWrap: true,
                   ),
+                  const SizedBox(height: 2),
                   Text(
                     equipmentDetails[4],
                     style: const TextStyle(
-                      fontSize: 17.0,
+                      fontSize: 23.0,
+                      fontWeight: FontWeight.bold,
                     ),
+                    softWrap: true,
                   ),
                 ],
               ),
+              const SizedBox(height: 5),
+              const Divider(
+                color: Colors.grey,
+              ),
+              const SizedBox(height: 5),
 
               //Displays the information for the equipment if forms are required
               if (forms)
-                const Text(
-                  'Required Forms: ',
-                  style: TextStyle(
-                    fontSize: 17.0,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Required Forms: ',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF8B8B8B),
+                      ),
+                      softWrap: true,
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      equipmentDetails[5],
+                      style: const TextStyle(
+                        fontSize: 23.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      softWrap: true,
+                    ),
+                  ],
                 ),
 
-              if (forms)
-                Text(equipmentDetails[5],
-                    style: const TextStyle(
-                      fontSize: 17.0,
-                    )),
+              if (forms) const SizedBox(height: 5),
+              const Divider(
+                color: Colors.grey,
+              ),
+              const SizedBox(height: 5),
 
               if (!user.adminStatus) const StudentEquipmentDetails(),
 
@@ -243,6 +320,9 @@ class StudentEquipmentDetailsState extends State<StudentEquipmentDetails> {
               ), // changes the color of the button
             ),
             onPressed: () async {
+              //checks to see if the app is still connected to the internet
+              connectionCheck(context);
+
               if (amountField.text.toString() != '') {
                 switch (await generateNewRequest(user.username, user.equipment,
                     int.parse(amountField.text.toString()))) {
@@ -304,7 +384,8 @@ class StudentEquipmentDetailsState extends State<StudentEquipmentDetails> {
 }
 
 class AdminEquipmentDetails extends StatelessWidget {
-  const AdminEquipmentDetails({Key? key, required this.forms}) : super(key: key);
+  const AdminEquipmentDetails({Key? key, required this.forms})
+      : super(key: key);
   final bool forms;
 
   @override
@@ -325,10 +406,12 @@ class AdminEquipmentDetails extends StatelessWidget {
           ), // changes the color of the button
         ),
         onPressed: () {
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => const NewEquipmentPage(),
-              ));
+          //checks to see if the app is still connected to the internet
+          connectionCheck(context);
+
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => const NewEquipmentPage(),
+          ));
         },
         child: const Padding(
           padding: EdgeInsets.all(10.0),
@@ -350,6 +433,9 @@ class AdminEquipmentDetails extends StatelessWidget {
           ), // changes the color of the button
         ),
         onPressed: () {
+          //checks to see if the app is still connected to the internet
+          connectionCheck(context);
+
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (context) => const AddFormRequirementPage(),
@@ -362,35 +448,37 @@ class AdminEquipmentDetails extends StatelessWidget {
         ),
       ),
       const SizedBox(height: 5),
-      if(forms)
-      ElevatedButton(
-        style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.all<Color>(
-              const Color(0xFF963e3e)), // changes color of text
-          backgroundColor: MaterialStateProperty.all<Color>(
-              const Color(0xFFdedede)), // changes color of button
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              // makes edges of button round instead of square
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-          ), // changes the color of the button
-        ),
-        onPressed: () {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const RemoveFormRequirementPage(),
-            ),
-          );
-        },
-        child: const Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Text('Remove Form Requirement', style: TextStyle(fontSize: 15)),
-        ),
-      ),
-      if(forms)
-      const SizedBox(height: 5),
+      if (forms)
+        ElevatedButton(
+          style: ButtonStyle(
+            foregroundColor: MaterialStateProperty.all<Color>(
+                const Color(0xFF963e3e)), // changes color of text
+            backgroundColor: MaterialStateProperty.all<Color>(
+                const Color(0xFFdedede)), // changes color of button
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                // makes edges of button round instead of square
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+            ), // changes the color of the button
+          ),
+          onPressed: () {
+            //checks to see if the app is still connected to the internet
+            connectionCheck(context);
 
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const RemoveFormRequirementPage(),
+              ),
+            );
+          },
+          child: const Padding(
+            padding: EdgeInsets.all(10.0),
+            child:
+                Text('Remove Form Requirement', style: TextStyle(fontSize: 15)),
+          ),
+        ),
+      if (forms) const SizedBox(height: 5),
       ElevatedButton(
         style: ButtonStyle(
           foregroundColor: MaterialStateProperty.all<Color>(
@@ -405,6 +493,9 @@ class AdminEquipmentDetails extends StatelessWidget {
           ), // changes the color of the button
         ),
         onPressed: () {
+          //checks to see if the app is still connected to the internet
+          connectionCheck(context);
+
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (context) => const HistoryPage(),
@@ -431,6 +522,9 @@ class AdminEquipmentDetails extends StatelessWidget {
           ), // changes the color of the button
         ),
         onPressed: () {
+          //checks to see if the app is still connected to the internet
+          connectionCheck(context);
+
           _removalConfirmation(context);
         },
         child: const Padding(
@@ -442,7 +536,6 @@ class AdminEquipmentDetails extends StatelessWidget {
   }
 }
 
-
 //Function to make a pop out dialogue box appear when delete button is pushed
 Future<void> _removalConfirmation(BuildContext context) async {
   return showDialog<void>(
@@ -453,12 +546,18 @@ Future<void> _removalConfirmation(BuildContext context) async {
         title: const Text('Delete Equipment'),
         content: SingleChildScrollView(
           child: ListBody(
-            children: <Widget>[Text('Are you sure you want to permanently delete "${user.equipment}"')],
+            children: <Widget>[
+              Text(
+                  'Are you sure you want to permanently delete "${user.equipment}"')
+            ],
           ),
         ),
         actions: <Widget>[
           TextButton(
               onPressed: () {
+                //checks to see if the app is still connected to the internet
+                connectionCheck(context);
+
                 Navigator.of(context).pop();
               },
               style: TextButton.styleFrom(
@@ -467,7 +566,10 @@ Future<void> _removalConfirmation(BuildContext context) async {
               child: const Text('Go Back')),
           TextButton(
               onPressed: () async {
-                if(user.equipment != '') {
+                //checks to see if the app is still connected to the internet
+                connectionCheck(context);
+
+                if (user.equipment != '') {
                   if (await removeEquipment(user.equipment) == 'Removed') {
                     user.equipment = '';
                     user.checkoutID = '';

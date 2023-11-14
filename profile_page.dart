@@ -6,6 +6,8 @@ import 'users_page.dart';
 import 'history_page.dart';
 import 'Data.dart' as user;
 
+import 'internet_checker.dart';
+
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
   @override
@@ -82,6 +84,9 @@ class ProfilePageState extends State<ProfilePage> {
               return IconButton(
                 icon: const Icon(Icons.menu),
                 onPressed: () {
+                  //checks to see if the app is still connected to the internet
+                  connectionCheck(context);
+
                   Scaffold.of(context).openDrawer();
                 },
               );
@@ -89,6 +94,9 @@ class ProfilePageState extends State<ProfilePage> {
               return IconButton(
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () {
+                  //checks to see if the app is still connected to the internet
+                  connectionCheck(context);
+
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
@@ -124,32 +132,28 @@ class ProfilePageState extends State<ProfilePage> {
               //  color: Colors.grey,
               //),
               const SizedBox(height: 5),
-              Row(
+
+              Column(
                 mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.account_circle, size: 45, color: Color(0xFF87352F)),
-                  const SizedBox(width: 20),
-                  //const Spacer(),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                        const Text(
-                          'Username: ',
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF8B8B8B),
-                          ),
-                        ),
-                      const SizedBox(height: 2),
-                        Text(
-                          username,
-                          style: const TextStyle(
-                            fontSize: 23.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                    ],
+                  const Text(
+                    'Username: ',
+                    softWrap: true,
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF8B8B8B),
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    username,
+                    softWrap: true,
+                    style: const TextStyle(
+                      fontSize: 23.0,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
@@ -160,54 +164,32 @@ class ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 5),
 
               // Name information for students (first and last name are populated on the same line
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.people, size: 45, color: Color(0xFF87352F)),
-                  const SizedBox(width: 20),
-                  //const Spacer(),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Name: ',
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF8B8B8B),
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            firstName,
-                            style: const TextStyle(
-                              fontSize: 23.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const Text(
-                            ' ',
-                            style: TextStyle(
-                              fontSize: 23.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            lastName,
-                            style: const TextStyle(
-                              fontSize: 23.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                  const Text(
+                    'Name: ',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF8B8B8B),
+                    ),
+                    softWrap: true,
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    '$firstName $lastName',
+                    //softWrap: true,
+                    style: const TextStyle(
+                      fontSize: 23.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    softWrap: true,
+                    overflow: TextOverflow.clip,
                   ),
                 ],
               ),
+
               const SizedBox(height: 5),
               const Divider(
                 color: Colors.grey,
@@ -215,35 +197,30 @@ class ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 5),
 
               // UIN information for students
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.numbers, size: 45, color: Color(0xFF87352F)),
-                  const SizedBox(width: 20),
-                  //const Spacer(),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'UIN: ',
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF8B8B8B),
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        uin,
-                        style: const TextStyle(
-                          fontSize: 23.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
+                  const Text(
+                    'UIN: ',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF8B8B8B),
+                    ),
+                    softWrap: true,
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    uin,
+                    style: const TextStyle(
+                      fontSize: 23.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    softWrap: true,
                   ),
                 ],
               ),
+
               const SizedBox(height: 5),
               const Divider(
                 color: Colors.grey,
@@ -251,35 +228,30 @@ class ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 5),
 
               // Email information for students
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.email, size: 45, color: Color(0xFF87352F)),
-                  const SizedBox(width: 20),
-                  //const Spacer(),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Email: ',
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF8B8B8B),
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        email,
-                        style: const TextStyle(
-                          fontSize: 23.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
+                  const Text(
+                    'Email: ',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF8B8B8B),
+                    ),
+                    softWrap: true,
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    email,
+                    style: const TextStyle(
+                      fontSize: 23.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    softWrap: true,
                   ),
                 ],
               ),
+
               const SizedBox(height: 5),
               const Divider(
                 color: Colors.grey,
@@ -287,83 +259,97 @@ class ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 5),
 
               // Phone number information for students
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.local_phone_rounded, size: 45, color: Color(0xFF87352F)),
-                  const SizedBox(width: 20),
-                  //const Spacer(),
+                  const Text(
+                    'Phone Number: ',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF8B8B8B),
+                    ),
+                    softWrap: true,
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    phoneNumber,
+                    style: const TextStyle(
+                      fontSize: 23.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    softWrap: true,
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 5),
+              const Divider(
+                color: Colors.grey,
+              ),
+              const SizedBox(height: 5),
+
+              if (!user.adminStatus || courseNumber != 'null')
+                //const SizedBox(height: 20),
+
+                // Class for students
+                if (!user.adminStatus || courseNumber != 'null')
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'Phone Number: ',
+                        'Course Information: ',
                         style: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF8B8B8B),
                         ),
+                        softWrap: true,
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        phoneNumber,
+                        'ECEN $courseNumber - Team $teamNumber',
                         style: const TextStyle(
                           fontSize: 23.0,
                           fontWeight: FontWeight.bold,
                         ),
+                        softWrap: true,
                       ),
                     ],
                   ),
+
+              const SizedBox(height: 5),
+              const Divider(
+                color: Colors.grey,
+              ),
+              const SizedBox(height: 5),
+              //TESTING SOFT WRAP
+              /*
+              const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'TESTING NAME: ',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF8B8B8B),
+                    ),
+                  ),
+                  SizedBox(height: 2),
+                  Text(
+                    'abcdhalfksjdfhlaksjdhfawefuhalskdjhfawehliaweufhaskjdfhlkawehjfliawuefhlaksjdfhawhefliawuefhajkshflawieufhaskjdfhalefhjkaw',
+                    style: TextStyle(
+                      fontSize: 23.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    softWrap: true,
+                  ),
                 ],
               ),
-              const SizedBox(height: 5),
-              const Divider(
-                color: Colors.grey,
-              ),
-              const SizedBox(height: 5),
+               */
 
-              if (!user.adminStatus || courseNumber != 'null')
-              //const SizedBox(height: 20),
-
-              // Class for students
-              if (!user.adminStatus || courseNumber != 'null')
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const Icon(Icons.book, size: 45, color: Color(0xFF87352F)),
-                    const SizedBox(width: 20),
-                    //const Spacer(),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Course Information: ',
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF8B8B8B),
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          'ECEN $courseNumber - Team $teamNumber',
-                          style: const TextStyle(
-                            fontSize: 23.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              const SizedBox(height: 5),
-              const Divider(
-                color: Colors.grey,
-              ),
-              const SizedBox(height: 5),
-
-              if(user.adminStatus)
-                const AdminUserDetails(),
+              if (user.adminStatus) const AdminUserDetails(),
             ],
           ),
         ),
@@ -371,7 +357,6 @@ class ProfilePageState extends State<ProfilePage> {
     );
   }
 }
-
 
 class AdminUserDetails extends StatelessWidget {
   const AdminUserDetails({Key? key}) : super(key: key);
@@ -394,10 +379,12 @@ class AdminUserDetails extends StatelessWidget {
           ), // changes the color of the button
         ),
         onPressed: () {
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => const SignUpPage(),
-              ));
+          //checks to see if the app is still connected to the internet
+          connectionCheck(context);
+
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => const SignUpPage(),
+          ));
         },
         child: const Padding(
           padding: EdgeInsets.all(10.0),
@@ -419,6 +406,9 @@ class AdminUserDetails extends StatelessWidget {
           ), // changes the color of the button
         ),
         onPressed: () {
+          //checks to see if the app is still connected to the internet
+          connectionCheck(context);
+
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => const HistoryPage(),
@@ -431,32 +421,34 @@ class AdminUserDetails extends StatelessWidget {
         ),
       ),
       const SizedBox(height: 5),
-      if(user.username != user.viewedUser)
-      ElevatedButton(
-        style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.all<Color>(
-              const Color(0xFFFFFFFF)), // changes color of text
-          backgroundColor: MaterialStateProperty.all<Color>(
-              const Color(0xFF963e3e)), // changes color of button
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              // makes edges of button round instead of square
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-          ), // changes the color of the button
+      if (user.username != user.viewedUser)
+        ElevatedButton(
+          style: ButtonStyle(
+            foregroundColor: MaterialStateProperty.all<Color>(
+                const Color(0xFFFFFFFF)), // changes color of text
+            backgroundColor: MaterialStateProperty.all<Color>(
+                const Color(0xFF963e3e)), // changes color of button
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                // makes edges of button round instead of square
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+            ), // changes the color of the button
+          ),
+          onPressed: () {
+            //checks to see if the app is still connected to the internet
+            connectionCheck(context);
+
+            _removalConfirmation(context);
+          },
+          child: const Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Text('Delete Account', style: TextStyle(fontSize: 15)),
+          ),
         ),
-        onPressed: () {
-          _removalConfirmation(context);
-        },
-        child: const Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Text('Delete Account', style: TextStyle(fontSize: 15)),
-        ),
-      ),
     ]);
   }
 }
-
 
 //Function to make a pop out dialogue box appear when delete button is pushed
 Future<void> _removalConfirmation(BuildContext context) async {
@@ -468,12 +460,18 @@ Future<void> _removalConfirmation(BuildContext context) async {
         title: const Text('Delete Account'),
         content: SingleChildScrollView(
           child: ListBody(
-            children: <Widget>[Text('Are you sure you want to permanently delete "${user.viewedUser}"')],
+            children: <Widget>[
+              Text(
+                  'Are you sure you want to permanently delete "${user.viewedUser}"')
+            ],
           ),
         ),
         actions: <Widget>[
           TextButton(
               onPressed: () {
+                //checks to see if the app is still connected to the internet
+                connectionCheck(context);
+
                 Navigator.of(context).pop();
               },
               style: TextButton.styleFrom(
@@ -482,7 +480,10 @@ Future<void> _removalConfirmation(BuildContext context) async {
               child: const Text('Go Back')),
           TextButton(
               onPressed: () async {
-                if(user.viewedUser != '' && user.username != user.viewedUser) {
+                //checks to see if the app is still connected to the internet
+                connectionCheck(context);
+
+                if (user.viewedUser != '' && user.username != user.viewedUser) {
                   if (await removeUser(user.viewedUser) == 'Removed') {
                     user.equipment = '';
                     user.checkoutID = '';

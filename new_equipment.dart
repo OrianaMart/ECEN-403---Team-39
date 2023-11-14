@@ -4,6 +4,8 @@ import 'database_functions.dart';
 import 'equipment_page.dart';
 import 'Data.dart' as user;
 
+import 'internet_checker.dart';
+
 class NewEquipmentPage extends StatefulWidget {
   const NewEquipmentPage({super.key});
   @override
@@ -199,6 +201,8 @@ class NewEquipmentPageState extends State<NewEquipmentPage> {
               const SizedBox(height: 5),
               ElevatedButton(
                 onPressed: () async {
+                  //checks to see if the app is still connected to the internet
+                  connectionCheck(context);
 
                   invalidCategory = false;
                   invalidLocation = false;

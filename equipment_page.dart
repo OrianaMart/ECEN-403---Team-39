@@ -5,6 +5,8 @@ import 'equipment_detail_page.dart';
 import 'new_equipment.dart';
 import 'Data.dart' as user;
 
+import 'internet_checker.dart';
+
 class EquipmentPage extends StatefulWidget {
   const EquipmentPage({Key? key}) : super(key: key);
   @override
@@ -149,6 +151,9 @@ class EquipmentPageState extends State<EquipmentPage> {
               return IconButton(
                 icon: const Icon(Icons.menu),
                 onPressed: () {
+                  //checks to see if the app is still connected to the internet
+                  connectionCheck(context);
+
                   Scaffold.of(context).openDrawer();
                 },
               );
@@ -511,6 +516,9 @@ class EquipmentPageState extends State<EquipmentPage> {
                             0xFF963e3e), // changes the color of the button
                       ),
                       onPressed: () {
+                        //checks to see if the app is still connected to the internet
+                        connectionCheck(context);
+
                         user.equipment = '';
                         Navigator.push(
                             context,
@@ -604,6 +612,9 @@ class EquipmentPageState extends State<EquipmentPage> {
                                         ), // changes the color of the button
                                       ),
                                       onPressed: () {
+                                        //checks to see if the app is still connected to the internet
+                                        connectionCheck(context);
+
                                         user.equipment = displayIDs[i];
                                         Navigator.push(
                                             context,

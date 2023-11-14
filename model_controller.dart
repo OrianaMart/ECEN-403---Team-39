@@ -8,6 +8,8 @@ import 'navigator_drawer.dart';
 import 'equipment_page.dart';
 import 'Data.dart' as user;
 
+import 'internet_checker.dart';
+
 /*
 *Author: Oriana V Martin
 * UIN: 527008754
@@ -118,6 +120,9 @@ class _ScanningPage extends State<ScanningPage> {
               return IconButton(
                 icon: const Icon(Icons.menu),
                 onPressed: () {
+                  //checks to see if the app is still connected to the internet
+                  connectionCheck(context);
+
                   Scaffold.of(context).openDrawer();
                 },
               );
@@ -235,6 +240,9 @@ class _ScanningPage extends State<ScanningPage> {
                                   0xFF963e3e),
                             ),
                                 onPressed: () {
+                                  //checks to see if the app is still connected to the internet
+                                  connectionCheck(context);
+
                                   user.mlCategory = modelPred;
 
                                   Navigator.pushReplacement(

@@ -3,6 +3,8 @@ import 'database_functions.dart';
 import 'history_detail_page.dart';
 import 'Data.dart' as user;
 
+import 'internet_checker.dart';
+
 class EditHistoryPage extends StatefulWidget {
   const EditHistoryPage({super.key});
   @override
@@ -274,6 +276,9 @@ class EditHistoryPageState extends State<EditHistoryPage> {
               const SizedBox(height: 5),
               ElevatedButton(
                 onPressed: () async {
+                  //checks to see if the app is still connected to the internet
+                  connectionCheck(context);
+
                   //check for invalid timestamps
                   List<String> timeParsed = timestampOutField.text.split('-');
                   int timeCode = 0;

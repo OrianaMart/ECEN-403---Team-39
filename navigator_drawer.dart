@@ -10,6 +10,8 @@ import 'notifications_page.dart';
 import 'model_controller.dart';
 import 'Data.dart' as user;
 
+import 'internet_checker.dart';
+
 class NavigatorDrawer extends StatelessWidget {
   const NavigatorDrawer({Key? key}) : super(key: key);
 
@@ -48,6 +50,9 @@ class NavigatorDrawer extends StatelessWidget {
               ),
             ),
             onTap: () {
+              //checks to see if the app is still connected to the internet
+              connectionCheck(context);
+
               user.equipment = '';
               user.checkoutID = '';
               user.requestID = '';
@@ -75,6 +80,9 @@ class NavigatorDrawer extends StatelessWidget {
                 ),
               ),
               onTap: () {
+                //checks to see if the app is still connected to the internet
+                connectionCheck(context);
+
                 user.equipment = '';
                 user.checkoutID = '';
                 user.requestID = '';
@@ -103,6 +111,9 @@ class NavigatorDrawer extends StatelessWidget {
                 ),
               ),
               onTap: () {
+                //checks to see if the app is still connected to the internet
+                connectionCheck(context);
+
                 user.equipment = '';
                 user.checkoutID = '';
                 user.requestID = '';
@@ -129,6 +140,9 @@ class NavigatorDrawer extends StatelessWidget {
               ),
             ),
             onTap: () {
+              //checks to see if the app is still connected to the internet
+              connectionCheck(context);
+
               user.equipment = '';
               user.checkoutID = '';
               user.requestID = '';
@@ -154,6 +168,9 @@ class NavigatorDrawer extends StatelessWidget {
               ),
             ),
             onTap: () {
+              //checks to see if the app is still connected to the internet
+              connectionCheck(context);
+
               user.equipment = '';
               user.checkoutID = '';
               user.requestID = '';
@@ -179,6 +196,9 @@ class NavigatorDrawer extends StatelessWidget {
                 ),
               ),
               onTap: () {
+                //checks to see if the app is still connected to the internet
+                connectionCheck(context);
+
                 user.equipment = '';
                 user.checkoutID = '';
                 user.requestID = '';
@@ -207,6 +227,9 @@ class NavigatorDrawer extends StatelessWidget {
                 ),
               ),
               onTap: () {
+                //checks to see if the app is still connected to the internet
+                connectionCheck(context);
+
                 user.equipment = '';
                 user.checkoutID = '';
                 user.requestID = '';
@@ -233,6 +256,9 @@ class NavigatorDrawer extends StatelessWidget {
               ),
             ),
             onTap: () {
+              //checks to see if the app is still connected to the internet
+              connectionCheck(context);
+
               user.equipment = '';
               user.checkoutID = '';
               user.requestID = '';
@@ -258,6 +284,9 @@ class NavigatorDrawer extends StatelessWidget {
               ),
             ),
             onTap: () {
+              //checks to see if the app is still connected to the internet
+              connectionCheck(context);
+
               _logoutConfirmation(context);
               //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
               // add more code here
@@ -285,6 +314,9 @@ Future<void> _logoutConfirmation(BuildContext context) async {
         actions: <Widget>[
           TextButton(
               onPressed: () {
+                //checks to see if the app is still connected to the internet
+                connectionCheck(context);
+
                 Navigator.of(context).pop();
               },
               style: TextButton.styleFrom(
@@ -293,6 +325,9 @@ Future<void> _logoutConfirmation(BuildContext context) async {
               child: const Text('Cancel')),
           TextButton(
               onPressed: () {
+                //checks to see if the app is still connected to the internet
+                connectionCheck(context);
+
                 user.equipment = '';
                 user.checkoutID = '';
                 user.requestID = '';

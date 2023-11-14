@@ -3,6 +3,8 @@ import 'database_functions.dart';
 import 'equipment_detail_page.dart';
 import 'Data.dart' as user;
 
+import 'internet_checker.dart';
+
 class AddFormRequirementPage extends StatefulWidget {
   const AddFormRequirementPage({super.key});
   @override
@@ -115,6 +117,9 @@ class AddFormRequirementPageState extends State<AddFormRequirementPage> {
               const SizedBox(height: 5),
               ElevatedButton(
                 onPressed: () async {
+                  //checks to see if the app is still connected to the internet
+                  connectionCheck(context);
+
                   if(nameField.text != '') {
                     if(await addFormRequirement(nameField.text, user.equipment) == 'Form Required') {
                       Navigator.pushReplacement(
@@ -254,6 +259,9 @@ class RemoveFormRequirementPageState extends State<RemoveFormRequirementPage> {
               const SizedBox(height: 5),
               ElevatedButton(
                 onPressed: () async {
+                  //checks to see if the app is still connected to the internet
+                  connectionCheck(context);
+
                   if(nameField.text != '') {
                     if(await removeFormRequirement(nameField.text, user.equipment) == 'Form Removed') {
                       Navigator.pushReplacement(

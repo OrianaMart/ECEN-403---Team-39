@@ -6,6 +6,8 @@ import 'request_detail_page.dart';
 import 'history_detail_page.dart';
 import 'Data.dart' as user;
 
+import 'internet_checker.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
   @override
@@ -59,6 +61,9 @@ class HomePageState extends State<HomePage> {
             return IconButton(
               icon: const Icon(Icons.menu),
               onPressed: () {
+                //checks to see if the app is still connected to the internet
+                connectionCheck(context);
+
                 Scaffold.of(context).openDrawer();
               },
             );
@@ -88,7 +93,7 @@ class HomePageState extends State<HomePage> {
             ),
 
              */
-            CircleAvatar(
+            /*CircleAvatar(
               radius: 40, // Change this radius for the width of the circular border
               backgroundColor: const Color(0xFF500000),
               child: CircleAvatar(
@@ -98,8 +103,11 @@ class HomePageState extends State<HomePage> {
                 ).image,
               ),
             ),
+
+
+             */
             // Username information for students
-            const SizedBox(height: 20),
+            //const SizedBox(height: 20),
 
             //if the user is a student, it displays the student home page column
             if (!user.adminStatus) const StudentHomePage(),
@@ -269,6 +277,9 @@ class StudentHomePageState extends State<StudentHomePage> {
                                 ), // changes the color of the button
                               ),
                               onPressed: () {
+                                //checks to see if the app is still connected to the internet
+                                connectionCheck(context);
+
                                 //sets the information to be displayed when the user reaches the request details
                                 user.equipment = requests[i];
                                 user.requestID = requestIDs[i];
@@ -303,6 +314,9 @@ class StudentHomePageState extends State<StudentHomePage> {
         // The button in the middle that allows the student to submit a new request
         ElevatedButton(
           onPressed: () {
+            //checks to see if the app is still connected to the internet
+            connectionCheck(context);
+
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -387,6 +401,9 @@ class StudentHomePageState extends State<StudentHomePage> {
                                 ), // changes the color of the butt
                               ),
                               onPressed: () {
+                                //checks to see if the app is still connected to the internet
+                                connectionCheck(context);
+
                                 //sets the information to be displayed when the user reaches the history details
                                 user.equipment = checkouts[i];
                                 user.checkoutID = historyIDs[i];
@@ -708,6 +725,9 @@ class AdminHomePageState extends State<AdminHomePage> {
                                     ))),
                                     */
                           onPressed: () {
+                            //checks to see if the app is still connected to the internet
+                            connectionCheck(context);
+
                             user.equipment = requestedEquipment[i];
                             user.requestID = requestIDs[i];
                             user.checkoutID = '';
@@ -876,6 +896,9 @@ class AdminHomePageState extends State<AdminHomePage> {
                                     ))),
                                     */
                           onPressed: () {
+                            //checks to see if the app is still connected to the internet
+                            connectionCheck(context);
+
                             user.requestID = '';
                             user.equipment = historyEquipment[i];
                             user.checkoutID = historyIDs[i];

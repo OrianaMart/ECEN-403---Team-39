@@ -5,6 +5,8 @@ import 'home_page.dart';
 import 'edit_history.dart';
 import 'Data.dart' as user;
 
+import 'internet_checker.dart';
+
 class HistoryDetailPage extends StatefulWidget {
   const HistoryDetailPage({Key? key}) : super(key: key);
   @override
@@ -55,6 +57,9 @@ class HistoryDetailPageState extends State<HistoryDetailPage> {
               return IconButton(
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () {
+                  //checks to see if the app is still connected to the internet
+                  connectionCheck(context);
+
                   Navigator.pop(context);
                 },
               );
@@ -306,6 +311,9 @@ class AdminHistoryDetailsState extends State<AdminHistoryDetails> {
                   const Color(0xFF963e3e), // changes the color of the button
             ),
             onPressed: () async {
+              //checks to see if the app is still connected to the internet
+              connectionCheck(context);
+
               invalidAmount = false;
               invalidUin = false;
 
@@ -370,6 +378,9 @@ class AdminHistoryDetailsState extends State<AdminHistoryDetails> {
                 const Color(0xFF963e3e), // changes the color of the button
           ),
           onPressed: () async {
+            //checks to see if the app is still connected to the internet
+            connectionCheck(context);
+
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -385,6 +396,9 @@ class AdminHistoryDetailsState extends State<AdminHistoryDetails> {
                   const Color(0xFF963e3e), // changes the color of the button
             ),
             onPressed: () async {
+              //checks to see if the app is still connected to the internet
+              connectionCheck(context);
+
               _removalConfirmation(context);
             },
             child: const Text('Delete Checkout History')),
@@ -411,6 +425,9 @@ Future<void> _removalConfirmation(BuildContext context) async {
         actions: <Widget>[
           TextButton(
               onPressed: () {
+                //checks to see if the app is still connected to the internet
+                connectionCheck(context);
+
                 Navigator.of(context).pop();
               },
               style: TextButton.styleFrom(
@@ -419,6 +436,9 @@ Future<void> _removalConfirmation(BuildContext context) async {
               child: const Text('Go Back')),
           TextButton(
               onPressed: () async {
+                //checks to see if the app is still connected to the internet
+                connectionCheck(context);
+
                 if (user.checkoutID != '') {
                   if (await removeHistory(user.checkoutID) == 'Removed') {
                     user.equipment = '';

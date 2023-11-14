@@ -5,6 +5,8 @@ import 'home_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'internet_checker.dart';
+
 class NotificationsPage extends StatefulWidget {
   const NotificationsPage({Key? key}) : super(key: key);
 
@@ -111,6 +113,9 @@ class NotificationsPageState extends State<NotificationsPage> {
             return IconButton(
               icon: const Icon(Icons.menu),
               onPressed: () {
+                //checks to see if the app is still connected to the internet
+                connectionCheck(context);
+
                 Scaffold.of(context).openDrawer();
               },
             );
@@ -224,6 +229,9 @@ class NotificationsPageState extends State<NotificationsPage> {
                     backgroundColor: const Color(0xFF963e3e),
                   ),
                   onPressed: () async {
+                    //checks to see if the app is still connected to the internet
+                    connectionCheck(context);
+
                     invalidUin = false;
                     invalidMessage = false;
                     invalidSubject = false;

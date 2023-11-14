@@ -4,6 +4,8 @@ import 'login_screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'internet_checker.dart';
+
 //Creates the forgot password page for the test app
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({Key? key}) : super(key: key);
@@ -88,6 +90,9 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     ),
                     TextButton(
                       onPressed: () {
+                        //checks to see if the app is still connected to the internet
+                        connectionCheck(context);
+
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
@@ -119,6 +124,9 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     backgroundColor: const Color(0xFF963e3e),
                   ),
                   onPressed: () async {
+                    //checks to see if the app is still connected to the internet
+                    connectionCheck(context);
+
                     if (emailField.text.toString() != '') {
                       response = (await forgotPassword(emailField.text));
                       switch (response[0]) {

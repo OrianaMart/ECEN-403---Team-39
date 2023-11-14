@@ -5,6 +5,8 @@ import 'profile_page.dart';
 import 'sign_up.dart';
 import 'Data.dart' as user;
 
+import 'internet_checker.dart';
+
 class UsersPage extends StatefulWidget {
   const UsersPage({Key? key}) : super(key: key);
 
@@ -110,6 +112,9 @@ class UsersPageState extends State<UsersPage> {
               return IconButton(
                 icon: const Icon(Icons.menu),
                 onPressed: () {
+                  //checks to see if the app is still connected to the internet
+                  connectionCheck(context);
+
                   Scaffold.of(context).openDrawer();
                 },
               );
@@ -399,6 +404,9 @@ class UsersPageState extends State<UsersPage> {
                           0xFF963e3e), // changes the color of the button
                     ),
                     onPressed: () {
+                      //checks to see if the app is still connected to the internet
+                      connectionCheck(context);
+
                       user.viewedUser = '';
                       Navigator.push(
                           context,
@@ -484,6 +492,9 @@ class UsersPageState extends State<UsersPage> {
                                       ), // changes the color of the button
                                     ),
                                     onPressed: () {
+                                      //checks to see if the app is still connected to the internet
+                                      connectionCheck(context);
+
                                       user.viewedUser = displayUsernames[i];
                                       Navigator.push(
                                           context,

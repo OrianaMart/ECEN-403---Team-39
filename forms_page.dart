@@ -4,6 +4,8 @@ import 'database_functions.dart';
 import 'new_form_page.dart';
 import 'Data.dart' as user;
 
+import 'internet_checker.dart';
+
 class FormsPage extends StatefulWidget {
   const FormsPage({Key? key}) : super(key: key);
   @override
@@ -46,6 +48,9 @@ class FormsPageState extends State<FormsPage> {
             return IconButton(
               icon: const Icon(Icons.menu),
               onPressed: () {
+                //checks to see if the app is still connected to the internet
+                connectionCheck(context);
+
                 Scaffold.of(context).openDrawer();
               },
             );
@@ -388,6 +393,9 @@ class AdminFormsPageState extends State<AdminFormsPage> {
                 const Color(0xFF963e3e), // changes the color of the button
           ),
           onPressed: () {
+            //checks to see if the app is still connected to the internet
+            connectionCheck(context);
+
             user.equipment = '';
             Navigator.push(
                 context,
@@ -471,6 +479,9 @@ class AdminFormsPageState extends State<AdminFormsPage> {
                             ), // changes the color of the button
                           ),
                           onPressed: () {
+                            //checks to see if the app is still connected to the internet
+                            connectionCheck(context);
+
                             _deleteConfirmation(context, results[0][i]);
                           },
                           child: const Padding(
@@ -517,6 +528,9 @@ Future<void> _deleteConfirmation(BuildContext context, String formID) async {
         actions: <Widget>[
           TextButton(
               onPressed: () {
+                //checks to see if the app is still connected to the internet
+                connectionCheck(context);
+
                 Navigator.of(context).pop();
               },
               style: TextButton.styleFrom(
@@ -525,6 +539,9 @@ Future<void> _deleteConfirmation(BuildContext context, String formID) async {
               child: const Text('Go Back')),
           TextButton(
               onPressed: () async {
+                //checks to see if the app is still connected to the internet
+                connectionCheck(context);
+
                 if(formID != '') {
                   if (await removeForm(formID) == 'Removed') {
                     user.equipment = '';

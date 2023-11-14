@@ -5,6 +5,8 @@ import 'home_page.dart';
 import 'users_page.dart';
 import 'Data.dart' as user;
 
+import 'internet_checker.dart';
+
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
   @override
@@ -127,6 +129,9 @@ class SignUpPageState extends State<SignUpPage> {
                     ),
                     TextButton(
                       onPressed: () {
+                        //checks to see if the app is still connected to the internet
+                        connectionCheck(context);
+
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
@@ -281,6 +286,9 @@ class SignUpPageState extends State<SignUpPage> {
               if (!user.adminStatus)
                 ElevatedButton(
                   onPressed: () async {
+                    //checks to see if the app is still connected to the internet
+                    connectionCheck(context);
+
                     invalidUsername = false;
                     invalidUin = false;
                     invalidEmail = false;
@@ -416,6 +424,9 @@ class SignUpPageState extends State<SignUpPage> {
               if (user.viewedUser != '')
                 ElevatedButton(
                     onPressed: () async {
+                      //checks to see if the app is still connected to the internet
+                      connectionCheck(context);
+
                       invalidEmail = false;
                       invalidPhoneNumber = false;
                       invalidCourseNumber = false;
@@ -529,6 +540,9 @@ class SignUpPageState extends State<SignUpPage> {
               if (user.adminStatus && user.viewedUser == '')
                 ElevatedButton(
                   onPressed: () async {
+                    //checks to see if the app is still connected to the internet
+                    connectionCheck(context);
+
                     invalidUsername = false;
                     invalidUin = false;
                     invalidEmail = false;
