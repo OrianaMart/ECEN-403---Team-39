@@ -199,6 +199,11 @@ class _ScanningPage extends State<ScanningPage> {
                           pickImageGallery(); //Trigger image selection from the gallery
                         }),
                   ),
+                  //Instructions for image capture
+                  const Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Text('Tip: For accurate classification, capture an image with only one item in frame'),
+                  ),
                 ],
               ),
               loading != true

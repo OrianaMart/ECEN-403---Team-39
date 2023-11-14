@@ -22,9 +22,14 @@ class EditHistoryPageState extends State<EditHistoryPage> {
   var admins = List<String>.filled(0, '', growable: true);
 
   //variables for error checking
-  bool invalidAmount = false;
   bool invalidTimeOut = false;
   bool invalidTimeIn = false;
+
+  //variables for null checking
+  bool invalidAmountOut = false;
+  bool invalidAdminOut = false;
+  bool invalidAmountIn = false;
+  bool invalidAdminIn = false;
 
   String adminOut = '';
   String adminIn = '';
@@ -181,7 +186,7 @@ class EditHistoryPageState extends State<EditHistoryPage> {
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   labelText: 'Amount - Out',
-                  errorText: invalidAmount ? 'Invalid Amounts' : null,
+                  errorText: invalidAmountOut ? 'Invalid Amount' : null,
                 ),
               ),
 
@@ -194,6 +199,7 @@ class EditHistoryPageState extends State<EditHistoryPage> {
                 width: MediaQuery.of(context).size.width * .9,
                 enableFilter: true,
                 initialSelection: historyDetails[4],
+                errorText: invalidAdminOut ? 'Invalid Admin': null,
                 label: const Text('Admin - Checkout'),
                 //makes the dropdown menu scrollable
                 menuHeight: 300,
@@ -214,7 +220,7 @@ class EditHistoryPageState extends State<EditHistoryPage> {
                 controller: timestampOutField,
                 decoration: InputDecoration(
                   labelText: 'Timestamp - Out',
-                  errorText: invalidTimeOut ? 'Invalid Timestamp Format' : null,
+                  errorText: invalidTimeOut ? 'Invalid Timestamp' : null,
                 ),
               ),
 
@@ -224,7 +230,7 @@ class EditHistoryPageState extends State<EditHistoryPage> {
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     labelText: 'Amount - Check-In',
-                    errorText: invalidAmount ? 'Invalid Amounts' : null,
+                    errorText: invalidAmountIn ? 'Invalid Amount' : null,
                   ),
                 ),
 
@@ -238,6 +244,7 @@ class EditHistoryPageState extends State<EditHistoryPage> {
                   width: MediaQuery.of(context).size.width * .9,
                   enableFilter: true,
                   initialSelection: historyDetails[7],
+                  errorText: invalidAdminIn ? 'Invalid Admin': null,
                   label: const Text('Admin - Check-In'),
                   //makes the dropdown menu scrollable
                   menuHeight: 300,
@@ -260,7 +267,7 @@ class EditHistoryPageState extends State<EditHistoryPage> {
                   decoration: InputDecoration(
                     labelText: 'Timestamp - In',
                     errorText:
-                        invalidTimeIn ? 'Invalid Timestamp Format' : null,
+                        invalidTimeIn ? 'Invalid Timestamp' : null,
                   ),
                 ),
 
@@ -272,63 +279,101 @@ class EditHistoryPageState extends State<EditHistoryPage> {
                   int timeCode = 0;
                   int timeCode2 = 0;
 
-                  timeParsed.add(timeParsed[2].split(' ').last);
-                  timeParsed[2] = timeParsed[2].split(' ').first;
-
-                  if(timeParsed.length != 4 ||
-                      int.parse(timeParsed[0]) > DateTime.now().year || int.parse(timeParsed[0]) < 2023 ||
-                      int.parse(timeParsed[1]) > 12 || int.parse(timeParsed[1]) < 1 ||
-                      int.parse(timeParsed[2]) > 31 || int.parse(timeParsed[2]) < 1
-                  ) {
-                    invalidTimeOut = true;
-                  } else {
-                    invalidTimeOut = false;
-                    timeCode = int.parse('${timeParsed[0]}${timeParsed[1]}${timeParsed[2]}');
-                  }
-
-                  if(timeParsed.length == 4){
-                    timeParsed = timeParsed[3].split(':');
-                    if(timeParsed.length != 3 ||
-                        int.parse(timeParsed[0]) > 23 || int.parse(timeParsed[0]) < 0 ||
-                        int.parse(timeParsed[1]) > 59 || int.parse(timeParsed[1]) < 0 ||
-                        int.parse(timeParsed[2]) > 59 || int.parse(timeParsed[2]) < 0
-                    ) {
-                      invalidTimeOut = true;
-                    } else {
-                      invalidTimeOut = false;
-                      timeCode = int.parse('${timeCode.toString()}${timeParsed[0]}${timeParsed[1]}${timeParsed[2]}');
-                    }
-                  }
-
-                  if(historyDetails.length > 6) {
-                    timeParsed = timestampInField.text.split('-');
-
+                  if(timestampOutField.text != '') {
                     timeParsed.add(timeParsed[2].split(' ').last);
                     timeParsed[2] = timeParsed[2].split(' ').first;
 
-                    if(timeParsed.length != 4 ||
+                    if (timeParsed.length != 4 || timeParsed.contains('') ||
                         int.parse(timeParsed[0]) > DateTime.now().year || int.parse(timeParsed[0]) < 2023 ||
                         int.parse(timeParsed[1]) > 12 || int.parse(timeParsed[1]) < 1 ||
                         int.parse(timeParsed[2]) > 31 || int.parse(timeParsed[2]) < 1
                     ) {
-                      invalidTimeIn = true;
+                      invalidTimeOut = true;
                     } else {
-                      invalidTimeIn = false;
-                      timeCode2 = int.parse('${timeParsed[0]}${timeParsed[1]}${timeParsed[2]}');
+                      invalidTimeOut = false;
+                      if(int.parse(timeParsed[1]) < 10) {
+                        timeParsed[1] = '0${timeParsed[1]}';
+                      }
+                      if(int.parse(timeParsed[2]) < 10) {
+                        timeParsed[2] = '0${timeParsed[2]}';
+                      }
+                      timeCode = int.parse('${timeParsed[0]}${timeParsed[1]}${timeParsed[2]}');
                     }
 
-                    if(timeParsed.length == 4){
+                    if (!invalidTimeOut) {
                       timeParsed = timeParsed[3].split(':');
-                      if(timeParsed.length != 3 ||
+                      if (timeParsed.length != 3 || timeParsed.contains('') ||
                           int.parse(timeParsed[0]) > 23 || int.parse(timeParsed[0]) < 0 ||
                           int.parse(timeParsed[1]) > 59 || int.parse(timeParsed[1]) < 0 ||
                           int.parse(timeParsed[2]) > 59 || int.parse(timeParsed[2]) < 0
                       ) {
+                        invalidTimeOut = true;
+                      } else {
+                        invalidTimeOut = false;
+                        if(int.parse(timeParsed[0]) < 10) {
+                          timeParsed[0] = '0${timeParsed[0]}';
+                        }
+                        if(int.parse(timeParsed[1]) < 10) {
+                          timeParsed[1] = '0${timeParsed[1]}';
+                        }
+                        if(int.parse(timeParsed[2]) < 10) {
+                          timeParsed[2] = '0${timeParsed[2]}';
+                        }
+                        timeCode = int.parse('${timeCode.toString()}${timeParsed[0]}${timeParsed[1]}${timeParsed[2]}');
+                      }
+                    }
+                  } else {
+                    invalidTimeOut = true;
+                  }
+
+                  if(historyDetails.length > 6) {
+                    if (timestampInField.text != '') {
+                      timeParsed = timestampInField.text.split('-');
+
+                      timeParsed.add(timeParsed[2].split(' ').last);
+                      timeParsed[2] = timeParsed[2].split(' ').first;
+
+                      if (timeParsed.length != 4 || timeParsed.contains('') ||
+                          int.parse(timeParsed[0]) > DateTime.now().year || int.parse(timeParsed[0]) < 2023 ||
+                          int.parse(timeParsed[1]) > 12 || int.parse(timeParsed[1]) < 1 ||
+                          int.parse(timeParsed[2]) > 31 || int.parse(timeParsed[2]) < 1
+                      ) {
                         invalidTimeIn = true;
                       } else {
                         invalidTimeIn = false;
-                        timeCode2 = int.parse('${timeCode2.toString()}${timeParsed[0]}${timeParsed[1]}${timeParsed[2]}');
+                        if(int.parse(timeParsed[1]) < 10) {
+                          timeParsed[1] = '0${timeParsed[1]}';
+                        }
+                        if(int.parse(timeParsed[2]) < 10) {
+                          timeParsed[2] = '0${timeParsed[2]}';
+                        }
+                        timeCode2 = int.parse('${timeParsed[0]}${timeParsed[1]}${timeParsed[2]}');
                       }
+
+                      if (!invalidTimeIn) {
+                        timeParsed = timeParsed[3].split(':');
+                        if (timeParsed.length != 3 || timeParsed.contains('') ||
+                            int.parse(timeParsed[0]) > 23 || int.parse(timeParsed[0]) < 0 ||
+                            int.parse(timeParsed[1]) > 59 || int.parse(timeParsed[1]) < 0 ||
+                            int.parse(timeParsed[2]) > 59 || int.parse(timeParsed[2]) < 0
+                        ) {
+                          invalidTimeIn = true;
+                        } else {
+                          invalidTimeIn = false;
+                          if(int.parse(timeParsed[0]) < 10) {
+                            timeParsed[0] = '0${timeParsed[0]}';
+                          }
+                          if(int.parse(timeParsed[1]) < 10) {
+                            timeParsed[1] = '0${timeParsed[1]}';
+                          }
+                          if(int.parse(timeParsed[2]) < 10) {
+                            timeParsed[2] = '0${timeParsed[2]}';
+                          }
+                          timeCode2 = int.parse('${timeCode2.toString()}${timeParsed[0]}${timeParsed[1]}${timeParsed[2]}');
+                        }
+                      }
+                    } else {
+                      invalidTimeIn = true;
                     }
                   }
 
@@ -336,15 +381,34 @@ class EditHistoryPageState extends State<EditHistoryPage> {
                     invalidTimeIn = true;
                   }
 
-                  if(invalidTimeOut || invalidTimeIn) {
-                    setState(() {
-                      invalidTimeOut;
-                      invalidTimeIn;
-                    });
+                  if(adminOut == ''){
+                    invalidAdminOut = true;
+                  } else {
+                    invalidAdminOut = false;
                   }
 
-                  //if the timestamps are in the correct format
-                  if (!invalidTimeIn && !invalidTimeOut) {
+                  if(historyDetails.length > 6 && adminIn == ''){
+                    invalidAdminIn = true;
+                  } else {
+                    invalidAdminIn = false;
+                  }
+
+                  if(amountOutField.text == ''){
+                    invalidAmountOut = true;
+                  } else {
+                    invalidAmountOut = false;
+                  }
+
+                  if(historyDetails.length > 6 && amountInField.text == ''){
+                    invalidAmountIn = true;
+                  } else {
+                    invalidAmountIn = false;
+                  }
+
+                  //if the timestamps are in the correct format and no values are null
+                  if (!invalidTimeIn && !invalidTimeOut &&
+                      !invalidAdminOut && !invalidAdminIn &&
+                      !invalidAmountOut && !invalidAmountIn) {
                     if (historyDetails.length > 6) {
                       if (await editHistory(
                           user.checkoutID,
@@ -361,16 +425,16 @@ class EditHistoryPageState extends State<EditHistoryPage> {
                               builder: (context) => const HistoryDetailPage(),
                             ));
                         setState(() {
-                          invalidAmount = false;
+                          invalidAmountOut = false;
+                          invalidAdminOut = false;
                           invalidTimeOut = false;
+                          invalidAmountIn = false;
+                          invalidAdminIn = false;
                           invalidTimeIn = false;
                         });
                       } else {
-                        setState(() {
-                          invalidAmount = true;
-                          invalidTimeOut = false;
-                          invalidTimeIn = false;
-                        });
+                        invalidAmountIn = true;
+                        invalidAmountOut = true;
                       }
                     } else {
                       if (await editHistory(
@@ -385,19 +449,28 @@ class EditHistoryPageState extends State<EditHistoryPage> {
                               builder: (context) => const HistoryDetailPage(),
                             ));
                         setState(() {
-                          invalidAmount = false;
+                          invalidAmountOut = false;
+                          invalidAdminOut = false;
                           invalidTimeOut = false;
+                          invalidAmountIn = false;
+                          invalidAdminIn = false;
                           invalidTimeIn = false;
                         });
                       } else {
-                        setState(() {
-                          invalidAmount = true;
-                          invalidTimeOut = false;
-                          invalidTimeIn = false;
-                        });
+                        invalidAmountIn = true;
+                        invalidAmountOut = true;
                       }
                     }
                   }
+
+                  setState(() {
+                    invalidTimeOut;
+                    invalidTimeIn;
+                    invalidAmountOut;
+                    invalidAdminIn;
+                    invalidAdminOut;
+                    invalidAdminIn;
+                  });
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF963e3e),

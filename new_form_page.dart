@@ -182,7 +182,15 @@ class NewFormPageState extends State<NewFormPage> {
                   invalidUin = false;
                   invalidForm = false;
 
-                  if (currentUin != null) {
+                  if(formNameField.text == ''){
+                    invalidForm = true;
+                  }
+
+                  if(currentUin == null){
+                    invalidUin = true;
+                  }
+
+                  if (!invalidUin && !invalidForm) {
                     if (await newForm(
                                 formNameField.text,
                                 usernames[uins
@@ -197,8 +205,6 @@ class NewFormPageState extends State<NewFormPage> {
                     } else {
                       invalidForm = true;
                     }
-                  } else {
-                    invalidUin = true;
                   }
 
                   setState(() {

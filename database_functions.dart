@@ -4,7 +4,6 @@
 //Importing all relevant firebase packages and the needed options file generated through the flutterfire_CLI
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_core/firebase_core.dart';
-//import 'package:flutter/cupertino.dart';
 import 'firebase_options.dart';
 
 //Firebase Gmail account login information: Username: smartinventorytamu@gmail.com Password: EricTeam#39
@@ -175,7 +174,7 @@ Future<String> newEquipment(
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //Function for adding a new individual student form to the system
 Future<String> newForm(
-    String formName, String user, String info) async
+    String formName, String user) async
 {
     //Sets a database reference to the forms section
     DatabaseReference formsRef = FirebaseDatabase.instance.ref('forms');
@@ -194,37 +193,12 @@ Future<String> newForm(
         String formKey = formRef.key.toString();
         formRef.set({
             'formName': formName,
-            'user': user,
-            'info': info,
-            'verification': false
+            'user': user
         });
         DatabaseReference userRef = FirebaseDatabase.instance.ref('users/$user/forms');
         userRef.update({formName: formKey});
         return 'Form Created';
     }
-}
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//Function for Admins to verify form completion
-Future<String> verifyForm(String user, String formName) async
-{
-    //sets user reference to the user being verified
-    DatabaseReference userRef = FirebaseDatabase.instance.ref('users/$user/forms/$formName');
-    var dataTest = await userRef.get();
-    if(dataTest.exists){
-        DataSnapshot event = await userRef.get();
-        String formID = event.value.toString();
-        //Sets a database reference to the specific form id
-        DatabaseReference formRef = FirebaseDatabase.instance.ref('forms/$formID');
-        //Checks to see if the form exists
-        dataTest = await formRef.get();
-        if(dataTest.exists){
-            //makes verification status true
-            formRef.update({'verification': true});
-            return 'Verified';
-        }
-    }
-    return 'Not Verified';
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -294,12 +268,7 @@ Future<String> generateNewRequest(String user, String equipment, int requestedAm
                         for (final j in userForms.children) {
                             String userForm = j.key.toString();
                             if (formName == userForm) {
-                                String formReference = userForms.child(j.value.toString()).key.toString();
-                                DatabaseReference formRef = FirebaseDatabase.instance.ref('forms/$formReference/verification');
-                                DataSnapshot verified = await formRef.get();
-                                if (verified.value == true) {
-                                    completeForms++;
-                                }
+                                completeForms++;
                             }
                         }
                         totalForms++;
@@ -800,88 +769,6 @@ Future<List<String>> getRequestInfo(String requestID) async
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//Function to find formIDs by username
-Future<List<String>> formIDbyUser(String username) async
-{
-    //creates the return list
-    var formID = List<String>.filled(0, '', growable: true);
-
-    //sets a database reference to the users associated forms directory and makes snapshot
-    DatabaseReference formNameRef = FirebaseDatabase.instance.ref('users/$username/forms');
-    DataSnapshot formNames = await formNameRef.get();
-
-    //checks to see if there are any associated forms
-    if(formNames.exists){
-        for(final child in formNames.children){
-            formID.add(child.value.toString());
-        }
-    } else{
-        //ERROR checking (no forms)~~~~~~~~~
-        formID.add('User Has No Forms');
-    }
-    //returns the list of found form IDs
-    return formID;
-}
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//Function to find formIDs by equipment name
-Future<List<String>> formIDbyEquipment(String equipment) async
-{
-    //sets up a list to return to the UI once it finds all form IDs for a given username
-    var formIDs = List<String>.filled(0, '', growable: true);
-
-    //Creates a database reference to the forms section of the database and takes data snapshot
-    DatabaseReference equipmentRef = FirebaseDatabase.instance.ref('inventory/$equipment/forms');
-    DataSnapshot formNames = await equipmentRef.get();
-
-    //checks to see if there are any associated forms
-    if(formNames.exists){
-        for(final child in formNames.children){
-            //fills formID variable with a list of formIDs tied to the formName
-            var formID = await formIDbyName(child.key.toString());
-
-            //iterates over the amount of IDs valid for each form attached to the equipment
-            for(int i = 0; i < formID.length; i++){
-                //adds each individual form ID to the list as its own entry.
-                formIDs.add(formID[i]);
-            }
-        }
-    } else{
-        //ERROR checking (no forms)~~~~~~~~~
-        formIDs.add('Equipment Has No Forms');
-    }
-    //returns the found formIDs
-    return formIDs;
-}
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//Function to find formIDs by form name
-Future<List<String>> formIDbyName(String formName) async
-{
-    //sets up a list to return to the UI once it finds all form IDs for a given username
-    var formIDs = List<String>.filled(0, '', growable: true);
-
-    //Creates a database reference to the forms section of the database
-    DatabaseReference formsRef = FirebaseDatabase.instance.ref('forms');
-    Query query = formsRef.orderByChild('formName').equalTo(formName);
-
-    //creates a snapshot of the queried data
-    DataSnapshot forms = await query.get();
-
-    if(forms.exists) {
-        for (final child in forms.children) {
-            formIDs.add(child.key.toString());
-        }
-    } else{
-        //ERROR Catching (no forms)~~~~~~~~~~~~
-        formIDs.add('No Forms With This Name');
-    }
-
-    //return resulting IDs
-    return formIDs;
-}
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //Function to return form information
 Future<List<String>> getFormInfo(String formID) async
 {
@@ -899,8 +786,6 @@ Future<List<String>> getFormInfo(String formID) async
         formInfo.add(formID);
         formInfo.add(formData.child('formName').value.toString());
         formInfo.add(formData.child('user').value.toString());
-        formInfo.add(formData.child('info').value.toString());
-        formInfo.add(formData.child('verification').value.toString());
     } else{
         //ERROR CATCHING (form doesn't exist)~~~~~~~~
         formInfo.add('Invalid Form');
@@ -920,33 +805,6 @@ Future<List<String>> historyIDbyUser(String username) async
     //sets a database reference to the history directory and performs a query
     DatabaseReference historyRef = FirebaseDatabase.instance.ref('checkoutHistory');
     Query query = historyRef.orderByChild('username').equalTo(username);
-
-    //takes a data snapshot of the queried information
-    DataSnapshot histories = await query.get();
-
-    //checks to see if there are any associated histories found
-    if(histories.exists){
-        for(final child in histories.children){
-            historyIDs.add(child.key.toString());
-        }
-    } else{
-        //ERROR checking (no history)~~~~~~~~~
-        historyIDs.add('No Checkout History');
-    }
-    //returns the list of found history IDs
-    return historyIDs;
-}
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//Function to return checkout history for a specific equipment
-Future<List<String>> historyIDbyEquipment(String equipment) async
-{
-    //creates the return list
-    var historyIDs = List<String>.filled(0, '', growable: true);
-
-    //sets a database reference to the history directory and performs a query
-    DatabaseReference historyRef = FirebaseDatabase.instance.ref('checkoutHistory');
-    Query query = historyRef.orderByChild('equipment').equalTo(equipment);
 
     //takes a data snapshot of the queried information
     DataSnapshot histories = await query.get();
@@ -1323,42 +1181,6 @@ Future<String> editEquipment(
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//Function to edit a form
-Future<String> editForm(String formID, String formName, String info, bool verification) async
-{
-    //sets a database reference to the form and takes snapshot
-    DatabaseReference formRef = FirebaseDatabase.instance.ref('forms/$formID');
-    DataSnapshot form = await formRef.get();
-
-    //checks that form exists
-    if(form.exists) {
-        //Gets the associated user and makes a reference
-        DatabaseReference userRef = FirebaseDatabase.instance.ref('users/${form.child('user').value.toString()}');
-
-        //checks to see if the associated user exists
-        var dataTest = await userRef.get();
-        if(dataTest.exists){
-            formRef.update({
-                'formName': formName,
-                'info': info,
-                'verification': verification
-            });
-            //checks to see if the form name was changed and if so changes in user data
-            String oldName = form.child('formName').value.toString();
-            if(formName != oldName) {
-                userRef.child('forms').child(oldName).remove();
-                userRef.child('forms').update({formName: formID});
-            }
-            return 'Updated';
-        } else {
-            return 'Invalid User';
-        }
-    } else {
-        return 'Invalid Form ID';
-    }
-}
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //Function to edit a checkout history
 Future<String> editHistory(
     String historyID, int amountOut,
@@ -1466,7 +1288,7 @@ Future<String> removeUser(String user) async
     //creates a variable for data testing
     var dataTest = await userRef.get();
     //checks to see if the username exists
-    if(dataTest.exists) {
+    if(dataTest.exists && user != '') {
 
         //deletes user
         userRef.remove();
@@ -1485,7 +1307,7 @@ Future<String> removeEquipment(String equipment) async
     //creates a variable for data testing
     var dataTest = await equipmentRef.get();
     //checks to see if the equipment exists
-    if(dataTest.exists) {
+    if(dataTest.exists && equipment != '') {
 
         //deletes equipment
         equipmentRef.remove();
@@ -1504,7 +1326,7 @@ Future<String> removeForm(String formID) async
     DataSnapshot form = await formRef.get();
 
     //checks that form exists
-    if(form.exists) {
+    if(form.exists && formID != '') {
         //Gets the associated user and makes a reference
         DatabaseReference userRef = FirebaseDatabase.instance.ref('users/${form.child('user').value.toString()}');
 
@@ -1531,7 +1353,7 @@ Future<String> removeHistory(String historyID) async
     //creates a variable for data testing
     var dataTest = await historyRef.get();
     //checks to see if the history exists
-    if(dataTest.exists) {
+    if(dataTest.exists && historyID != '') {
 
         //deletes history
         historyRef.remove();
@@ -1551,7 +1373,7 @@ Future<String> removeFormRequirement(
     //creates a variable for data testing
     var dataTest = await equipmentRef.get();
     //checks to see if the equipment exists
-    if(dataTest.exists) {
+    if(dataTest.exists && formName != '' && equipmentName != '') {
         //tests for the formName in the equipment
         dataTest = await equipmentRef.child('forms/$formName').get();
         if (dataTest.exists) {

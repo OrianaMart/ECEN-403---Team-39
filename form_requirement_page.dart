@@ -1,8 +1,7 @@
-//import 'package:database_demo_app/equipment_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'database_functions.dart';
-import 'Data.dart' as user;
 import 'equipment_detail_page.dart';
+import 'Data.dart' as user;
 
 class AddFormRequirementPage extends StatefulWidget {
   const AddFormRequirementPage({super.key});
@@ -107,7 +106,7 @@ class AddFormRequirementPageState extends State<AddFormRequirementPage> {
                 label: const Text('Form Name'),
                 //makes the dropdown menu scrollable
                 menuHeight: 300,
-                errorText: invalidForm ? 'Form already required for equipment': null,
+                errorText: invalidForm ? 'Invalid Form Name': null,
                 //sets the entries to the dropdown menu
                 dropdownMenuEntries: formEntries,
                 onSelected: (String? unused) {},
@@ -129,7 +128,12 @@ class AddFormRequirementPageState extends State<AddFormRequirementPage> {
                     } else {
                       invalidForm = true;
                     }
+                  } else {
+                    invalidForm = true;
                   }
+                  setState(() {
+                    invalidForm;
+                  });
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF963e3e),
@@ -156,6 +160,8 @@ class RemoveFormRequirementPageState extends State<RemoveFormRequirementPage> {
 
   //for drop down menu
   var forms = List<String>.filled(0, '', growable: true);
+
+  bool invalidForm = false;
 
   @override
   void initState() {
@@ -237,6 +243,7 @@ class RemoveFormRequirementPageState extends State<RemoveFormRequirementPage> {
                 width: MediaQuery.of(context).size.width * .9,
                 enableFilter: true,
                 label: const Text('Form Name'),
+                errorText: invalidForm ? 'Invalid Form Name': null,
                 //makes the dropdown menu scrollable
                 menuHeight: 300,
                 //sets the entries to the dropdown menu
@@ -254,7 +261,18 @@ class RemoveFormRequirementPageState extends State<RemoveFormRequirementPage> {
                           MaterialPageRoute(
                             builder: (context) => const EquipmentDetailPage(),
                           ));
+                      setState(() {
+                        invalidForm = false;
+                      });
+                    } else {
+                      setState(() {
+                        invalidForm = true;
+                      });
                     }
+                  } else {
+                    setState(() {
+                      invalidForm = true;
+                    });
                   }
                 },
                 style: ElevatedButton.styleFrom(

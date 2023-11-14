@@ -75,193 +75,119 @@ class EquipmentDetailPageState extends State<EquipmentDetailPage> {
                   ),
                 ),
               ),
-              //const SizedBox(height: 25),
+              const SizedBox(height: 25),
 
-              const SizedBox(height: 5),
-              const Divider(
-                color: Colors.grey,
-              ),
-              const SizedBox(height: 5),
-              //TESTING SOFT WRAP
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              //Displays information for the equipment
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    'Equipment Name: ',
+                    "Equipment Name: ",
                     style: TextStyle(
-                      fontSize: 18.0,
+                      fontSize: 17.0,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF8B8B8B),
                     ),
-                    softWrap: true,
                   ),
-                  const SizedBox(height: 2),
                   Text(
                     user.equipment,
                     style: const TextStyle(
-                      fontSize: 23.0,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 17.0,
                     ),
-                    softWrap: true,
                   ),
                 ],
               ),
-              const SizedBox(height: 5),
-              const Divider(
-                color: Colors.grey,
-              ),
-              const SizedBox(height: 5),
-              //Displays information for the equipment
 
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    'Equipment Category: ',
+                    "Equipment Category: ",
                     style: TextStyle(
-                      fontSize: 18.0,
+                      fontSize: 17.0,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF8B8B8B),
                     ),
-                    softWrap: true,
                   ),
-                  const SizedBox(height: 2),
                   Text(
                     equipmentDetails[1],
                     style: const TextStyle(
-                      fontSize: 23.0,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 17.0,
                     ),
-                    softWrap: true,
                   ),
                 ],
               ),
-              const SizedBox(height: 5),
-              const Divider(
-                color: Colors.grey,
-              ),
-              const SizedBox(height: 5),
 
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    'Storage Location: ',
+                    "Storage Location: ",
                     style: TextStyle(
-                      fontSize: 18.0,
+                      fontSize: 17.0,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF8B8B8B),
                     ),
-                    softWrap: true,
                   ),
-                  const SizedBox(height: 2),
                   Text(
                     equipmentDetails[2],
                     style: const TextStyle(
-                      fontSize: 23.0,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 17.0,
                     ),
-                    softWrap: true,
                   ),
                 ],
               ),
-              const SizedBox(height: 5),
-              const Divider(
-                color: Colors.grey,
-              ),
-              const SizedBox(height: 5),
 
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    'Amount Available: ',
+                    "Amount Available: ",
                     style: TextStyle(
-                      fontSize: 18.0,
+                      fontSize: 17.0,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF8B8B8B),
                     ),
-                    softWrap: true,
                   ),
-                  const SizedBox(height: 2),
                   Text(
                     equipmentDetails[3],
                     style: const TextStyle(
-                      fontSize: 23.0,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 17.0,
                     ),
-                    softWrap: true,
                   ),
                 ],
               ),
-              const SizedBox(height: 5),
-              const Divider(
-                color: Colors.grey,
-              ),
-              const SizedBox(height: 5),
 
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    'Total Amount: ',
+                    "Total Amount: ",
                     style: TextStyle(
-                      fontSize: 18.0,
+                      fontSize: 17.0,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF8B8B8B),
                     ),
-                    softWrap: true,
                   ),
-                  const SizedBox(height: 2),
                   Text(
                     equipmentDetails[4],
                     style: const TextStyle(
-                      fontSize: 23.0,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 17.0,
                     ),
-                    softWrap: true,
                   ),
                 ],
               ),
-              const SizedBox(height: 5),
-              const Divider(
-                color: Colors.grey,
-              ),
-              const SizedBox(height: 5),
-
 
               //Displays the information for the equipment if forms are required
               if (forms)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Required Forms: ',
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF8B8B8B),
-                      ),
-                      softWrap: true,
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      equipmentDetails[5],
-                      style: const TextStyle(
-                        fontSize: 23.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      softWrap: true,
-                    ),
-                  ],
+                const Text(
+                  'Required Forms: ',
+                  style: TextStyle(
+                    fontSize: 17.0,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
 
               if (forms)
-                const SizedBox(height: 5),
-                const Divider(
-                  color: Colors.grey,
-                ),
-                const SizedBox(height: 5),
+                Text(equipmentDetails[5],
+                    style: const TextStyle(
+                      fontSize: 17.0,
+                    )),
 
               if (!user.adminStatus) const StudentEquipmentDetails(),
 
@@ -351,7 +277,7 @@ class StudentEquipmentDetailsState extends State<StudentEquipmentDetails> {
               } else {
                 setState(() {
                   amountField.text = '';
-                  invalidAmount = false;
+                  invalidAmount = true;
                   invalidPermissions = false;
                 });
               }
@@ -479,7 +405,7 @@ class AdminEquipmentDetails extends StatelessWidget {
           ), // changes the color of the button
         ),
         onPressed: () {
-          Navigator.of(context).push(
+          Navigator.of(context).pushReplacement(
             MaterialPageRoute(
               builder: (context) => const HistoryPage(),
             ),

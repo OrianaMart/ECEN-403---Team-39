@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'login_screen.dart'; //Imports the login page
 import 'home_page.dart';//Imports the home page
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp()); //Runs app
@@ -12,6 +13,10 @@ class MyApp extends StatelessWidget {
   // This widget is the homepage of the application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return MaterialApp(
       initialRoute: '/login',
       routes: {

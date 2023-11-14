@@ -28,6 +28,10 @@ class NewEquipmentPageState extends State<NewEquipmentPage> {
   bool invalidName = false;
   bool invalidAmount = false;
 
+  //error checking to catch null category or location
+  bool invalidCategory = false;
+  bool invalidLocation = false;
+
   //variables for initial values
   String? category;
   String? location;
@@ -147,6 +151,7 @@ class NewEquipmentPageState extends State<NewEquipmentPage> {
                 width: MediaQuery.of(context).size.width * .9,
                 enableFilter: true,
                 initialSelection: category,
+                errorText: invalidCategory ? 'Invalid Category' : null,
                 label: const Text('Category'),
                 //makes the dropdown menu scrollable
                 menuHeight: 300,
@@ -164,6 +169,7 @@ class NewEquipmentPageState extends State<NewEquipmentPage> {
                 width: MediaQuery.of(context).size.width * .9,
                 enableFilter: true,
                 initialSelection: location,
+                errorText: invalidLocation ? 'Invalid Location' : null,
                 label: const Text('Storage Location'),
                 //makes the dropdown menu scrollable
                 menuHeight: 300,
@@ -177,7 +183,7 @@ class NewEquipmentPageState extends State<NewEquipmentPage> {
                 enabled: creating,
                 decoration: InputDecoration(
                   labelText: 'Equipment Name',
-                  errorText: invalidName ? 'Equipment Already Exists' : null,
+                  errorText: invalidName ? 'Invalid Equipment Name' : null,
                 ),
               ),
               TextFormField(
@@ -185,7 +191,7 @@ class NewEquipmentPageState extends State<NewEquipmentPage> {
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   labelText: 'Amount',
-                  errorText: invalidAmount ? 'Incorrect Amount' : null,
+                  errorText: invalidAmount ? 'Invalid Amount' : null,
                 ),
               ),
 
@@ -193,10 +199,28 @@ class NewEquipmentPageState extends State<NewEquipmentPage> {
               const SizedBox(height: 5),
               ElevatedButton(
                 onPressed: () async {
-                  if (nameField.text != '' &&
-                      amountField.text != '' &&
-                      categoryField.text != '' &&
-                      locationField.text != '') {
+
+                  invalidCategory = false;
+                  invalidLocation = false;
+                  invalidName = false;
+                  invalidAmount = false;
+
+
+                  if(categoryField.text == '') {
+                    invalidCategory = true;
+                  }
+                  if(locationField.text == '') {
+                    invalidLocation = true;
+                  }
+                  if(nameField.text == '') {
+                    invalidName = true;
+                  }
+                  if(amountField.text == '') {
+                    invalidAmount = true;
+                  }
+
+                  if (!invalidCategory && !invalidLocation &&
+                      !invalidName && !invalidAmount) {
                     //if no category is left empty
                     if (creating) {
                       //if in creation mode
@@ -207,19 +231,13 @@ class NewEquipmentPageState extends State<NewEquipmentPage> {
                           locationField.text)) {
                         case 'Creation Failed':
                           {
-                            setState(() {
-                              invalidName = true;
-                              invalidAmount = false;
-                            });
+                            invalidName = true;
                           }
                           break;
 
                         case 'Invalid Amount':
                           {
-                            setState(() {
-                              invalidName = false;
-                              invalidAmount = true;
-                            });
+                            invalidAmount = true;
                           }
                           break;
 
@@ -233,6 +251,8 @@ class NewEquipmentPageState extends State<NewEquipmentPage> {
                             setState(() {
                               invalidName = false;
                               invalidAmount = false;
+                              invalidLocation = false;
+                              invalidCategory = false;
                             });
                           }
                           break;
@@ -248,16 +268,21 @@ class NewEquipmentPageState extends State<NewEquipmentPage> {
                         setState(() {
                           invalidName = false;
                           invalidAmount = false;
+                          invalidLocation = false;
+                          invalidCategory = false;
                         });
                       } else {
-
-                        setState(() {
-                          invalidName = false;
-                          invalidAmount = true;
-                        });
+                        invalidAmount = true;
                       }
                     }
                   }
+
+                  setState(() {
+                    invalidCategory;
+                    invalidLocation;
+                    invalidName;
+                    invalidAmount;
+                  });
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF963e3e),

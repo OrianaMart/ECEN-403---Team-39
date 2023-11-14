@@ -132,6 +132,8 @@ class LoginScreenState extends State<LoginScreen> {
                   }
                   // Add login code here with database
                   // Include code to navigate to the homepage
+                } else {
+
                 }
               },
               style: ElevatedButton.styleFrom(

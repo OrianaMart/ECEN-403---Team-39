@@ -64,137 +64,137 @@ class HistoryDetailPageState extends State<HistoryDetailPage> {
         body: Center(
             child: Padding(
                 padding:
-                const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                child: Column(
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                child: Column(children: [
+                  const Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'Checkout Details',
+                      style: TextStyle(
+                        fontSize: 28.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          'Checkout Details',
+                      const Text(
+                        "Checkout History ID: ",
+                        style: TextStyle(
+                          fontSize: 17.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        user.checkoutID,
+                        style: const TextStyle(
+                          fontSize: 17.0,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  if (user.adminStatus)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Username: ",
                           style: TextStyle(
-                            fontSize: 28.0,
+                            fontSize: 17.0,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 15),
+                        Text(
+                          historyDetails[1],
+                          style: const TextStyle(
+                            fontSize: 17.0,
+                          ),
+                        ),
+                      ],
+                    ),
 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Checkout History ID: ",
-                            style: TextStyle(
-                              fontSize: 17.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            user.checkoutID,
-                            style: const TextStyle(
-                              fontSize: 17.0,
-                            ),
-                          ),
-                        ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Checked Out Equipment: ",
+                        style: TextStyle(
+                          fontSize: 17.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
+                      Text(
+                        historyDetails[2],
+                        style: const TextStyle(
+                          fontSize: 17.0,
+                        ),
+                      ),
+                    ],
+                  ),
 
-                      if(user.adminStatus) Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Username: ",
-                            style: TextStyle(
-                              fontSize: 17.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            historyDetails[1],
-                            style: const TextStyle(
-                              fontSize: 17.0,
-                            ),
-                          ),
-                        ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Amount Checked Out: ",
+                        style: TextStyle(
+                          fontSize: 17.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
+                      Text(
+                        historyDetails[3],
+                        style: const TextStyle(
+                          fontSize: 17.0,
+                        ),
+                      ),
+                    ],
+                  ),
 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Checked Out Equipment: ",
-                            style: TextStyle(
-                              fontSize: 17.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            historyDetails[2],
-                            style: const TextStyle(
-                              fontSize: 17.0,
-                            ),
-                          ),
-                        ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Admin Approved Checkout: ",
+                        style: TextStyle(
+                          fontSize: 17.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
+                      Text(
+                        historyDetails[4],
+                        style: const TextStyle(
+                          fontSize: 17.0,
+                        ),
+                      ),
+                    ],
+                  ),
 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Amount Checked Out: ",
-                            style: TextStyle(
-                              fontSize: 17.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            historyDetails[3],
-                            style: const TextStyle(
-                              fontSize: 17.0,
-                            ),
-                          ),
-                        ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Checkout Timestamp: ",
+                        style: TextStyle(
+                          fontSize: 17.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Admin Approved Checkout: ",
-                            style: TextStyle(
-                              fontSize: 17.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            historyDetails[4],
-                            style: const TextStyle(
-                              fontSize: 17.0,
-                            ),
-                          ),
-                        ],
+                      Text(
+                        historyDetails[5],
+                        style: const TextStyle(
+                          fontSize: 17.0,
+                        ),
                       ),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Checkout Timestamp: ",
-                            style: TextStyle(
-                              fontSize: 17.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            historyDetails[5],
-                            style: const TextStyle(
-                              fontSize: 17.0,
-                            ),
-                          ),
-                        ],
-                      ),
+                    ],
+                  ),
 
                   //Displays the information for the equipment
-                  if(historyDetails.length > 6)
+                  if (historyDetails.length > 6)
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -214,7 +214,7 @@ class HistoryDetailPageState extends State<HistoryDetailPage> {
                       ],
                     ),
 
-                  if(historyDetails.length > 6)
+                  if (historyDetails.length > 6)
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -234,7 +234,7 @@ class HistoryDetailPageState extends State<HistoryDetailPage> {
                       ],
                     ),
 
-                  if(historyDetails.length > 6)
+                  if (historyDetails.length > 6)
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -254,9 +254,8 @@ class HistoryDetailPageState extends State<HistoryDetailPage> {
                       ],
                     ),
 
-                  if(user.adminStatus)
+                  if (user.adminStatus)
                     AdminHistoryDetails(amountAllowed: amount),
-
                 ]))));
   }
 }
@@ -270,6 +269,7 @@ class AdminHistoryDetails extends StatefulWidget {
     return AdminHistoryDetailsState();
   }
 }
+
 class AdminHistoryDetailsState extends State<AdminHistoryDetails> {
   final uinField = TextEditingController();
   final amountField = TextEditingController();
@@ -280,88 +280,94 @@ class AdminHistoryDetailsState extends State<AdminHistoryDetails> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      if(widget.amountAllowed > 0)
-      TextFormField(
-        controller: uinField,
-        keyboardType: TextInputType.number,
-        decoration: InputDecoration(
-            labelText: 'UIN',
-            helperText: 'Verify Students UIN for Verification',
-            errorText: invalidUin ? 'Incorrect UIN' : null),
-      ),
-      if(widget.amountAllowed > 0)
-      TextFormField(
-        controller: amountField,
-        keyboardType: TextInputType.number,
-        decoration: InputDecoration(
-            labelText: 'Check-In Amount',
-            errorText: invalidAmount ? 'Invalid Check-In Amount' : null),
-      ),
-      if(widget.amountAllowed > 0)
-      ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            foregroundColor:
-            const Color(0xFFdedede), // changes color of the text
-            backgroundColor:
-            const Color(0xFF963e3e), // changes the color of the button
-          ),
-          onPressed: () async {
-            if (amountField.text.toString() != '') {
-              if (int.parse(amountField.text.toString()) < 1 ||
-                  int.parse(amountField.text.toString()) > widget.amountAllowed) {
-                setState(() {
+      if (widget.amountAllowed > 0)
+        TextFormField(
+          controller: uinField,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+              labelText: 'UIN',
+              helperText: 'Verify Students UIN for Verification',
+              errorText: invalidUin ? 'Incorrect UIN' : null),
+        ),
+      if (widget.amountAllowed > 0)
+        TextFormField(
+          controller: amountField,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+              labelText: 'Check-In Amount',
+              errorText: invalidAmount ? 'Invalid Check-In Amount' : null),
+        ),
+      if (widget.amountAllowed > 0)
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              foregroundColor:
+                  const Color(0xFFdedede), // changes color of the text
+              backgroundColor:
+                  const Color(0xFF963e3e), // changes the color of the button
+            ),
+            onPressed: () async {
+              invalidAmount = false;
+              invalidUin = false;
+
+              if (amountField.text.toString() != '') {
+                if (int.parse(amountField.text.toString()) < 1 ||
+                    int.parse(amountField.text.toString()) >
+                        widget.amountAllowed) {
                   invalidAmount = true;
-                  invalidUin = false;
-                });
+                }
               } else {
-                if (uinField.text.toString() != '') {
-                  switch (await verifyCheckIn(
-                      user.checkoutID,
-                      int.parse(uinField.text.toString()),
-                      int.parse(amountField.text.toString()),
-                      user.username)) {
-                    case 'Invalid Amount':
-                      {
-                        invalidAmount = true;
-                        invalidUin = false;
-                      }
-                      break;
+                invalidAmount = true;
+              }
 
-                    case 'Invalid UIN':
-                      {
+              if (uinField.text.toString() == '') {
+                invalidUin = true;
+              }
+
+              if (!invalidAmount && !invalidUin) {
+                switch (await verifyCheckIn(
+                    user.checkoutID,
+                    int.parse(uinField.text.toString()),
+                    int.parse(amountField.text.toString()),
+                    user.username)) {
+                  case 'Invalid Amount':
+                    {
+                      invalidAmount = true;
+                    }
+                    break;
+
+                  case 'Invalid UIN':
+                    {
+                      invalidUin = true;
+                    }
+                    break;
+
+                  case 'Checked In':
+                    {
+                      setState(() {
                         invalidAmount = false;
-                        invalidUin = true;
-                      }
-                      break;
-
-                    case 'Checked In':
-                      {
-                        setState(() {
-                          invalidAmount = false;
-                          invalidUin = false;
-                        });
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const HomePage()));
-                      }
-                      break;
-                  }
-                  setState(() {
-                    invalidUin;
-                    invalidAmount;
-                  });
+                        invalidUin = false;
+                      });
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomePage()));
+                    }
+                    break;
                 }
               }
-            }
-          },
-          child: const Text('Verify Check-In')),
+
+              setState(() {
+                invalidAmount;
+                invalidUin;
+              });
+            },
+            child: const Text('Verify Check-In')),
       ElevatedButton(
           style: ElevatedButton.styleFrom(
             foregroundColor:
-            const Color(0xFFdedede), // changes color of the text
+                const Color(0xFFdedede), // changes color of the text
             backgroundColor:
-            const Color(0xFF963e3e), // changes the color of the button
+                const Color(0xFF963e3e), // changes the color of the button
           ),
           onPressed: () async {
             Navigator.pushReplacement(
@@ -370,22 +376,21 @@ class AdminHistoryDetailsState extends State<AdminHistoryDetails> {
                     builder: (context) => const EditHistoryPage()));
           },
           child: const Text('Edit Checkout History')),
-      if(widget.amountAllowed == 0)
-      ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            foregroundColor:
-            const Color(0xFFdedede), // changes color of the text
-            backgroundColor:
-            const Color(0xFF963e3e), // changes the color of the button
-          ),
-          onPressed: () async {
-            _removalConfirmation(context);
-          },
-          child: const Text('Delete Checkout History')),
+      if (widget.amountAllowed == 0)
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              foregroundColor:
+                  const Color(0xFFdedede), // changes color of the text
+              backgroundColor:
+                  const Color(0xFF963e3e), // changes the color of the button
+            ),
+            onPressed: () async {
+              _removalConfirmation(context);
+            },
+            child: const Text('Delete Checkout History')),
     ]);
   }
 }
-
 
 //Function to make a pop out dialogue box appear when delete button is pushed
 Future<void> _removalConfirmation(BuildContext context) async {
@@ -395,9 +400,12 @@ Future<void> _removalConfirmation(BuildContext context) async {
     builder: (BuildContext context) {
       return AlertDialog(
         title: const Text('Delete History'),
-        content:  const SingleChildScrollView(
+        content: const SingleChildScrollView(
           child: ListBody(
-            children: <Widget>[Text('Are you sure you want to permanently delete this history entry?')],
+            children: <Widget>[
+              Text(
+                  'Are you sure you want to permanently delete this history entry?')
+            ],
           ),
         ),
         actions: <Widget>[
@@ -411,7 +419,7 @@ Future<void> _removalConfirmation(BuildContext context) async {
               child: const Text('Go Back')),
           TextButton(
               onPressed: () async {
-                if(user.checkoutID != '') {
+                if (user.checkoutID != '') {
                   if (await removeHistory(user.checkoutID) == 'Removed') {
                     user.equipment = '';
                     user.checkoutID = '';

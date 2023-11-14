@@ -124,13 +124,17 @@ class ProfilePageState extends State<ProfilePage> {
               //  color: Colors.grey,
               //),
               const SizedBox(height: 5),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Icon(Icons.account_circle, size: 45, color: Color(0xFF87352F)),
+                  const SizedBox(width: 20),
+                  //const Spacer(),
                   Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                         const Text(
                           'Username: ',
-                          softWrap: true,
                           style: TextStyle(
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold,
@@ -140,7 +144,6 @@ class ProfilePageState extends State<ProfilePage> {
                       const SizedBox(height: 2),
                         Text(
                           username,
-                          softWrap: true,
                           style: const TextStyle(
                             fontSize: 23.0,
                             fontWeight: FontWeight.bold,
@@ -148,6 +151,8 @@ class ProfilePageState extends State<ProfilePage> {
                         ),
                     ],
                   ),
+                ],
+              ),
               const SizedBox(height: 5),
               const Divider(
                 color: Colors.grey,
@@ -155,33 +160,54 @@ class ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 5),
 
               // Name information for students (first and last name are populated on the same line
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Icon(Icons.people, size: 45, color: Color(0xFF87352F)),
+                  const SizedBox(width: 20),
+                  //const Spacer(),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'First Name: ',
+                        'Name: ',
                         style: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF8B8B8B),
                         ),
-                        softWrap: true,
                       ),
                       const SizedBox(height: 2),
-
-                      Text(
-                        '$firstName $lastName',
-                        //softWrap: true,
-                        style: const TextStyle(
-                          fontSize: 23.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        softWrap: true,
-                        overflow: TextOverflow.clip,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            firstName,
+                            style: const TextStyle(
+                              fontSize: 23.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const Text(
+                            ' ',
+                            style: TextStyle(
+                              fontSize: 23.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            lastName,
+                            style: const TextStyle(
+                              fontSize: 23.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-
+                ],
+              ),
               const SizedBox(height: 5),
               const Divider(
                 color: Colors.grey,
@@ -189,6 +215,12 @@ class ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 5),
 
               // UIN information for students
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Icon(Icons.numbers, size: 45, color: Color(0xFF87352F)),
+                  const SizedBox(width: 20),
+                  //const Spacer(),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -199,7 +231,6 @@ class ProfilePageState extends State<ProfilePage> {
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF8B8B8B),
                         ),
-                        softWrap: true,
                       ),
                       const SizedBox(height: 2),
                       Text(
@@ -208,11 +239,11 @@ class ProfilePageState extends State<ProfilePage> {
                           fontSize: 23.0,
                           fontWeight: FontWeight.bold,
                         ),
-                        softWrap: true,
                       ),
                     ],
                   ),
-
+                ],
+              ),
               const SizedBox(height: 5),
               const Divider(
                 color: Colors.grey,
@@ -220,6 +251,12 @@ class ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 5),
 
               // Email information for students
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Icon(Icons.email, size: 45, color: Color(0xFF87352F)),
+                  const SizedBox(width: 20),
+                  //const Spacer(),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -230,7 +267,6 @@ class ProfilePageState extends State<ProfilePage> {
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF8B8B8B),
                         ),
-                        softWrap: true,
                       ),
                       const SizedBox(height: 2),
                       Text(
@@ -239,10 +275,11 @@ class ProfilePageState extends State<ProfilePage> {
                           fontSize: 23.0,
                           fontWeight: FontWeight.bold,
                         ),
-                        softWrap: true,
                       ),
                     ],
                   ),
+                ],
+              ),
               const SizedBox(height: 5),
               const Divider(
                 color: Colors.grey,
@@ -250,7 +287,12 @@ class ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 5),
 
               // Phone number information for students
-
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Icon(Icons.local_phone_rounded, size: 45, color: Color(0xFF87352F)),
+                  const SizedBox(width: 20),
+                  //const Spacer(),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -261,7 +303,6 @@ class ProfilePageState extends State<ProfilePage> {
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF8B8B8B),
                         ),
-                        softWrap: true,
                       ),
                       const SizedBox(height: 2),
                       Text(
@@ -270,11 +311,11 @@ class ProfilePageState extends State<ProfilePage> {
                           fontSize: 23.0,
                           fontWeight: FontWeight.bold,
                         ),
-                        softWrap: true,
                       ),
                     ],
                   ),
-
+                ],
+              ),
               const SizedBox(height: 5),
               const Divider(
                 color: Colors.grey,
@@ -286,6 +327,12 @@ class ProfilePageState extends State<ProfilePage> {
 
               // Class for students
               if (!user.adminStatus || courseNumber != 'null')
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Icon(Icons.book, size: 45, color: Color(0xFF87352F)),
+                    const SizedBox(width: 20),
+                    //const Spacer(),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -296,7 +343,6 @@ class ProfilePageState extends State<ProfilePage> {
                             fontWeight: FontWeight.bold,
                             color: Color(0xFF8B8B8B),
                           ),
-                          softWrap: true,
                         ),
                         const SizedBox(height: 2),
                         Text(
@@ -305,43 +351,16 @@ class ProfilePageState extends State<ProfilePage> {
                             fontSize: 23.0,
                             fontWeight: FontWeight.bold,
                           ),
-                          softWrap: true,
                         ),
                       ],
                     ),
+                  ],
+                ),
               const SizedBox(height: 5),
               const Divider(
                 color: Colors.grey,
               ),
               const SizedBox(height: 5),
-              //TESTING SOFT WRAP
-              /*
-              const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'TESTING NAME: ',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF8B8B8B),
-                    ),
-                  ),
-                  SizedBox(height: 2),
-                  Text(
-                    'abcdhalfksjdfhlaksjdhfawefuhalskdjhfawehliaweufhaskjdfhlkawehjfliawuefhlaksjdfhawhefliawuefhajkshflawieufhaskjdfhalefhjkaw',
-                    style: TextStyle(
-                      fontSize: 23.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    softWrap: true,
-                  ),
-
-                ],
-              ),
-
-               */
-
 
               if(user.adminStatus)
                 const AdminUserDetails(),

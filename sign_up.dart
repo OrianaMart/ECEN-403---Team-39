@@ -31,6 +31,12 @@ class SignUpPageState extends State<SignUpPage> {
   bool invalidCourseNumber = false;
   bool invalidPassword = false;
 
+  bool invalidFirstName = false;
+  bool invalidLastName = false;
+  bool invalidTeamNumber = false;
+
+  bool student = false;
+
   String pageName = 'Create your account.';
 
   @override
@@ -45,15 +51,23 @@ class SignUpPageState extends State<SignUpPage> {
           pageName = 'Edit account';
 
           var temp = await getUserInfo(user.viewedUser);
+
+          if(temp.length > 6 && temp[6] != 'null'){
+            student = true;
+          }
           setState(() {
+            student;
             firstNameField.text = temp[2];
             lastNameField.text = temp[3];
             emailField.text = temp[4];
             confirmEmailField.text = temp[4];
             phoneNumberField.text = temp[5];
             uinField.text = temp[1];
+            if(student) {
+              teamNumberField.text = temp[7];
+              courseNumberField.text = temp[6];
+            }
           });
-
         } else {
           pageName = 'Create admin account.';
         }
@@ -61,8 +75,9 @@ class SignUpPageState extends State<SignUpPage> {
 
       setState(() {
         pageName;
+        student;
       });
-    } ();
+    }();
   }
 
   @override
@@ -128,10 +143,10 @@ class SignUpPageState extends State<SignUpPage> {
                     ),
                   ],
                 ),
-              if (user.adminStatus && user.viewedUser != '') const SizedBox(height: 15),
+              if (user.adminStatus && user.viewedUser != '')
+                const SizedBox(height: 15),
 
               // Personal Information Text
-              if(user.viewedUser == '')
               const Align(
                 alignment: Alignment.topLeft,
                 child: Text(
@@ -144,23 +159,25 @@ class SignUpPageState extends State<SignUpPage> {
               ),
               TextFormField(
                 controller: firstNameField,
-                decoration: const InputDecoration(labelText: 'First Name'),
+                decoration: InputDecoration(labelText: 'First Name',
+                    errorText: invalidFirstName ? 'Enter First Name' : null),
               ),
               TextFormField(
                 controller: lastNameField,
-                decoration: const InputDecoration(labelText: 'Last Name'),
+                decoration: InputDecoration(labelText: 'Last Name',
+                    errorText: invalidLastName ? 'Enter Last Name' : null),
               ),
               TextFormField(
                 controller: emailField,
-                decoration: const InputDecoration(
-                    labelText: 'E-mail', hintText: 'ex: email@tamu.edu'),
+                decoration: InputDecoration(
+                    labelText: 'E-mail', hintText: 'ex: email@tamu.edu',
+                    errorText: invalidEmail ? 'Invalid Email' : null),
               ),
               TextFormField(
                 controller: confirmEmailField,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     labelText: 'Confirm E-mail',
-                    hintText: 'ex: email@tamu.edu',
-                    errorText: invalidEmail ? 'Invalid Email' : null),
+                    hintText: 'ex: email@tamu.edu'),
               ),
               TextFormField(
                 controller: phoneNumberField,
@@ -182,7 +199,7 @@ class SignUpPageState extends State<SignUpPage> {
               const Align(
                 child: SizedBox(height: 40),
               ),
-              if (!user.adminStatus)
+              if (!user.adminStatus || student)
                 const Align(
                   alignment: Alignment.topLeft,
                   child: Text(
@@ -193,13 +210,14 @@ class SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                 ),
-              if (!user.adminStatus)
+              if (!user.adminStatus || student)
                 TextFormField(
                   controller: teamNumberField,
                   keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(labelText: 'Team Number'),
+                  decoration: InputDecoration(labelText: 'Team Number',
+                      errorText: invalidTeamNumber ? 'Enter Team Number' : null),
                 ),
-              if (!user.adminStatus)
+              if (!user.adminStatus || student)
                 TextFormField(
                   controller: courseNumberField,
                   keyboardType: TextInputType.number,
@@ -237,24 +255,26 @@ class SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                 ),
-              TextFormField(
-                controller: usernameField,
-                decoration: InputDecoration(
-                    labelText: 'Username',
-                    errorText:
-                        invalidUsername ? 'Username Already Exists' : null),
-              ),
-              TextFormField(
-                controller: passwordField,
-                decoration: const InputDecoration(labelText: 'Password'),
-              ),
-              TextFormField(
-                controller: confirmPasswordField,
-                decoration: InputDecoration(
-                    labelText: 'Confirm Password',
-                    errorText:
-                        invalidPassword ? 'Passwords Do Not Match' : null),
-              ),
+              if (user.viewedUser == '')
+                TextFormField(
+                  controller: usernameField,
+                  decoration: InputDecoration(
+                      labelText: 'Username',
+                      errorText:
+                          invalidUsername ? 'Invalid Username' : null),
+                ),
+              if (user.viewedUser == '')
+                TextFormField(
+                  controller: passwordField,
+                  decoration: InputDecoration(labelText: 'Password',
+                      errorText: invalidPassword ? 'Invalid Password' : null),
+                ),
+              if (user.viewedUser == '')
+                TextFormField(
+                  controller: confirmPasswordField,
+                  decoration: const InputDecoration(
+                      labelText: 'Confirm Password'),
+                ),
 
               // Submits information to data base and proceeds user to student home page
               const SizedBox(height: 5),
@@ -268,14 +288,45 @@ class SignUpPageState extends State<SignUpPage> {
                     invalidCourseNumber = false;
                     invalidPassword = false;
 
-                    if (emailField.text != confirmEmailField.text) {
+                    invalidFirstName = false;
+                    invalidLastName = false;
+                    invalidTeamNumber = false;
+
+                    if (emailField.text != confirmEmailField.text || emailField.text == '') {
                       invalidEmail = true;
                     }
-                    if (passwordField.text != confirmPasswordField.text) {
+                    if (passwordField.text != confirmPasswordField.text || passwordField.text == '') {
                       invalidPassword = true;
                     }
+                    if(usernameField.text == '') {
+                      invalidUsername = true;
+                    }
+                    if(uinField.text == '') {
+                      invalidUin = true;
+                    }
 
-                    if (!invalidEmail && !invalidPassword) {
+                    if(firstNameField.text == '') {
+                      invalidFirstName = true;
+                    }
+                    if(lastNameField.text == '') {
+                      invalidLastName = true;
+                    }
+                    if(teamNumberField.text == '') {
+                      invalidTeamNumber = true;
+                    }
+
+                    if (phoneNumberField.text == '') {
+                      invalidPhoneNumber = true;
+                    }
+                    if (courseNumberField.text == '') {
+                      invalidCourseNumber = true;
+                    }
+
+                    if (!invalidEmail && !invalidPassword &&
+                          !invalidUsername && !invalidUin &&
+                          !invalidFirstName && !invalidLastName &&
+                          !invalidTeamNumber && !invalidCourseNumber &&
+                          !invalidPhoneNumber) {
                       switch (await createStudentUser(
                           usernameField.text,
                           passwordField.text,
@@ -332,6 +383,10 @@ class SignUpPageState extends State<SignUpPage> {
                               invalidPhoneNumber = false;
                               invalidCourseNumber = false;
                               invalidPassword = false;
+
+                              invalidFirstName = false;
+                              invalidLastName = false;
+                              invalidTeamNumber = false;
                             });
                           }
                           break;
@@ -345,6 +400,10 @@ class SignUpPageState extends State<SignUpPage> {
                       invalidPhoneNumber;
                       invalidCourseNumber;
                       invalidPassword;
+
+                      invalidFirstName;
+                      invalidLastName;
+                      invalidTeamNumber;
                     });
                   },
                   style: ElevatedButton.styleFrom(
@@ -353,7 +412,121 @@ class SignUpPageState extends State<SignUpPage> {
                   child: const Text('Submit'),
                 ),
 
-              if(user.adminStatus && user.viewedUser == '')
+              //edit user
+              if (user.viewedUser != '')
+                ElevatedButton(
+                    onPressed: () async {
+                      invalidEmail = false;
+                      invalidPhoneNumber = false;
+                      invalidCourseNumber = false;
+                      invalidTeamNumber = false;
+                      invalidUin = false;
+                      invalidFirstName = false;
+                      invalidLastName = false;
+
+                      if (emailField.text != confirmEmailField.text || emailField.text == '') {
+                        invalidEmail = true;
+                      }
+
+                      int teamNumber = 0;
+                      int courseNumber = 0;
+
+                      if(teamNumberField.text != '') {
+                        teamNumber = int.parse(teamNumberField.text);
+                      } else if (student){
+                        invalidTeamNumber = true;
+                      }
+
+                      if(courseNumberField.text != '') {
+                        if(int.parse(courseNumberField.text) == 403 || int.parse(courseNumberField.text) == 404) {
+                          courseNumber = int.parse(courseNumberField.text);
+                        } else {
+                          invalidCourseNumber = true;
+                        }
+                      } else if(student){
+                        invalidCourseNumber = true;
+                      }
+                      if(uinField.text == '') {
+                        invalidUin = true;
+                      }
+
+                      if(firstNameField.text == '') {
+                        invalidFirstName = true;
+                      }
+                      if(lastNameField.text == '') {
+                        invalidLastName = true;
+                      }
+
+                      if (phoneNumberField.text == '') {
+                        invalidPhoneNumber = true;
+                      }
+
+                      if(!invalidEmail && !invalidCourseNumber &&
+                          !invalidFirstName && !invalidLastName &&
+                          !invalidUin && !invalidTeamNumber &&
+                          !invalidPhoneNumber) {
+                        switch (await editUserAccount(
+                            user.viewedUser,
+                            int.parse(uinField.text),
+                            firstNameField.text,
+                            lastNameField.text,
+                            emailField.text,
+                            int.parse(phoneNumberField.text),
+                            teamNumber,
+                            courseNumber)) {
+                          case 'Invalid Email':
+                            {
+                              invalidEmail = true;
+                            }
+
+                            break;
+
+                          case 'Invalid Phone Number':
+                            {
+                              invalidPhoneNumber = true;
+                            }
+
+                            break;
+
+                          case 'Updated':
+                            {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const UsersPage(),
+                                  ));
+                              setState(() {
+                                invalidEmail = false;
+                                invalidPhoneNumber = false;
+                                invalidCourseNumber = false;
+                                invalidTeamNumber = false;
+                                invalidUin = false;
+                                invalidFirstName = false;
+                                invalidLastName = false;
+                              });
+                            }
+                            break;
+                        }
+
+                      }
+                      setState(() {
+                        invalidEmail;
+                        invalidPhoneNumber;
+                        invalidCourseNumber;
+                        invalidTeamNumber;
+                        invalidUin;
+                        invalidFirstName;
+                        invalidLastName;
+                      });
+
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF963e3e),
+                    ),
+                    child: const Text('Submit')
+                ),
+
+              if (user.adminStatus && user.viewedUser == '')
                 ElevatedButton(
                   onPressed: () async {
                     invalidUsername = false;
@@ -362,14 +535,38 @@ class SignUpPageState extends State<SignUpPage> {
                     invalidPhoneNumber = false;
                     invalidPassword = false;
 
-                    if (emailField.text != confirmEmailField.text) {
+                    invalidFirstName = false;
+                    invalidLastName = false;
+
+                    if (emailField.text != confirmEmailField.text || emailField.text == '') {
                       invalidEmail = true;
                     }
-                    if (passwordField.text != confirmPasswordField.text) {
+                    if (passwordField.text != confirmPasswordField.text || passwordField.text == '') {
                       invalidPassword = true;
                     }
 
-                    if (!invalidEmail && !invalidPassword) {
+                    if(uinField.text == '') {
+                      invalidUin = true;
+                    }
+                    if(usernameField.text == '') {
+                      invalidUsername = true;
+                    }
+
+                    if(firstNameField.text == '') {
+                      invalidFirstName = true;
+                    }
+                    if(lastNameField.text == '') {
+                      invalidLastName = true;
+                    }
+
+                    if (phoneNumberField.text == '') {
+                      invalidPhoneNumber = true;
+                    }
+
+                    if (!invalidEmail && !invalidPassword &&
+                        !invalidFirstName && !invalidLastName &&
+                        !invalidUin && !invalidUsername &&
+                        !invalidPhoneNumber) {
                       switch (await createAdminUser(
                           usernameField.text,
                           passwordField.text,
@@ -416,6 +613,9 @@ class SignUpPageState extends State<SignUpPage> {
                               invalidPhoneNumber = false;
                               invalidCourseNumber = false;
                               invalidPassword = false;
+
+                              invalidFirstName = false;
+                              invalidLastName = false;
                             });
                           }
                           break;
@@ -428,6 +628,9 @@ class SignUpPageState extends State<SignUpPage> {
                       invalidEmail;
                       invalidPhoneNumber;
                       invalidPassword;
+
+                      invalidFirstName;
+                      invalidLastName;
                     });
                   },
                   style: ElevatedButton.styleFrom(
