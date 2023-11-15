@@ -1,16 +1,4 @@
-# team_39_application
+#ECEN-404---Team-39
+The User Interface (UI) serves as the main point of interaction for users, requiring a clear and intuitive design to allow effortless navigation for all users. This interface simplifies student activities, allowing them to log in, reserve lab equipment prior to their arrival, and access required forms for specialized equipment. Following form submission of equipment requests, students can track the real-time status of their accounts.
+In addition to equipment reservations, a machine learning-powered scanning page allows students and administrators to identify the category of requested or checked-out equipment. Admin login functionality is integrated within the same login page; however, upon login, administrators are redirected to a different portion of the application, granting them access to advanced features. Administrators have the ability to approve equipment and specialized equipment access requests, update database information and permissions, as well as interact with the ML model scanning page.
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
