@@ -112,6 +112,7 @@ class ProfilePageState extends State<ProfilePage> {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
+          child: SingleChildScrollView(
           child: Column(
             children: [
               /*CircleAvatar(
@@ -352,6 +353,7 @@ class ProfilePageState extends State<ProfilePage> {
               if (user.adminStatus) const AdminUserDetails(),
             ],
           ),
+        ),
         ),
       ),
     );

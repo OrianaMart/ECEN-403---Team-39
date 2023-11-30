@@ -20,7 +20,7 @@ Future<void> internetPopUp(BuildContext context) async {
         title: const Text('Internet Connection Lost'),
         content: const SingleChildScrollView(
           child: ListBody(
-            children: <Widget>[Text('Please reconnect to the iternet and then retry the connection.')],
+            children: <Widget>[Text('Please reconnect to the internet and then retry the connection.')],
           ),
         ),
         actions: <Widget>[

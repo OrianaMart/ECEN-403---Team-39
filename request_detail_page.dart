@@ -57,8 +57,8 @@ class RequestDetailPageState extends State<RequestDetailPage> {
         body: Center(
             child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                child: Column(children: [
+                    const EdgeInsets.symmetric(horizontal: 20),
+                child: SingleChildScrollView(child: Column(children: [
                   const Align(
                     alignment: Alignment.topLeft,
                     child: Text(
@@ -69,110 +69,167 @@ class RequestDetailPageState extends State<RequestDetailPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 15),
 
                   //Displays the information for the equipment
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "Request ID: ",
-                        style: TextStyle(
-                          fontSize: 17.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        user.requestID,
-                        style: const TextStyle(
-                          fontSize: 17.0,
-                        ),
-                      ),
-                    ],
+                  const SizedBox(height: 5),
+                  const Divider(
+                    color: Colors.grey,
                   ),
-
-                  if (user.adminStatus)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                  const SizedBox(height: 5),
+                  //TESTING SOFT WRAP
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          "Username: ",
+                          'Request ID: ',
                           style: TextStyle(
-                            fontSize: 17.0,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF8B8B8B),
+                          ),
+                          softWrap: true,
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          requestDetails[0],
+                          style: const TextStyle(
+                            fontSize: 23.0,
                             fontWeight: FontWeight.bold,
                           ),
+                          softWrap: true,
                         ),
+                      ],
+                  ),
+                  const SizedBox(height: 5),
+                  const Divider(
+                    color: Colors.grey,
+                  ),
+                  const SizedBox(height: 5),
+
+                  if (user.adminStatus)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Username: ',
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF8B8B8B),
+                          ),
+                          softWrap: true,
+                        ),
+                        const SizedBox(height: 2),
                         Text(
                           requestDetails[1],
                           style: const TextStyle(
-                            fontSize: 17.0,
+                            fontSize: 23.0,
+                            fontWeight: FontWeight.bold,
                           ),
+                          softWrap: true,
                         ),
+                        const SizedBox(height: 5),
                       ],
                     ),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  if (user.adminStatus)
+                    const Divider(
+                      color: Colors.grey,
+                    ),
+
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        "Requested Equipment: ",
+                        'Request Equipment: ',
                         style: TextStyle(
-                          fontSize: 17.0,
+                          fontSize: 18.0,
                           fontWeight: FontWeight.bold,
+                          color: Color(0xFF8B8B8B),
                         ),
+                        softWrap: true,
                       ),
+                      const SizedBox(height: 2),
                       Text(
                         requestDetails[2],
                         style: const TextStyle(
-                          fontSize: 17.0,
+                          fontSize: 23.0,
+                          fontWeight: FontWeight.bold,
                         ),
+                        softWrap: true,
                       ),
                     ],
                   ),
+                  const SizedBox(height: 5),
+                  const Divider(
+                    color: Colors.grey,
+                  ),
+                  const SizedBox(height: 5),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        "Requested Amount: ",
+                        'Requested Amount: ',
                         style: TextStyle(
-                          fontSize: 17.0,
+                          fontSize: 18.0,
                           fontWeight: FontWeight.bold,
+                          color: Color(0xFF8B8B8B),
                         ),
+                        softWrap: true,
                       ),
+                      const SizedBox(height: 2),
                       Text(
                         requestDetails[3],
                         style: const TextStyle(
-                          fontSize: 17.0,
+                          fontSize: 23.0,
+                          fontWeight: FontWeight.bold,
                         ),
+                        softWrap: true,
                       ),
                     ],
                   ),
+                  const SizedBox(height: 5),
+                  const Divider(
+                    color: Colors.grey,
+                  ),
+                  const SizedBox(height: 5),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        "Request Timestamp: ",
+                        'Request Timestamp: ',
                         style: TextStyle(
-                          fontSize: 17.0,
+                          fontSize: 18.0,
                           fontWeight: FontWeight.bold,
+                          color: Color(0xFF8B8B8B),
                         ),
+                        softWrap: true,
                       ),
+                      const SizedBox(height: 2),
                       Text(
                         requestDetails[4],
                         style: const TextStyle(
-                          fontSize: 17.0,
+                          fontSize: 23.0,
+                          fontWeight: FontWeight.bold,
                         ),
+                        softWrap: true,
                       ),
                     ],
                   ),
+                  const SizedBox(height: 5),
+                  const Divider(
+                    color: Colors.grey,
+                  ),
+                  const SizedBox(height: 5),
+
                   const SizedBox(height: 15),
 
                   if (!user.adminStatus) const StudentRequestDetails(),
 
                   if (user.adminStatus) const AdminRequestDetails(),
-                ]))));
+                ])))));
   }
 }
 
@@ -192,7 +249,7 @@ class StudentRequestDetailsState extends State<StudentRequestDetails> {
   Widget build(BuildContext context) {
     return Column(children: [
       Align(
-        alignment: Alignment.centerRight,
+        alignment: Alignment.center,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             foregroundColor:

@@ -104,7 +104,7 @@ class EditHistoryPageState extends State<EditHistoryPage> {
               const Align(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  'Edit Checkout History.',
+                  'Edit Checkout History',
                   style: TextStyle(
                     fontSize: 28.0,
                     fontWeight: FontWeight.bold,
@@ -119,69 +119,108 @@ class EditHistoryPageState extends State<EditHistoryPage> {
                   'Edit Checkout History Information:',
                   style: TextStyle(
                     fontSize: 17.0,
-                    fontWeight: FontWeight.bold,
+                    //fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-              const SizedBox(height: 15),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              const SizedBox(height: 5),
+              const Divider(
+                color: Colors.grey,
+              ),
+              const SizedBox(height: 5),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    "Checkout History ID: ",
+                    'Checkout History ID: ',
                     style: TextStyle(
-                      fontSize: 17.0,
+                      fontSize: 18.0,
                       fontWeight: FontWeight.bold,
+                      color: Color(0xFF8B8B8B),
                     ),
+                    softWrap: true,
                   ),
+                  const SizedBox(height: 2),
                   Text(
                     user.checkoutID,
                     style: const TextStyle(
-                      fontSize: 17.0,
+                      fontSize: 23.0,
+                      fontWeight: FontWeight.bold,
                     ),
+                    softWrap: true,
                   ),
                 ],
               ),
+              const SizedBox(height: 5),
+              const Divider(
+                color: Colors.grey,
+              ),
+              const SizedBox(height: 5),
+
 
               if (user.adminStatus)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      "Username: ",
+                      'Username: ',
                       style: TextStyle(
-                        fontSize: 17.0,
+                        fontSize: 18.0,
                         fontWeight: FontWeight.bold,
+                        color: Color(0xFF8B8B8B),
                       ),
+                      softWrap: true,
                     ),
+                    const SizedBox(height: 2),
                     Text(
                       historyDetails[1],
                       style: const TextStyle(
-                        fontSize: 17.0,
+                        fontSize: 23.0,
+                        fontWeight: FontWeight.bold,
                       ),
+                      softWrap: true,
                     ),
                   ],
                 ),
+              if (user.adminStatus)
+              const SizedBox(height: 5),
+              if (user.adminStatus)
+              const Divider(
+                color: Colors.grey,
+              ),
+              if (user.adminStatus)
+              const SizedBox(height: 5),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    "Checked Out Equipment: ",
+                    'Checked Out Equipment: ',
                     style: TextStyle(
-                      fontSize: 17.0,
+                      fontSize: 18.0,
                       fontWeight: FontWeight.bold,
+                      color: Color(0xFF8B8B8B),
                     ),
+                    softWrap: true,
                   ),
+                  const SizedBox(height: 2),
                   Text(
                     historyDetails[2],
                     style: const TextStyle(
-                      fontSize: 17.0,
+                      fontSize: 23.0,
+                      fontWeight: FontWeight.bold,
                     ),
+                    softWrap: true,
                   ),
                 ],
               ),
+              const SizedBox(height: 5),
+              const Divider(
+                color: Colors.grey,
+              ),
+              const SizedBox(height: 5),
 
               TextFormField(
                 controller: amountOutField,

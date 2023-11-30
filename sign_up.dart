@@ -115,38 +115,44 @@ class SignUpPageState extends State<SignUpPage> {
                     fontSize: 28.0,
                     fontWeight: FontWeight.bold,
                   ),
+                  softWrap: true,
                 ),
               ),
               if (!user.adminStatus)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Create a free account or return to",
-                      style: TextStyle(
-                        fontSize: 17.0,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        //checks to see if the app is still connected to the internet
-                        connectionCheck(context);
-
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const LoginScreen(),
-                            ));
-                      },
-                      child: const Text(
-                        'log in.',
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Column(
+                    //mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Create a free account or",
                         style: TextStyle(
-                          color: Colors.blue,
                           fontSize: 17.0,
                         ),
+                        softWrap: true,
                       ),
-                    ),
-                  ],
+                      TextButton(
+                        onPressed: () {
+                          //checks to see if the app is still connected to the internet
+                          connectionCheck(context);
+
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const LoginScreen(),
+                              ));
+                        },
+                        child: const Text(
+                          'Return to log in',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 17.0,
+                          ),
+                          softWrap: true,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               if (user.adminStatus && user.viewedUser != '')
                 const SizedBox(height: 15),

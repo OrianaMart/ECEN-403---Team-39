@@ -68,7 +68,7 @@ class EquipmentDetailPageState extends State<EquipmentDetailPage> {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-          child: Column(
+          child: SingleChildScrollView(child: Column(
             children: [
               const Align(
                 alignment: Alignment.topLeft,
@@ -260,17 +260,21 @@ class EquipmentDetailPageState extends State<EquipmentDetailPage> {
                   ],
                 ),
 
-              if (forms) const SizedBox(height: 5),
-              const Divider(
-                color: Colors.grey,
-              ),
-              const SizedBox(height: 5),
+              if (forms)
+                const SizedBox(height: 5),
+              if (forms)
+                const Divider(
+                  color: Colors.grey,
+                ),
+              if (forms)
+                const SizedBox(height: 5),
 
               if (!user.adminStatus) const StudentEquipmentDetails(),
 
               if (user.adminStatus) AdminEquipmentDetails(forms: forms),
             ],
           ),
+        ),
         ),
       ),
     );

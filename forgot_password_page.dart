@@ -78,15 +78,17 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   ),
                 ),
               ),
-              Flexible(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+              Align(
+                alignment: Alignment.topLeft,
+                child: Column(
+                  //mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     const Text(
-                      "Input recovery email or return to",
+                      "Input recovery email or",
                       style: TextStyle(
                         fontSize: 17.0,
                       ),
+                      softWrap: true,
                     ),
                     TextButton(
                       onPressed: () {
@@ -100,11 +102,12 @@ class ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             ));
                       },
                       child: const Text(
-                        'log in.',
+                        'return to log in.',
                         style: TextStyle(
                           color: Colors.blue,
                           fontSize: 17.0,
                         ),
+                        softWrap: true,
                       ),
                     ),
                   ],

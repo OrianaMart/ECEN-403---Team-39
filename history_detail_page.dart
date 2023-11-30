@@ -70,7 +70,7 @@ class HistoryDetailPageState extends State<HistoryDetailPage> {
             child: Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                child: Column(children: [
+                child: SingleChildScrollView(child: Column(children: [
                   const Align(
                     alignment: Alignment.topLeft,
                     child: Text(
@@ -83,185 +83,296 @@ class HistoryDetailPageState extends State<HistoryDetailPage> {
                   ),
                   const SizedBox(height: 15),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  const SizedBox(height: 5),
+                  const Divider(
+                    color: Colors.grey,
+                  ),
+                  const SizedBox(height: 5),
+                  //TESTING SOFT WRAP
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        "Checkout History ID: ",
+                        'Checkout History ID: ',
                         style: TextStyle(
-                          fontSize: 17.0,
+                          fontSize: 18.0,
                           fontWeight: FontWeight.bold,
+                          color: Color(0xFF8B8B8B),
                         ),
+                        softWrap: true,
                       ),
+                      const SizedBox(height: 2),
                       Text(
                         user.checkoutID,
                         style: const TextStyle(
-                          fontSize: 17.0,
+                          fontSize: 23.0,
+                          fontWeight: FontWeight.bold,
                         ),
+                        softWrap: true,
                       ),
                     ],
                   ),
+                  const SizedBox(height: 5),
+                  const Divider(
+                    color: Colors.grey,
+                  ),
+                  const SizedBox(height: 5),
 
                   if (user.adminStatus)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          "Username: ",
+                          'Username: ',
                           style: TextStyle(
-                            fontSize: 17.0,
+                            fontSize: 18.0,
                             fontWeight: FontWeight.bold,
+                            color: Color(0xFF8B8B8B),
                           ),
+                          softWrap: true,
                         ),
+                        const SizedBox(height: 2),
                         Text(
                           historyDetails[1],
                           style: const TextStyle(
-                            fontSize: 17.0,
+                            fontSize: 23.0,
+                            fontWeight: FontWeight.bold,
                           ),
+                          softWrap: true,
                         ),
                       ],
                     ),
+                  if (user.adminStatus)
+                    const SizedBox(height: 5),
+                  if (user.adminStatus)
+                    const Divider(
+                      color: Colors.grey,
+                    ),
+                  if (user.adminStatus)
+                    const SizedBox(height: 5),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        "Checked Out Equipment: ",
+                        'Checked Out Equipment: ',
                         style: TextStyle(
-                          fontSize: 17.0,
+                          fontSize: 18.0,
                           fontWeight: FontWeight.bold,
+                          color: Color(0xFF8B8B8B),
                         ),
+                        softWrap: true,
                       ),
+                      const SizedBox(height: 2),
                       Text(
                         historyDetails[2],
                         style: const TextStyle(
-                          fontSize: 17.0,
+                          fontSize: 23.0,
+                          fontWeight: FontWeight.bold,
                         ),
+                        softWrap: true,
                       ),
                     ],
                   ),
+                  const SizedBox(height: 5),
+                  const Divider(
+                    color: Colors.grey,
+                  ),
+                  const SizedBox(height: 5),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        "Amount Checked Out: ",
+                        'Amount Checked: ',
                         style: TextStyle(
-                          fontSize: 17.0,
+                          fontSize: 18.0,
                           fontWeight: FontWeight.bold,
+                          color: Color(0xFF8B8B8B),
                         ),
+                        softWrap: true,
                       ),
+                      const SizedBox(height: 2),
                       Text(
                         historyDetails[3],
                         style: const TextStyle(
-                          fontSize: 17.0,
+                          fontSize: 23.0,
+                          fontWeight: FontWeight.bold,
                         ),
+                        softWrap: true,
                       ),
                     ],
                   ),
+                  const SizedBox(height: 5),
+                  const Divider(
+                    color: Colors.grey,
+                  ),
+                  const SizedBox(height: 5),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        "Admin Approved Checkout: ",
+                        'Admin Approved Checkout: ',
                         style: TextStyle(
-                          fontSize: 17.0,
+                          fontSize: 18.0,
                           fontWeight: FontWeight.bold,
+                          color: Color(0xFF8B8B8B),
                         ),
+                        softWrap: true,
                       ),
+                      const SizedBox(height: 2),
                       Text(
                         historyDetails[4],
                         style: const TextStyle(
-                          fontSize: 17.0,
+                          fontSize: 23.0,
+                          fontWeight: FontWeight.bold,
                         ),
+                        softWrap: true,
                       ),
                     ],
                   ),
+                  const SizedBox(height: 5),
+                  const Divider(
+                    color: Colors.grey,
+                  ),
+                  const SizedBox(height: 5),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        "Checkout Timestamp: ",
+                        'Checkout Timestamp: ',
                         style: TextStyle(
-                          fontSize: 17.0,
+                          fontSize: 18.0,
                           fontWeight: FontWeight.bold,
+                          color: Color(0xFF8B8B8B),
                         ),
+                        softWrap: true,
                       ),
+                      const SizedBox(height: 2),
                       Text(
                         historyDetails[5],
                         style: const TextStyle(
-                          fontSize: 17.0,
+                          fontSize: 23.0,
+                          fontWeight: FontWeight.bold,
                         ),
+                        softWrap: true,
                       ),
                     ],
                   ),
+                  const SizedBox(height: 5),
+                  const Divider(
+                    color: Colors.grey,
+                  ),
+                  const SizedBox(height: 5),
+
 
                   //Displays the information for the equipment
                   if (historyDetails.length > 6)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          "Amount Checked In: ",
+                          'Amount Checked In: ',
                           style: TextStyle(
-                            fontSize: 17.0,
+                            fontSize: 18.0,
                             fontWeight: FontWeight.bold,
+                            color: Color(0xFF8B8B8B),
                           ),
+                          softWrap: true,
                         ),
+                        const SizedBox(height: 2),
                         Text(
                           historyDetails[6],
                           style: const TextStyle(
-                            fontSize: 17.0,
+                            fontSize: 23.0,
+                            fontWeight: FontWeight.bold,
                           ),
+                          softWrap: true,
                         ),
                       ],
                     ),
+                  if (historyDetails.length > 6)
+                    const SizedBox(height: 5),
+                  if (historyDetails.length > 6)
+                    const Divider(
+                      color: Colors.grey,
+                    ),
+                  if (historyDetails.length > 6)
+                    const SizedBox(height: 5),
+
 
                   if (historyDetails.length > 6)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          "Admin Approved Check-In: ",
+                          'Admin Approved Check-In: ',
                           style: TextStyle(
-                            fontSize: 17.0,
+                            fontSize: 18.0,
                             fontWeight: FontWeight.bold,
+                            color: Color(0xFF8B8B8B),
                           ),
+                          softWrap: true,
                         ),
+                        const SizedBox(height: 2),
                         Text(
                           historyDetails[7],
                           style: const TextStyle(
-                            fontSize: 17.0,
+                            fontSize: 23.0,
+                            fontWeight: FontWeight.bold,
                           ),
+                          softWrap: true,
                         ),
                       ],
                     ),
+                  if (historyDetails.length > 6)
+                    const SizedBox(height: 5),
+                  if (historyDetails.length > 6)
+                    const Divider(
+                      color: Colors.grey,
+                    ),
+                  if (historyDetails.length > 6)
+                    const SizedBox(height: 5),
+
 
                   if (historyDetails.length > 6)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          "Check-in Timestamp: ",
+                          'Check-In Timestamp: ',
                           style: TextStyle(
-                            fontSize: 17.0,
+                            fontSize: 18.0,
                             fontWeight: FontWeight.bold,
+                            color: Color(0xFF8B8B8B),
                           ),
+                          softWrap: true,
                         ),
+                        const SizedBox(height: 2),
                         Text(
                           historyDetails[8],
                           style: const TextStyle(
-                            fontSize: 17.0,
+                            fontSize: 23.0,
+                            fontWeight: FontWeight.bold,
                           ),
+                          softWrap: true,
                         ),
                       ],
                     ),
+                  if (historyDetails.length > 6)
+                    const SizedBox(height: 5),
+                  if (historyDetails.length > 6)
+                    const Divider(
+                      color: Colors.grey,
+                    ),
+                  if (historyDetails.length > 6)
+                    const SizedBox(height: 5),
 
                   if (user.adminStatus)
                     AdminHistoryDetails(amountAllowed: amount),
-                ]))));
+                ])))));
   }
 }
 
