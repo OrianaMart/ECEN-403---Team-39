@@ -169,7 +169,7 @@ class ProfilePageState extends State<ProfilePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Name: ',
+                    'First Name: ',
                     style: TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
@@ -179,7 +179,38 @@ class ProfilePageState extends State<ProfilePage> {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    '$firstName $lastName',
+                    firstName,
+                    //softWrap: true,
+                    style: const TextStyle(
+                      fontSize: 23.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    softWrap: true,
+                    overflow: TextOverflow.clip,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 5),
+              const Divider(
+                color: Colors.grey,
+              ),
+              const SizedBox(height: 5),
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Last Name: ',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF8B8B8B),
+                    ),
+                    softWrap: true,
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    lastName,
                     //softWrap: true,
                     style: const TextStyle(
                       fontSize: 23.0,
